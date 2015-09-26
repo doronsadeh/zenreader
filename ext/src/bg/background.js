@@ -20,3 +20,19 @@ chrome.runtime.onMessage.addListener(
 
     sendResponse({result:"ok"});
   });
+  
+// You'll usually only ever have to create one service instance.
+var service = analytics.getService('zen_reader');
+
+// You can create as many trackers as you want. Each tracker has its own state
+// independent of other tracker instances.
+var tracker = service.getTracker('UA-67866543-1');
+
+var anonID = 'aid_' + Math.random();
+
+// Send initial event 
+tracker.sendEvent('AIDPing', anonID,  Date.now());
+
+// Ping GA every half an hour, with anonymized random ID to show how many active users we really have
+window.setInterval(function() {tracker.sendEvent('AIDPing', anonID,  Date.now());},  1000*60*30);
+

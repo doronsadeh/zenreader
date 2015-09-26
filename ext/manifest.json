@@ -15,6 +15,7 @@
   "default_locale": "en",
   "background": {
     "scripts": [
+	  "src/js/google-analytics-bundle.js",
       "src/bg/background.js"
     ],
     "persistent": true

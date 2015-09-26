@@ -299,8 +299,6 @@
 		  }
 		});
 
-		// If you are using the Closure compiler:
-		goog.require('analytics.getService');
 		// You'll usually only ever have to create one service instance.
 		var service = analytics.getService('zen_reader');
 
