@@ -1,13 +1,82 @@
-// if you checked "fancy-settings" in extensionizr.com, uncomment this lines
+var authorsList = ["gideon-levi", 
+                   "merav-arlozorov",
+                   "benny-tzipper",
+                   "ofri-ilani",
+                   "revital-madar",
+                   "uri-katz",
+                   "anshil-pepper",
+                   "eyal-sagie-bizaui",
+                   "hani-zubida",
+                   "tahel-farosh",
+				   "nehamia-shtresler",
+				   "carolina-landsman",
+				   "tzafi-saar"];
 
-// var settings = new Store("settings", {
-//     "sample_setting": "This is how you use Store.js to remember values"
-// });
+
+function applyOptions(authorsMap) {
+	chrome.storage.sync.set({
+		'authors': authorsMap,
+	}, function() {
+		// Quiet
+	});
+	
+	var trigger = Math.random();
+	chrome.storage.sync.set({'refresh': trigger});
+}
+
+function setAllOptions() {
+	var authorsMap = {};
+	numBlockedAuthors = 0
+	for (var i = 0; i < authorsList.length; i++) {
+		authorsMap[authorsList[i]] = true;
+	}
+
+	// Save them to local storage
+	applyOptions(authorsMap);
+}
+				   
+function updateOptions() {
+	// Read current options, and set those who are new (after version update if any)
+	var authorsMap = {};
+	chrome.storage.sync.get('authors',
+							function(items) {
+								authorsMap = items.authors;
+							});
+							
+	numBlockedAuthors = 0;
+	for (var i = 0; i < authorsList.length; i++) {
+		// If author already saved to local storgae, skip
+		if (authorsMap[authorsList[i]])
+			continue;
+		
+		// Else ... save it, and set by default
+		authorsMap[authorsList[i]] = true;
+	}
+  
+	// Save changes
+	applyOptions(authorsMap);
+}
+
+// Check whether new version is installed
+chrome.runtime.onInstalled.addListener(function(details) {
+    if(details.reason == "install") {
+        console.log("ZenReader first time install. Saving options.");
+		
+		// Set all authors to block on first time install
+		setAllOptions();
+		
+    } else if(details.reason == "update") {
+        var thisVersion = chrome.runtime.getManifest().version;
+        console.log("Zen Reader updated from " + details.previousVersion + " to " + thisVersion + ". Updating options.");
+		
+		// Update all new authors (added in updated version) to block, but leave all others as set by user
+		updateOptions();
+    }
+});
 
 var counter = 0;
 chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] });
 
-//example of using a message handler from the inject scripts
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
 	 console.log('incr: ', request.incr);

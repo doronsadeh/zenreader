@@ -3,44 +3,58 @@
 	var copyModified = -1;
 	var modified = 0;
 
-	var authorsList = ["gideon-levi",
-					   "merav-arlozorov",
-					   "benny-tzipper",
-					   "ofri-ilani",
-					   "revital-madar",
-					   "uri-katz",
-					   "anshil-pepper",
-					   "eyal-sagie-bizaui",
-					   "hani-zubida",
-					   "tahel-farosh",
-					   "nehamia-shtresler",
-					   "carolina-landsman",
-					   "tzafi-saar"];
+	var deadPoets = ["מירב ארלוזורוב",
+					 "מרב ארלוזורוב",
+					 "גדעון לוי",
+					 "גידעון לוי",
+					 "בני ציפר",
+					 "עפרי אילני",
+					 "רוויטל מדר",
+					 "אורי כץ",
+					 "אנשיל פפר",
+					 "אייל שגיא ביזאוי",
+					 "איל שגיא ביזאוי",
+					 "הני זוביידה",
+					 "הני זובידה",
+					 "ציפר",
+					 "תהל פרוש",
+					 "נחמיה שטרסלר",
+					 "קרולינה לנדסמן",
+					 "צפי סער"];
+
+	var deadPoetsXlatMap = { "מירב ארלוזורוב":"merav-arlozorov",
+							 "מרב ארלוזורוב":"merav-arlozorov",
+							 "גדעון לוי":"gideon-levi",
+							 "גידעון לוי":"gideon-levi",
+							 "בני ציפר":"benny-tzipper",
+							 "עפרי אילני":"ofri-ilani",
+							 "רוויטל מדר":"revital-madar",
+							 "אורי כץ":"uri-katz",
+							 "אנשיל פפר":"anshil-pepper",
+							 "אייל שגיא ביזאוי":"eyal-sagie-bizaui",
+							 "איל שגיא ביזאוי":"eyal-sagie-bizaui",
+							 "הני זוביידה":"hani-zubida",
+							 "הני זובידה":"hani-zubida",
+							 "ציפר":"benny-tzipper",
+							 "תהל פרוש":"tahel-farosh",
+							 "נחמיה שטרסלר":"nehamia-shtresler",
+							 "קרולינה לנדסמן":"carolina-landsman",
+							 "צפי סער":"tzafi-saar"};
 
 	var allowedDomains = ["haaretz.co.il", "themarker.com"]
 
-	function save_options() {
-		var authors = authorsList;
-		var authorsMap = {};
-		for (var i = 0; i < authors.length; i++) {
-			authorsMap[new String(authors[i])] = true;
-		}
-
-		chrome.storage.sync.set({
-			'authors': authorsMap, 'updated': true,
-		}, function() {
-		});
+	// Create a uniform name list of authors for tracking
+	var dpKeyList = Object.keys(deadPoetsXlatMap);
+	var deadPoetsUniformName = {};
+	for (var i = 0; i < dpKeyList.length; i++) {
+		deadPoetsUniformName[deadPoetsXlatMap[dpKeyList[i]]] = deadPoetsXlatMap[dpKeyList[i]];
 	}
 
-	function check_and_update_options() {
-		chrome.storage.sync.get('updated',
-								function(items) {
-									if (!items.updated) {
-										save_options();
-									}
-								});
+	var deadPoetsRegEx = [];
+	for (var i = 0; i < deadPoets.length; i++) {
+		deadPoetsRegEx[i] = XRegExp(deadPoets[i]);
 	}
-
+		
 	function getAuthorKey(deadPoetsXlatMap, author) {
 		return deadPoetsXlatMap[author];
 	}
@@ -178,29 +192,6 @@
 		document.getElementById('mailto-proxy').click();
 	}
 
-	var originals = {
-		"background_color":"",
-		"webkit_filter":"",
-		"filter":""
-	}
-
-	function lightbox(on) {
-		if (on) {
-			originals.background_color = document.body.style.getPropertyValue('background-color');
-			originals.webkit_filter = document.body.style.getPropertyValue('-webkit-filter');
-			originals.filter = document.body.style.getPropertyValue('filter');
-
-			document.body.style.setProperty('background-color','#eee', '');
-			document.body.style.setProperty('-webkit-filter', 'opacity(1.00) brightness(0.4) blur(3px)', '');
-			document.body.style.setProperty('filter', 'opacity(1.00) brightness(0.4) blur(3px)', '');
-		}
-		else {
-			document.body.style.setProperty('background-color',originals.background_color, '');
-			document.body.style.setProperty('-webkit-filter', originals.webkit_filter, '');
-			document.body.style.setProperty('filter', original.filter, '');
-		}
-	}
-
 	function allowed() {
 		for (var i = 0; i < allowedDomains.length; i++) {
 			if (window.location.hostname.endsWith(allowedDomains[i]))
@@ -225,60 +216,12 @@
 		tracker.sendEvent('ScannedPage', window.location.href, 1);
 	}
 
+	
+	//
+	// main
+	//
+	
 	if (window === window.top) {
-
-		var deadPoets = ["מירב ארלוזורוב",
-						 "מרב ארלוזורוב",
-						 "גדעון לוי",
-						 "גידעון לוי",
-						 "בני ציפר",
-						 "עפרי אילני",
-						 "רוויטל מדר",
-						 "אורי כץ",
-						 "אנשיל פפר",
-						 "אייל שגיא ביזאוי",
-						 "איל שגיא ביזאוי",
-						 "הני זוביידה",
-						 "הני זובידה",
-						 "ציפר",
-						 "תהל פרוש",
-						 "נחמיה שטרסלר",
-						 "קרולינה לנדסמן",
-						 "צפי סער"];
-
-		var deadPoetsXlatMap = { "מירב ארלוזורוב":"merav-arlozorov",
-								 "מרב ארלוזורוב":"merav-arlozorov",
-								 "גדעון לוי":"gideon-levi",
-								 "גידעון לוי":"gideon-levi",
-								 "בני ציפר":"benny-tzipper",
-								 "עפרי אילני":"ofri-ilani",
-								 "רוויטל מדר":"revital-madar",
-								 "אורי כץ":"uri-katz",
-								 "אנשיל פפר":"anshil-pepper",
-								 "אייל שגיא ביזאוי":"eyal-sagie-bizaui",
-								 "איל שגיא ביזאוי":"eyal-sagie-bizaui",
-								 "הני זוביידה":"hani-zubida",
-								 "הני זובידה":"hani-zubida",
-								 "ציפר":"benny-tzipper",
-								 "תהל פרוש":"tahel-farosh",
-								 "נחמיה שטרסלר":"nehamia-shtresler",
-								 "קרולינה לנדסמן":"carolina-landsman",
-								 "צפי סער":"tzafi-saar"};
-
-
-		// Create a uniform name list of authors for tracking
-		var dpKeyList = Object.keys(deadPoetsXlatMap);
-		var deadPoetsUniformName = {};
-		for (var i = 0; i < dpKeyList.length; i++) {
-			deadPoetsUniformName[deadPoetsXlatMap[dpKeyList[i]]] = deadPoetsXlatMap[dpKeyList[i]];
-		}
-
-		var deadPoetsRegEx = [];
-		for (var i = 0; i < deadPoets.length; i++) {
-			deadPoetsRegEx[i] = XRegExp(deadPoets[i]);
-		}
-
-		check_and_update_options();
 
 		console.log('sending modified 1st time: 0');
 		chrome.runtime.sendMessage({incr: '0'}, function(response) {
@@ -292,9 +235,6 @@
 			}
 			if (key === 'req_new_author') {
 				req_new_author();
-			}
-			if (key === 'options_on') {
-				// lightbox(changes[key].newValue.startsWith('on_'));
 			}
 		  }
 		});

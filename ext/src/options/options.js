@@ -1,22 +1,18 @@
 var numBlockedAuthors = 0;
 
-function toggle_all(e) {
-	var state = true;
-	if (event.shiftKey)
-		state = false;
-	
-	var authors = document.querySelectorAll('input.author-input');
-	for (var i = 0; i < authors.length; i++) {
-		authors[i].checked = state;
-	}
-	
-	save_options();
-}
-
-function request_new_author(e) {
-	var trigger = Math.random();
-	chrome.storage.sync.set({'req_new_author': trigger});
-}
+var authorsList = ["gideon-levi", 
+                   "merav-arlozorov",
+                   "benny-tzipper",
+                   "ofri-ilani",
+                   "revital-madar",
+                   "uri-katz",
+                   "anshil-pepper",
+                   "eyal-sagie-bizaui",
+                   "hani-zubida",
+                   "tahel-farosh",
+				   "nehamia-shtresler",
+				   "carolina-landsman",
+				   "tzafi-saar"];
 
 function save_options() {
 	var authors = document.querySelectorAll('input.author-input');
@@ -51,20 +47,6 @@ function listenOnAllCheckboxes() {
     }
 }
 
-var authorsList = ["gideon-levi", 
-                   "merav-arlozorov",
-                   "benny-tzipper",
-                   "ofri-ilani",
-                   "revital-madar",
-                   "uri-katz",
-                   "anshil-pepper",
-                   "eyal-sagie-bizaui",
-                   "hani-zubida",
-                   "tahel-farosh",
-				   "nehamia-shtresler",
-				   "carolina-landsman",
-				   "tzafi-saar"];
-				   
 function restore_options() {
 	numBlockedAuthors = 0
 	chrome.storage.sync.get('authors',
@@ -80,9 +62,38 @@ function restore_options() {
 							});
 }
 
+function toggle_all(e) {
+	var state = true;
+	if (event.shiftKey)
+		state = false;
+	
+	var authors = document.querySelectorAll('input.author-input');
+	for (var i = 0; i < authors.length; i++) {
+		authors[i].checked = state;
+	}
+	
+	save_options();
+}
 
+function request_new_author(e) {
+	var trigger = Math.random();
+	chrome.storage.sync.set({'req_new_author': trigger});
+}
+
+function onDOMLoaded() {
+	// Print the version number
+	var zVer = chrome.runtime.getManifest().version;
+	document.getElementById('zen_version').innerHTML = 'v' + zVer;
+	
+	// Now restore all options from local storage
+	restore_options();
+}
+
+//
+// main
+//
 if (window === window.top) {
-	document.addEventListener('DOMContentLoaded', restore_options);
+	document.addEventListener('DOMContentLoaded', onDOMLoaded);
 	
 	listenOnAllCheckboxes();
 	
