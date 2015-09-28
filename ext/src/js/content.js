@@ -217,6 +217,10 @@
 	}
 	
 	function talkbacks() {
+		
+		if (!allowed())
+			return;
+		
 		var allTB = getAllTalkbacks('media__content', '.cmt__title', '.cmt__text');
 		
 		for (var i = 0; i < allTB.length; i++) {
