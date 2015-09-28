@@ -1,3 +1,6 @@
+function countStrongPunctMarks(word) {
+	return word.replace(/[^!?]/g, "").length;
+}
 
 function hide(talkback) {
 	// Set highlight just before we remove it so when its clicked we already have it
@@ -29,19 +32,28 @@ function parseTalkback(talkback) {
 	
 	var kill = false;
 	
+	var countOffendingTitle = 0;
+	var countOffendingText = 0;
+	var maxSingleWord = 0;
 	for (var i = 0; i < titleWords.length; i++) {
-		if (titleWords[i].indexOf("!") !== -1) {
-			kill = true;
-		}
+		var o = countStrongPunctMarks(titleWords[i]);
+		if (o > 1)
+			countOffendingTitle += 1;
+		
+		maxSingleWord = Math.max(maxSingleWord, o);
 	}
 
 	for (var i = 0; i < textWords.length; i++) {
-		if (textWords[i].indexOf("!") !== -1) {
-			kill = true;
-		}
+		var o = countStrongPunctMarks(textWords[i]);
+		if (o > 1)
+			countOffendingText += 1;
+		
+		maxSingleWord = Math.max(maxSingleWord, o);
 	}
 	
-	if (kill) {
+	var ratio = ((countOffendingTitle / titleWords.length) + (countOffendingText / textWords.length)) / 2;
+	
+	if (maxSingleWord > 2 || ratio > 0.1) {
 		hide(talkback);
 	}
 }
