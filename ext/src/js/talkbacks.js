@@ -29,6 +29,7 @@ function parseTalkback(talkback) {
 		
 		var p = talkback.element.parentNode;
 		var zen = document.createElement('IMG');
+		zen.src = 'https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/icon48.png'
 		p.appendChild(zen);
 				
 		talkback.element.style.setProperty('display', 'none', 'important');
@@ -73,5 +74,4 @@ function getAllTalkbacks(parentClass, titleSelector, textSelector) {
 	
 	return talkbacks;
 }
-
 
