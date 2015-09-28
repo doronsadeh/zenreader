@@ -51,9 +51,11 @@ function parseTalkback(talkback) {
 		maxSingleWord = Math.max(maxSingleWord, o);
 	}
 	
-	var ratio = ((countOffendingTitle / titleWords.length) + (countOffendingText / textWords.length)) / 2;
+	var ratioTitle = countOffendingTitle / titleWords.length;
+	var ratioText = countOffendingText / textWords.length;
 	
-	if (maxSingleWord > 2 || ratio > 0.1) {
+	// TODO tunes this and add word based classifiers
+	if (maxSingleWord > 2 || ratioTitle > 0.1 || ratioText > 0.25) {
 		hide(talkback);
 	}
 }
