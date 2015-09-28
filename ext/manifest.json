@@ -1,6 +1,6 @@
 {
   "name": "Zen Reader",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "manifest_version": 2,
   "description": "בנה את העיתון שאתה רוצה לקרוא",
   "icons": {
@@ -29,6 +29,8 @@
     "http://*/*",
     "https://*/*",
 	"storage"
+  ],
+  "web_accessible_resources": [
   ],
   "content_scripts": [
     {

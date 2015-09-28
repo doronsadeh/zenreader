@@ -1,18 +1,3 @@
-var authorsList = ["gideon-levi", 
-                   "merav-arlozorov",
-                   "benny-tzipper",
-                   "ofri-ilani",
-                   "revital-madar",
-                   "uri-katz",
-                   "anshil-pepper",
-                   "eyal-sagie-bizaui",
-                   "hani-zubida",
-                   "tahel-farosh",
-				   "nehamia-shtresler",
-				   "carolina-landsman",
-				   "tzafi-saar"];
-
-
 function applyOptions(authorsMap) {
 	chrome.storage.sync.set({
 		'authors': authorsMap,
@@ -57,6 +42,62 @@ function updateOptions() {
 	applyOptions(authorsMap);
 }
 
+function applyTrackers(_anonID) {
+	// Send initial event 
+	tracker.sendEvent('panIDPing', _anonID,  Date.now());
+
+	// Ping GA every half an hour, with anonymized random ID to show how many active users we really have
+	window.setInterval(function() {tracker.sendEvent('panIDPing', _anonID,  Date.now());},  1000*60*30);
+}
+
+function startTracker() {
+	// Read anonID from local storage
+	chrome.storage.sync.get('anonID',
+							function(items) {
+								// Get the anonymous ID
+								anonID = items.anonID;
+
+								if (anonID && anonID.length > 0 && anonID.startsWith('aid_')) {
+									applyTrackers(anonID);
+								}
+								else {
+									// Else, tell me, cause this is a bug
+									tracker.sendEvent('panIDPing', 'AID regenerated',  Date.now());
+									
+									// But, don't leave it empty. Set it. And start trackers
+									anonID = 'aid_' + Math.random();
+									chrome.storage.sync.set({'anonID': anonID});
+									applyTrackers(anonID);
+								}
+							});
+}
+
+//
+// main
+//
+var anonID = 'aid_not_set';
+
+var authorsList = ["gideon-levi", 
+                   "merav-arlozorov",
+                   "benny-tzipper",
+                   "ofri-ilani",
+                   "revital-madar",
+                   "uri-katz",
+                   "anshil-pepper",
+                   "eyal-sagie-bizaui",
+                   "hani-zubida",
+                   "tahel-farosh",
+				   "nehamia-shtresler",
+				   "carolina-landsman",
+				   "tzafi-saar"];
+
+// You'll usually only ever have to create one service instance.
+var service = analytics.getService('zen_reader');
+
+// You can create as many trackers as you want. Each tracker has its own state
+// independent of other tracker instances.
+var tracker = service.getTracker('UA-67866543-1');
+
 // Check whether new version is installed
 chrome.runtime.onInstalled.addListener(function(details) {
     if(details.reason == "install") {
@@ -64,13 +105,23 @@ chrome.runtime.onInstalled.addListener(function(details) {
 		
 		// Set all authors to block on first time install
 		setAllOptions();
+
+		// Set one time anonymous ID, and write it to local storage
+		anonID = 'aid_' + Math.random();
+		chrome.storage.sync.set({'anonID': anonID});
 		
-    } else if(details.reason == "update") {
+		// Start GA tracker
+		startTracker();
+		
+    } else if (details.reason == "update") {
         var thisVersion = chrome.runtime.getManifest().version;
         console.log("Zen Reader updated from " + details.previousVersion + " to " + thisVersion + ". Updating options.");
 		
 		// Update all new authors (added in updated version) to block, but leave all others as set by user
 		updateOptions();
+		
+		// Start the tracker (we should already have an AID)
+		startTracker();
     }
 });
 
@@ -90,18 +141,3 @@ chrome.runtime.onMessage.addListener(
     sendResponse({result:"ok"});
   });
   
-// You'll usually only ever have to create one service instance.
-var service = analytics.getService('zen_reader');
-
-// You can create as many trackers as you want. Each tracker has its own state
-// independent of other tracker instances.
-var tracker = service.getTracker('UA-67866543-1');
-
-var anonID = 'aid_' + Math.random();
-
-// Send initial event 
-tracker.sendEvent('AIDPing', anonID,  Date.now());
-
-// Ping GA every half an hour, with anonymized random ID to show how many active users we really have
-window.setInterval(function() {tracker.sendEvent('AIDPing', anonID,  Date.now());},  1000*60*30);
-
