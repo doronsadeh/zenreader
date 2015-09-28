@@ -215,6 +215,14 @@
 
 		tracker.sendEvent('ScannedPage', window.location.href, 1);
 	}
+	
+	function talkbacks() {
+		var allTB = getAllTalkbacks('media__content', '.cmt__title', '.cmt__text');
+		
+		for (var i = 0; i < allTB.length; i++) {
+			parseTalkback(allTB[i]);
+		}
+	}
 
 	
 	//
@@ -250,5 +258,9 @@
 
 		// 1st time scan
 		scan();
+		
+		// Set talkbaks listener
+		window.setInterval(talkbacks, 1000);
 	}
 })();
+

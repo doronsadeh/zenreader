@@ -1,6 +1,6 @@
 {
   "name": "Zen Reader",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "manifest_version": 2,
   "description": "בנה את העיתון שאתה רוצה לקרוא",
   "icons": {
@@ -47,6 +47,7 @@
 		"src/js/addons/unicode/unicode-categories.js",
 		"src/js/addons/unicode/unicode-scripts.js",
 		"src/js/csspath.js",
+        "src/js/talkbacks.js",
         "src/js/content.js"
       ]
     }
