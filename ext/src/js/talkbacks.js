@@ -1,5 +1,17 @@
+var negKeywords = {"סמולנ" : 1, "סמולן" : 1};
+
 function countStrongPunctMarks(word) {
 	return word.replace(/[^!?]/g, "").length;
+}
+
+function isNegWord(word) {
+	nWs = Object.keys(negKeywords);
+	for (var i = 0; i < nWs.length; i++) {
+		if (word.indexOf(nWs[i]) !== -1)
+			return true;
+	}
+	
+	return false;
 }
 
 function hide(talkback) {
@@ -35,12 +47,17 @@ function parseTalkback(talkback) {
 	var countOffendingTitle = 0;
 	var countOffendingText = 0;
 	var maxSingleWord = 0;
+	var countNegWords = 0;
+	
 	for (var i = 0; i < titleWords.length; i++) {
 		var o = countStrongPunctMarks(titleWords[i]);
 		if (o > 1)
 			countOffendingTitle += 1;
 		
 		maxSingleWord = Math.max(maxSingleWord, o);
+		
+		if (isNegWord(titleWords[i]))
+			countNegWords += 1;
 	}
 
 	for (var i = 0; i < textWords.length; i++) {
@@ -49,13 +66,16 @@ function parseTalkback(talkback) {
 			countOffendingText += 1;
 		
 		maxSingleWord = Math.max(maxSingleWord, o);
+		
+		if (isNegWord(textWords[i]))
+			countNegWords += 1;
 	}
 	
 	var ratioTitle = countOffendingTitle / titleWords.length;
 	var ratioText = countOffendingText / textWords.length;
 	
 	// TODO tunes this and add word based classifiers
-	if (maxSingleWord > 2 || ratioTitle > 0.1 || ratioText > 0.25) {
+	if (maxSingleWord > 2 || ratioTitle > 0.1 || ratioText > 0.15 || countNegWords >= 1) {
 		hide(talkback);
 	}
 }
