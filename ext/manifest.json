@@ -15,7 +15,7 @@
   "default_locale": "en",
   "background": {
     "scripts": [
-	  "src/js/google-analytics-bundle.js",
+	  "src/js/libs/google-analytics-bundle.js",
       "src/bg/background.js"
     ],
     "persistent": true
@@ -41,13 +41,15 @@
 	  "run_at": "document_end",
 	  "all_frames": true,
       "js": [
-		"src/js/google-analytics-bundle.js",
-		"src/js/xregexp.js",
-		"src/js/addons/unicode/unicode-base.js",
-		"src/js/addons/unicode/unicode-categories.js",
-		"src/js/addons/unicode/unicode-scripts.js",
-		"src/js/csspath.js",
-        "src/js/talkbacks.js",
+		"src/js/libs/google-analytics-bundle.js",
+		"src/js/libs/xregexp.js",
+		"src/js/libs/addons/unicode/unicode-base.js",
+		"src/js/libs/addons/unicode/unicode-categories.js",
+		"src/js/libs/addons/unicode/unicode-scripts.js",
+		"src/js/libs/csspath.js",
+		"src/js/publishers/publisher.js",
+		"src/js/publishers/shoken/shoken.js",
+		"src/js/publishers/shoken/talkbacks.js",
         "src/js/content.js"
       ]
     }

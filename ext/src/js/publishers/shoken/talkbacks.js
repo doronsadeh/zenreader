@@ -60,14 +60,14 @@ function parseTalkback(talkback) {
 			countNegWords += 1;
 	}
 
-	for (var i = 0; i < textWords.length; i++) {
-		var o = countStrongPunctMarks(textWords[i]);
-		if (o > 1)
+	for (var j = 0; j < textWords.length; j++) {
+		var p = countStrongPunctMarks(textWords[j]);
+		if (p > 1)
 			countOffendingText += 1;
 		
-		maxSingleWord = Math.max(maxSingleWord, o);
+		maxSingleWord = Math.max(maxSingleWord, p);
 		
-		if (isNegWord(textWords[i]))
+		if (isNegWord(textWords[j]))
 			countNegWords += 1;
 	}
 	
@@ -115,4 +115,6 @@ function getAllTalkbacks(parentClass, titleSelector, textSelector) {
 	
 	return talkbacks;
 }
+
+
 
