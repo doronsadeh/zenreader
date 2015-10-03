@@ -83,7 +83,9 @@ Shoken.prototype.uid = 	function() {
 };
 
 Shoken.prototype.run = function(rerun) {
-	// TODO run authors hiding once, and set interval to run talkbacks hiding
+	if (!this._allowed()) 
+		return;
+
 	this._hideAuthors();
 	
 	if (!rerun) {
