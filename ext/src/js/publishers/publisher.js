@@ -3,6 +3,10 @@ var Publisher = function(tracker) {
 	 //
 	 // Constructor
 	 //
+
+	// REmoved articles counter and snapshot
+ 	this.copyModified = -1;
+	this.modified = 0;
 	 
 	 // The set of domains this publisher owns
 	 this.allowedDomains = [];
@@ -70,6 +74,98 @@ Publisher.prototype = {
 		}
 
 		return false;
+	},
+	
+	
+	_climbeToArticle : function(element) {
+		var e = element;
+		while (e && e !== document.body && e.tagName !== 'ARTICLE') {
+			e = e.parentElement;
+		}
+
+		if (e && e.tagName === 'ARTICLE')
+			return e;
+
+		return null;
+	},
+
+	_erase : function(authorsMap) {
+		
+		// For tracking
+		var blockedAuthorsDict = {};
+
+		this.modified = 0;
+
+		var authorz = document.querySelectorAll(this.authorSelectors);
+		
+		for (var z = 0; z < authorz.length; z++) {
+			var author = authorz[z].firstChild;
+
+			var actualAuthorString = '';
+			if (typeof author.data != 'undefined') {
+				actualAuthorString = author.data;
+			}
+			else if (typeof author.firstChild != 'undefined' && typeof author.firstChild.data != 'undefined') {
+				actualAuthorString = author.firstChild.data;
+			}
+
+			for (var a = 0; a < this.authorsRegEx.length; a++) {
+
+				var candidates = this.authorsRegEx[a].exec(actualAuthorString);
+				for (var y = 0; candidates !== null && y < candidates.length; y++) {
+
+					var candidate = candidates[y];
+
+					var articleToHide = this._climbeToArticle(authorz[z]);
+
+					var toHide = this._isHide(authorsMap, this.authorsNormalizedXlatTable, candidate);
+					if (toHide && this.authorsRegEx[a].test(candidate)) {
+						// Hide only if not already hidden
+						if (articleToHide !== null) {
+							if (articleToHide.style.display !== 'none') {
+								articleToHide.style.setProperty('display', 'none', 'important');
+							}
+
+							articleToHide.setAttribute('data-zenreader-hide-article','true');
+							authorz[z].setAttribute('data-zenreader-hide-author',candidate);
+
+							var k = this._normalizeAuthor(this.authorsNormalizedXlatTable, candidate);
+							if (k) {
+								blockedAuthorsDict[k] = 1;
+							}
+						}
+					}
+					else if (!toHide && this.authorsRegEx[a].test(candidate)) {
+						articleToHide.style.setProperty('display', '', '');
+						articleToHide.removeAttribute('data-zenreader-hide-article');
+
+						var q = this._normalizeAuthor(this.authorsNormalizedXlatTable, candidate);
+						if (q) {
+							blockedAuthorsDict[q] = 0;
+						}
+					}
+				}
+			}
+		}
+		
+		this.modified = document.querySelectorAll('[data-zenreader-hide-article]').length;
+
+		if (this.modified !== this.copyModified) {
+			this.copyModified = this.modified;
+			console.log('sending modified: ', this.copyModified);
+			chrome.runtime.sendMessage({incr: this.copyModified}, function(response) {
+			});
+
+			var kl = Object.keys(this.authorsTrackingUniformName);
+			for (var r = 0; r < kl.length; r++) {
+				if (blockedAuthorsDict[this.authorsTrackingUniformName[kl[r]]] > 0) {
+					this.tracker.sendEvent('BlockedAuthorOnPage', this.authorsTrackingUniformName[kl[r]], blockedAuthorsDict[this.authorsTrackingUniformName[kl[r]]]);
+				}
+			}
+		}
+
+		this.modified = 0;
+		
 	},
 
 	// @protected hideAuthors
