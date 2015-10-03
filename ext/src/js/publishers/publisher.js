@@ -76,7 +76,10 @@ Publisher.prototype = {
 		return false;
 	},
 	
-	
+	// @protected _climbeToArticle
+	//
+	// Returns: the article element whose a direct or non-direct parent of 'element', 
+	//          or null if no such element
 	_climbeToArticle : function(element) {
 		var e = element;
 		while (e && e !== document.body && e.tagName !== 'ARTICLE') {
@@ -89,7 +92,12 @@ Publisher.prototype = {
 		return null;
 	},
 
-	_erase : function(authorsMap) {
+	// @protected _eraseHiddenAuthors
+	//
+	// Erases all articles by hidden authors
+	//
+	// Returns: nothing
+	_eraseHiddenAuthors : function(authorsMap) {
 		
 		// For tracking
 		var blockedAuthorsDict = {};

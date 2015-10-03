@@ -84,7 +84,7 @@ Shoken.prototype._hideAuthors = function() {
 
 	chrome.storage.sync.get('authors',
 						function(items) {
-							publisherInstances["Shoken"]._erase(items.authors);
+							publisherInstances["Shoken"]._eraseHiddenAuthors(items.authors);
 						});
 
 	this.tracker.sendEvent('ScannedPage', window.location.href, 1);
