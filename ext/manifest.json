@@ -49,7 +49,6 @@
 		"src/js/libs/csspath.js",
 		"src/js/publishers/publisher.js",
 		"src/js/publishers/shoken/shoken.js",
-		"src/js/publishers/shoken/talkbacks.js",
         "src/js/content.js"
       ]
     }

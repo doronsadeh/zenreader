@@ -58,6 +58,15 @@ var Shoken = function(tracker) {
 	for (var j = 0; j < this.authorsList.length; j++) {
 		this.authorsRegEx[j] = XRegExp(this.authorsList[j]);
 	}
+	
+	this.negKeywords = {"סמולנ" : 1, "סמולן" : 1};
+	
+	this.talkbackParentClass = 'media__content';
+	
+	this.talkbackTitleSelectors = ['.cmt__title'];
+	
+	this.talkbackTextSelectors = ['.cmt__text'];
+
 };
 
 Shoken.prototype = Object.create(Publisher.prototype);
@@ -96,10 +105,10 @@ Shoken.prototype._hideTalkbacks = function() {
 			return;
 		
 		// TODO move to object model
-		var allTB = getAllTalkbacks('media__content', '.cmt__title', '.cmt__text');
+		var allTB = self._getTalkbacks();
 		
 		for (var i = 0; i < allTB.length; i++) {
-			parseTalkback(allTB[i]);
+			self._parseTalkback(allTB[i]);
 		}
 };
 
