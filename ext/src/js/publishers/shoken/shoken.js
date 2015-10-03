@@ -59,7 +59,13 @@ var Shoken = function(tracker) {
 		this.authorsRegEx[j] = XRegExp(this.authorsList[j]);
 	}
 	
-	this.negKeywords = {"סמולנ" : 1, "סמולן" : 1};
+	this.negKeywords = {"סמולנ" : 1, 
+						"סמולן" : 1, 
+						"גזען" : 1,
+						"טיפש" : 1, 
+						"אידיוט" : 1,
+						"טמבל" : 1,
+						"נאצי" : 1};
 	
 	this.talkbackParentClass = 'media__content';
 	
