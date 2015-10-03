@@ -9,11 +9,14 @@ var Ynet = function(tracker) {
 	
 	this.allowedDomains = ["ynet.co.il"];
 
-	this.authorsList = ['אבאשלך'];
+	this.authorsList = ['רון בן ישי', 'רון  בן-ישי', 'יועז הנדל', 'איתי גל'];
 
-	this.authorsNormalizedXlatTable = {'אבאשלך':'father'};
+	this.authorsNormalizedXlatTable = {'רון בן ישי':'ron-ben-yishai',
+									   'רון בן-ישי' : 'ron-ben-yishai',
+									   'יועז הנדל' : 'yoaz-hendel',
+									   'איתי גל' : 'itay-gal'};
 
-	this.authorSelectors = ['.nosuchclassever'];
+	this.authorSelectors = ['span.art_header_footer_author>span>a', 'span.mta_gray_text'];
 
 	// Create a uniform name list of authors for tracking
 	var dpKeyList = Object.keys(this.authorsNormalizedXlatTable);
@@ -33,7 +36,7 @@ var Ynet = function(tracker) {
 						"טמבל" : 1,
 						"נאצי" : 1};
 	
-	this.talkbackParentClass = 'art_tkb_talkback_details_inner';
+	this.talkbackParentClass = 'art_tkb_talkback';
 	
 	this.talkbackTitleSelectors = ['.art_tkb_talkback_title'];
 	
@@ -43,6 +46,17 @@ var Ynet = function(tracker) {
 
 Ynet.prototype = Object.create(Publisher.prototype);
 Ynet.prototype.constructor = Ynet;
+
+Ynet.prototype._climbeToArticle = function(element) {
+	if (element.classList.contains('mta_gray_text') && element.parentElement && element.parentElement.tagName === 'LI') {
+		return element.parentElement;
+	}
+	else if (element.tagName === 'A' && element.parentElement && element.parentElement.tagName === 'SPAN') {
+		return document.querySelector('.block.B4.spacer');
+	}
+	
+	return null;
+};
 
 Ynet.prototype.uid = 	function() {
 	return 'ynet';
@@ -77,13 +91,16 @@ Ynet.prototype._hideTalkbacks = function() {
 	var self = publisherInstances["Ynet"];
 	if (!self._allowed())
 			return;
+
+	// Hide all FB comments (TODO provide an option to enable them back)
+	var fbComments = document.getElementById('articleComments');
+	fbComments.style.setProperty('display', 'none', 'important');
 		
-		// TODO move to object model
-		var allTB = self._getTalkbacks();
+	var allTB = self._getTalkbacks();
 		
-		for (var i = 0; i < allTB.length; i++) {
-			self._parseTalkback(allTB[i]);
-		}
+	for (var i = 0; i < allTB.length; i++) {
+		self._parseTalkback(allTB[i]);
+	}
 };
 
 

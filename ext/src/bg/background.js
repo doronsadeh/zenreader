@@ -92,7 +92,10 @@ var authorsList = ["gideon-levi",
                    "tahel-farosh",
 				   "nehamia-shtresler",
 				   "carolina-landsman",
-				   "tzafi-saar"];
+				   "tzafi-saar",
+				   "ron-ben-yishai",
+				   "yoaz-hendel",
+				   "itay-gal"];
 
 // You'll usually only ever have to create one service instance.
 var service = analytics.getService('zen_reader');
