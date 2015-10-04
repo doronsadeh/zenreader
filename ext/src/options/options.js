@@ -14,6 +14,7 @@ var authorsList = ["gideon-levi",
 				   "carolina-landsman",
 				   "tzafi-saar",
 				   "noa-ast",
+				   "merav-michaeli",
 				   "ron-ben-yishai",
 				   "yoaz-hendel",
 				   "itay-gal"];
