@@ -93,6 +93,7 @@ var authorsList = ["gideon-levi",
 				   "nehamia-shtresler",
 				   "carolina-landsman",
 				   "tzafi-saar",
+				   "noa-ast",
 				   "ron-ben-yishai",
 				   "yoaz-hendel",
 				   "itay-gal"];
