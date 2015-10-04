@@ -28,6 +28,7 @@ var Shoken = function(tracker) {
 						 "קרולינה לנדסמן",
 						 "צפי סער",
 						 "נועה אסטרייכר",
+						 "נעה אסטרייכר",
 						 "מרב מיכאלי",
 						 "מירב מיכאלי"];
 
@@ -50,6 +51,7 @@ var Shoken = function(tracker) {
 										 "קרולינה לנדסמן":"carolina-landsman",
 										 "צפי סער":"tzafi-saar",
 										 "נועה אסטרייכר":"noa-ast",
+										 "נעה אסטרייכר":"noa-ast",
 										 "מרב מיכאלי":"merav-michaeli",
 										 "מירב מיכאלי":"merav-michaeli"};
 
