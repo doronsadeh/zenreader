@@ -59,8 +59,22 @@ var Publisher = function(tracker) {
 	this.talkbackTextSelectors = [];
 	
 	// Talkbacks neg words
-	this.talkbackNegWords = [];
- 
+	this.talkbackNegKeywords = {"סמולנ" : 1, 
+								"סמולן" : 1, 
+								"0מולן" : 1,
+								"מזוין" : 1,
+								"מזוינ" : 1,
+								"מזדיין" : 1,
+								"מזדיינ" : 1,
+								"מזדינ" : 1,
+								"גזען" : 1,
+								"טיפש" : 1, 
+								"אידיוט" : 1,
+								"טמבל" : 1,
+								"נאצי" : 1,
+								"דביל" : 1,
+								"מפגר" : 1,
+								"חחח" : 1};
 };	
 
 Publisher.prototype = {
@@ -230,7 +244,7 @@ Publisher.prototype = {
 	},
 
 	_isNegWord : function(word) {
-		nWs = Object.keys(this.negKeywords);
+		nWs = Object.keys(this.talkbackNegKeywords);
 		for (var i = 0; i < nWs.length; i++) {
 			if (word.indexOf(nWs[i]) !== -1)
 				return true;
@@ -272,7 +286,7 @@ Publisher.prototype = {
 			return;
 		
 		var titleWords = talkback.title.split(" ");
-		var textWords = talkback.text.split("");
+		var textWords = talkback.text.split(" ");
 		
 		var kill = false;
 		

@@ -28,14 +28,6 @@ var Ynet = function(tracker) {
 		this.authorsRegEx[j] = XRegExp(this.authorsList[j]);
 	}
 	
-	this.negKeywords = {"סמולנ" : 1, 
-						"סמולן" : 1, 
-						"גזען" : 1,
-						"טיפש" : 1, 
-						"אידיוט" : 1,
-						"טמבל" : 1,
-						"נאצי" : 1};
-	
 	this.talkbackParentClass = 'art_tkb_talkback';
 	
 	this.talkbackTitleSelectors = ['.art_tkb_talkback_title'];
