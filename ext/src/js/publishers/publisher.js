@@ -161,6 +161,8 @@ Publisher.prototype = {
 			else if (typeof author.firstChild != 'undefined' && typeof author.firstChild.data != 'undefined') {
 				actualAuthorString = author.firstChild.data;
 			}
+			
+			actualAuthorString = actualAuthorString.replace(/\s+/g, ' ');
 
 			for (var a = 0; a < this.authorsRegEx.length; a++) {
 
