@@ -143,10 +143,12 @@ Ynet.prototype._hideTalkbacks = function() {
 			return;
 
 	// Hide all FB comments (TODO provide an option to enable them back)
+	/*
 	var fbComments = document.getElementById('articleComments');
 	if (fbComments)
 		fbComments.style.setProperty('display', 'none', 'important');
-		
+	*/
+	
 	var allTB = self._getTalkbacks();
 		
 	for (var i = 0; i < allTB.length; i++) {
