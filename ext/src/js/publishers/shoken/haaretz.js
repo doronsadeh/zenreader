@@ -8,7 +8,7 @@ var Haaretz = function(tracker) {
 	Publisher.call(this, tracker);
 	
 	this.allowedDomains = ["haaretz.co.il"];
-
+    
 	this.authorsList = ["מירב ארלוזורוב",
 						"מרב ארלוזורוב",
 						 "גדעון לוי",

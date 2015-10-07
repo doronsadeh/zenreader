@@ -9,28 +9,33 @@ var TheMarker = function(tracker) {
 	
 	this.allowedDomains = ["themarker.com"];
 
+                        ["gideon-levi",
+                            "merav-arlozorov",
+                            "benny-tzipper",
+                            "ofri-ilani",
+                            "uri-katz",
+                            "eyal-sagie-bizaui",
+                            "hani-zubida",
+                            "nehamia-shtresler",
+                            "carolina-landsman",
+                            "noa-ast"];
+    
 	this.authorsList = ["מירב ארלוזורוב",
 						"מרב ארלוזורוב",
 						 "גדעון לוי",
 						 "גידעון לוי",
 						 "בני ציפר",
 						 "עפרי אילני",
-						 "רוויטל מדר",
 						 "אורי כץ",
-						 "אנשיל פפר",
 						 "אייל שגיא ביזאוי",
 						 "איל שגיא ביזאוי",
 						 "הני זוביידה",
 						 "הני זובידה",
 						 "ציפר",
-						 "תהל פרוש",
 						 "נחמיה שטרסלר",
 						 "קרולינה לנדסמן",
-						 "צפי סער",
 						 "נועה אסטרייכר",
-						 "נעה אסטרייכר",
-						 "מרב מיכאלי",
-						 "מירב מיכאלי"];
+						 "נעה אסטרייכר"];
 
 	this.authorsNormalizedXlatTable = {	 "מירב ארלוזורוב":"merav-arlozorov",
 										 "מרב ארלוזורוב":"merav-arlozorov",
@@ -38,22 +43,17 @@ var TheMarker = function(tracker) {
 										 "גידעון לוי":"gideon-levi",
 										 "בני ציפר":"benny-tzipper",
 										 "עפרי אילני":"ofri-ilani",
-										 "רוויטל מדר":"revital-madar",
 										 "אורי כץ":"uri-katz",
-										 "אנשיל פפר":"anshil-pepper",
 										 "אייל שגיא ביזאוי":"eyal-sagie-bizaui",
 										 "איל שגיא ביזאוי":"eyal-sagie-bizaui",
 										 "הני זוביידה":"hani-zubida",
 										 "הני זובידה":"hani-zubida",
 										 "ציפר":"benny-tzipper",
-										 "תהל פרוש":"tahel-farosh",
 										 "נחמיה שטרסלר":"nehamia-shtresler",
 										 "קרולינה לנדסמן":"carolina-landsman",
 										 "צפי סער":"tzafi-saar",
 										 "נועה אסטרייכר":"noa-ast",
-										 "נעה אסטרייכר":"noa-ast",
-										 "מרב מיכאלי":"merav-michaeli",
-										 "מירב מיכאלי":"merav-michaeli"};
+										 "נעה אסטרייכר":"noa-ast"};
 
 	this.authorSelectors = ['address','a>h3[class*="teaser"]>span','a>header>p.pic__caption','address>a[rel="author"]','a>div.media__content>p.t-address','a>h3>span>span.t-kicker','a>article.media>div.media__content>h3>div.t-epsilon'];
 
