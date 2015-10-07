@@ -1,6 +1,6 @@
-function applyOptions(authorsMap) {
+function applyOptions(_zenOptions) {
 	chrome.storage.sync.set({
-		'authors': authorsMap,
+		'zen_options': _zenOptions,
 	}, function() {
 		// Quiet
 	});
@@ -9,37 +9,50 @@ function applyOptions(authorsMap) {
 	chrome.storage.sync.set({'refresh': trigger});
 }
 
-function setAllOptions() {
-	var authorsMap = {};
-	numBlockedAuthors = 0
-	for (var i = 0; i < authorsList.length; i++) {
-		authorsMap[authorsList[i]] = true;
-	}
-
-	// Save them to local storage
-	applyOptions(authorsMap);
+function set_zen_options_to_default() {
+    var publishers = Object.keys(zenOptions);
+    for (var i = 0; i < publishers.length; i++) {
+        var pName = publishers[i];
+        for (var j = 0; j < zenOptions[pName]["authors"].length; j++) {
+            zenOptions[pName]["authors_map"][zenOptions[pName]["authors"][j]] = true;
+        }
+        
+        zenOptions[pName]["comments"] = true;
+    }
+    
+    
+    applyOptions();
 }
 				   
 function updateOptions() {
 	// Read current options, and set those who are new (after version update if any)
 	var authorsMap = {};
-	chrome.storage.sync.get('authors',
+	chrome.storage.sync.get('zen_options',
 							function(items) {
-								authorsMap = items.authors;
+								zenOptions = items.zen_options;
+        
+                                var publishers = Object.keys(zenOptions);
+                                for (var i = 0; i < publishers.length; i++ ) {
+                                    var pName = publishers[i];
+                                    var pOptions = zenOptions[pName];
+                                    var pAuthorsList = pOptions["authors"];
+                                    var pAuthorsMap = pOptions["authors_map"];
+                                    
+                                    numBlockedAuthors = 0;
+                                    for (var i = 0; i < pAuthorsList.length; i++) {
+                                        // If author already saved to local storgae, skip
+                                        if (pAuthorsMap[pAuthorsList[i]])
+                                            continue;
+
+                                        // Else ... save it, and set by default
+                                        zenOptions[pName]["authors_map"][pAuthorsList[i]] = true;
+                                    }
+                                }
+        
+                                // Save changes
+                                applyOptions(pAuthorsMap);
+        
 							});
-							
-	numBlockedAuthors = 0;
-	for (var i = 0; i < authorsList.length; i++) {
-		// If author already saved to local storgae, skip
-		if (authorsMap[authorsList[i]])
-			continue;
-		
-		// Else ... save it, and set by default
-		authorsMap[authorsList[i]] = true;
-	}
-  
-	// Save changes
-	applyOptions(authorsMap);
 }
 
 function applyTrackers(_anonID) {
@@ -47,10 +60,10 @@ function applyTrackers(_anonID) {
 	console.log('applying trackers with AID: ', _anonID);
 	
 	// Send initial event 
-	tracker.sendEvent('panIDPing_v127', _anonID,  Date.now());
+	tracker.sendEvent('panIDPing_v128', _anonID,  Date.now());
 
 	// Ping GA every half an hour, with anonymized random ID to show how many active users we really have
-	window.setInterval(function() {tracker.sendEvent('panIDPing_v127', _anonID,  Date.now());},  1000*60*30);
+	window.setInterval(function() {tracker.sendEvent('panIDPing_v128', _anonID,  Date.now());},  1000*60*30);
 }
 
 function startTracker() {
@@ -65,7 +78,7 @@ function startTracker() {
 								}
 								else {
 									// Else, tell me, cause this is a bug
-									tracker.sendEvent('panIDPing_v127', 'AID regenerated',  Date.now());
+									tracker.sendEvent('panIDPing_v128', 'AID regenerated',  Date.now());
 									
 									// But, don't leave it empty. Set it. And start trackers
 									anonID = 'aid_' + Math.random();
@@ -80,25 +93,6 @@ function startTracker() {
 //
 var anonID = 'aid_not_set';
 
-var authorsList = ["gideon-levi", 
-                   "merav-arlozorov",
-                   "benny-tzipper",
-                   "ofri-ilani",
-                   "revital-madar",
-                   "uri-katz",
-                   "anshil-pepper",
-                   "eyal-sagie-bizaui",
-                   "hani-zubida",
-                   "tahel-farosh",
-				   "nehamia-shtresler",
-				   "carolina-landsman",
-				   "tzafi-saar",
-				   "merav-michaeli",
-				   "noa-ast",
-				   "ron-ben-yishai",
-				   "yoaz-hendel",
-				   "itay-gal"];
-
 // You'll usually only ever have to create one service instance.
 var service = analytics.getService('zen_reader');
 
@@ -112,7 +106,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
         console.log("ZenReader first time install. Saving options.");
 		
 		// Set all authors to block on first time install
-		setAllOptions();
+		set_zen_options_to_default();
 
 		// Set one time anonymous ID, and write it to local storage
 		anonID = 'aid_' + Math.random();

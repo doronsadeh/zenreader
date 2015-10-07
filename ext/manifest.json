@@ -16,6 +16,7 @@
   "background": {
     "scripts": [
 	  "src/js/libs/google-analytics-bundle.js",
+      "src/browser_action/publishers/zen_global_options.js",
       "src/bg/background.js"
     ],
     "persistent": true
