@@ -1,4 +1,4 @@
-var Shoken = function(tracker) {
+var TheMarker = function(tracker) {
 	
 	//
 	// Constructor
@@ -7,7 +7,7 @@ var Shoken = function(tracker) {
 	// Call super
 	Publisher.call(this, tracker);
 	
-	this.allowedDomains = ["haaretz.co.il", "themarker.com"];
+	this.allowedDomains = ["themarker.com"];
 
 	this.authorsList = ["מירב ארלוזורוב",
 						"מרב ארלוזורוב",
@@ -75,14 +75,14 @@ var Shoken = function(tracker) {
 
 };
 
-Shoken.prototype = Object.create(Publisher.prototype);
-Shoken.prototype.constructor = Shoken;
+TheMarker.prototype = Object.create(Publisher.prototype);
+TheMarker.prototype.constructor = TheMarker;
 
-Shoken.prototype.uid = 	function() {
-	return 'shoken';
+TheMarker.prototype.uid = 	function() {
+	return 'TheMarker';
 };
 
-Shoken.prototype.run = function(rerun) {
+TheMarker.prototype.run = function(rerun) {
 	if (!this._allowed()) 
 		return;
 
@@ -93,22 +93,22 @@ Shoken.prototype.run = function(rerun) {
 	}
 };
 
-Shoken.prototype._hideAuthors = function() {
+TheMarker.prototype._hideAuthors = function() {
 	if (!this._allowed()) {
 		this.tracker.sendEvent('NotAllowedPage', 'na', 1);
 		return;
 	}
 
-	chrome.storage.sync.get('authors',
+	chrome.storage.sync.get('zen_options',
 						function(items) {
-							publisherInstances["Shoken"]._eraseHiddenAuthors(items.authors);
+							publisherInstances["TheMarker"]._eraseHiddenAuthors(items.zen_options["TheMarker"]["authors_map"]);
 						});
 
 	this.tracker.sendEvent('ScannedPage', window.location.href, 1);
 };
 
-Shoken.prototype._hideTalkbacks = function() {
-	var self = publisherInstances["Shoken"];
+TheMarker.prototype._hideTalkbacks = function() {
+	var self = publisherInstances["TheMarker"];
 	if (!self._allowed())
 			return;
 		

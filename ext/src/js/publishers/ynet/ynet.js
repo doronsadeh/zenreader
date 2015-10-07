@@ -72,9 +72,9 @@ Ynet.prototype._hideAuthors = function() {
 		return;
 	}
 
-	chrome.storage.sync.get('authors',
+	chrome.storage.sync.get('zen_options',
 						function(items) {
-							publisherInstances["Ynet"]._eraseHiddenAuthors(items.authors);
+							publisherInstances["Ynet"]._eraseHiddenAuthors(items.zen_options["Ynet"]["authors_map"]);
 						});
 
 	this.tracker.sendEvent('ScannedPage', window.location.href, 1);

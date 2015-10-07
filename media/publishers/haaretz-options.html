@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Haaretz Options Page</title>
+    <link rel="stylesheet" type="text/css" href="options.css"/>
+    
+    <script>
+        var authorsList = ["gideon-levi",
+                           "merav-arlozorov",
+                           "benny-tzipper",
+                           "ofri-ilani",
+                           "revital-madar",
+                           "uri-katz",
+                           "anshil-pepper",
+                           "eyal-sagie-bizaui",
+                           "hani-zubida",
+                           "tahel-farosh",
+                           "nehamia-shtresler",
+                           "carolina-landsman",
+                           "tzafi-saar",
+                           "noa-ast",
+                           "merav-michaeli"];
+    </script>
+</head>
+
+<body style='min-width:300px;direction:rtl;'>
+
+  <a href='options.html'><img class='home' src="home-icon.png"/></a>
+
+  <div>
+    <button type="submit" id="sel_des_all" style="border: 0; background: transparent;">
+	  <img style="vertical-align:middle;width:35px;height:auto;" id="sel_des_all" src='haaretz-logo_128x128.png' title="Click to select all, SHIFT+Click to deselect all">
+	</button>  
+	<span style="font-size:120%;text-shadow:white 0 1px 2px;padding-right:0px;top:2px;position: relative;">&#1489;&#1504;&#1492; &#1488;&#1514; &#1492;&#1506;&#1497;&#1514;&#1493;&#1503; &#1513;&#1500;&#1498;</span>
+	<span id='zen_version' style="font-size:70%;float:left;margin-left:1px;position:relative;top:0px;"><span>
+  </div>
+
+  <div style='margin-right:10px;margin-top:15px;'>
+    <p style='margin-top:10px;border-bottom:solid lightgray 1px;padding-bottom:10px;max-width:50%;'>&#1505;&#1502;&#1503; &#1488;&#1514; &#1492;&#1499;&#1493;&#1514;&#1489;&#1497;&#1501; &#1513;&#1489;&#1512;&#1510;&#1493;&#1504;&#1498; &#1500;&#1492;&#1505;&#1514;&#1497;&#1512;</p>
+    <label><div class="input"><input type="checkbox" checked="true" class='author-input' id="gideon-levi"><span class="author">&#1490;&#1491;&#1506;&#1493;&#1503; &#1500;&#1493;&#1497;</span></input></div></label>
+    <label><div class="input"><input type="checkbox" checked="true" class='author-input' id="merav-arlozorov"><span class="author">&#1502;&#1497;&#1512;&#1489; &#1488;&#1512;&#1500;&#1493;&#1494;&#1493;&#1512;&#1493;&#1489;</span></input></div></label>
+    <label><div class="input"><input type="checkbox" checked="true" class='author-input' id="benny-tzipper"><span class="author">&#1489;&#1504;&#1497; &#1510;&#1497;&#1508;&#1512;</span></input></div></label>
+    <label><div class="input"><input type="checkbox" checked="true" class='author-input' id="ofri-ilani"><span class="author">&#1506;&#1508;&#1512;&#1497; &#1488;&#1497;&#1500;&#1504;&#1497;</span></input></div></label>
+    <label><div class="input"><input type="checkbox" checked="true" class='author-input' id="revital-madar"><span class="author">&#1512;&#1493;&#1493;&#1497;&#1496;&#1500; &#1502;&#1491;&#1512;</span></input></div></label>
+    <label><div class="input"><input type="checkbox" checked="true" class='author-input' id="uri-katz"><span class="author">&#1488;&#1493;&#1512;&#1497; &#1499;&#1509;</span></input></div></label>
+    <label><div class="input"><input type="checkbox" checked="true" class='author-input' id="anshil-pepper"><span class="author">&#1488;&#1504;&#1513;&#1497;&#1500; &#1508;&#1508;&#1512;</span></input></div></label>
+    <label><div class="input"><input type="checkbox" checked="true" class='author-input' id="eyal-sagie-bizaui"><span class="author">&#1488;&#1497;&#1497;&#1500; &#1513;&#1490;&#1497;&#1488; &#1489;&#1497;&#1494;&#1488;&#1493;&#1497;</span></input></div></label>
+    <label><div class="input"><input type="checkbox" checked="true" class='author-input' id="hani-zubida"><span class="author">&#1492;&#1504;&#1497; &#1494;&#1493;&#1489;&#1497;&#1497;&#1491;&#1492;</span></input></div></label>
+    <label><div class="input"><input type="checkbox" checked="true" class='author-input' id="tahel-farosh"><span class="author">&#1514;&#1492;&#1500; &#1508;&#1512;&#1493;&#1513;</span></input></div></label>
+    <label><div class="input"><input type="checkbox" checked="true" class='author-input' id="nehamia-shtresler"><span class="author">&#1504;&#1495;&#1502;&#1497;&#1492; &#1513;&#1496;&#1512;&#1505;&#1500;&#1512;</span></input></div></label>
+    <label><div class="input"><input type="checkbox" checked="true" class='author-input' id="carolina-landsman"><span class="author">&#1511;&#1512;&#1493;&#1500;&#1497;&#1504;&#1492; &#1500;&#1504;&#1491;&#1505;&#1502;&#1503;</span></input></div></label>
+    <label><div class="input"><input type="checkbox" checked="true" class='author-input' id="tzafi-saar"><span class="author">&#1510;&#1508;&#1497; &#1505;&#1506;&#1512;</span></input></div></label>
+    <label><div class="input"><input type="checkbox" checked="true" class='author-input' id="noa-ast"><span class="author">&#1504;&#1493;&#1506;&#1492; &#1488;&#1505;&#1496;&#1512;&#1497;&#1497;&#1499;&#1512;</span></input></div></label>
+    <label><div class="input"><input type="checkbox" checked="true" class='author-input' id="merav-michaeli"><span class="author">&#1502;&#1512;&#1489; &#1502;&#1497;&#1499;&#1488;&#1500;&#1497;</span></input></div></label>
+  </div>
+
+  <div style="padding-top: 10px;">
+	<hr style='margin-top:15px;'>
+	<div id="status" style='direction:ltr;'>&copy; 2015 Doron Sadeh <span style="max-width:140px;float:right;margin-right:0px;"><a style="text-decoration:none;" id="request-new-author" href="#">&#1489;&#1511;&#1513;/&#1497; &#1492;&#1493;&#1505;&#1508;&#1514; &#1499;&#1493;&#1514;&#1489;/&#1514;</a><span></div>
+  </div>
+  
+  <script src="options.js"></script>
+
+</body>
+</html>
+
+

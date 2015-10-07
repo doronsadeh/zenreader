@@ -9,7 +9,7 @@
     "128": "icons/icon128.png"
   },
   "options_ui": {
-    "page": "src/options/options.html",
+    "page": "src/browser_action/publishers/options.html",
     "chrome_style": true
   },
   "default_locale": "en",
@@ -23,7 +23,7 @@
   "browser_action": {
     "default_icon": "icons/icon19.png",
     "default_title": "Zen Reader",
-    "default_popup": "src/browser_action/browser_action.html"
+    "default_popup": "src/browser_action/publishers/options.html"
   },
   "permissions": [
     "http://*/*",
@@ -48,7 +48,8 @@
 		"src/js/libs/addons/unicode/unicode-scripts.js",
 		"src/js/libs/csspath.js",
 		"src/js/publishers/publisher.js",
-		"src/js/publishers/shoken/shoken.js",
+		"src/js/publishers/shoken/haaretz.js",
+		"src/js/publishers/shoken/themarker.js",
 		"src/js/publishers/ynet/ynet.js",
         "src/js/content.js"
       ]

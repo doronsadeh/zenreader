@@ -1,4 +1,4 @@
-var publishers = ["Shoken", "Ynet"];
+var publishers = ["Haaretz", "TheMarker", "Ynet"];
 var publisherInstances = {};
 
 (function() {
