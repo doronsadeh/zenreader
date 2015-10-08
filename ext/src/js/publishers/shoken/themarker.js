@@ -108,16 +108,21 @@ TheMarker.prototype._hideAuthors = function() {
 };
 
 TheMarker.prototype._hideTalkbacks = function() {
-	var self = publisherInstances["TheMarker"];
-	if (!self._allowed())
-			return;
-		
-		// TODO move to object model
-		var allTB = self._getTalkbacks();
-		
-		for (var i = 0; i < allTB.length; i++) {
-			self._parseTalkback(allTB[i]);
-		}
+    
+     chrome.storage.sync.get('zen_options',
+						function(items) {
+                            if (items && items.zen_options["TheMarker"]["comments"]) {
+                                var self = publisherInstances["TheMarker"];
+                                if (!self._allowed())
+                                        return;
+
+                                var allTB = self._getTalkbacks();
+
+                                for (var i = 0; i < allTB.length; i++) {
+                                    self._parseTalkback(allTB[i]);
+                                }
+                            }
+                        });
 };
 
 

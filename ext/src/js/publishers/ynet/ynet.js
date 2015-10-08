@@ -104,48 +104,54 @@ Ynet.prototype._talkbackTouched = function(talkback) {
 
 Ynet.prototype._hideTalkback = function(talkback) {
 	
-	var idU = null;
-	if (talkback.element.id)
-		idU = this.talkbackIdRegExp.exec(talkback.element.id);
-	
-	var c = document.querySelectorAll('div[id*="' + idU + '"]');
+    var idU = null;
+    if (talkback.element.id)
+        idU = this.talkbackIdRegExp.exec(talkback.element.id);
 
-	for (var i = 0; i < c.length; i++) {
-		// Set highlight just before we remove it so when its clicked we already have it
-		c[i].style.backgroundColor = 'rgba(255,255,0,0.4)';
-		
-		var h = '48px';
-		var lM = '58px';
-		var lH = '42px';
-		if (c[i].getClientRects()[0]) {
-			h = (c[i].getClientRects()[0].height * 0.75) + 'px';
-			lM = ((c[i].getClientRects()[0].height * 0.75) + 10) + 'px';
-			lH = ((c[i].getClientRects()[0].height * 0.75) - 5) + 'px';
-		}
-		
-		var oldIHb64 = window.encodeURI(c[i].innerHTML);
-		c[i].innerHTML = "<div class='zenreader-comment' onclick='(function(){parentNode.innerHTML = window.decodeURI(parentNode.getAttribute(\"zenreader-hidden-talkback\"));})()'><img src='https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/icon48.png' style='width: auto; height:" +  h + ";'><div style='text-shadow:white 0 1px 2px;padding-right:" + lM + ";bottom:" + lH + ";position: relative;'><strong>Zen Reader</strong>, &#1492;&#1505;&#1514;&#1497;&#1512; &#1514;&#1490;&#1493;&#1489;&#1492; &#1494;&#1493; &#1499;&#1491;&#1497; &#1500;&#1513;&#1502;&#1493;&#1512; &#1506;&#1500; &#1513;&#1500;&#1493;&#1493;&#1514;&#1499;&#1501; (&#1500;&#1497;&#1495;&#1510;&#1493; &#1499;&#1491;&#1497; &#1500;&#1490;&#1500;&#1493;&#1514; &#1488;&#1514; &#1492;&#1514;&#1490;&#1493;&#1489;&#1492; &#1513;&#1492;&#1493;&#1505;&#1514;&#1512;&#1492;).</div></div>";
-		c[i].setAttribute('zenreader-hidden-talkback', oldIHb64);
-	}
+    var c = document.querySelectorAll('div[id*="' + idU + '"]');
+
+    for (var i = 0; i < c.length; i++) {
+        // Set highlight just before we remove it so when its clicked we already have it
+        c[i].style.backgroundColor = 'rgba(255,255,0,0.4)';
+
+        var h = '48px';
+        var lM = '58px';
+        var lH = '42px';
+        if (c[i].getClientRects()[0]) {
+            h = (c[i].getClientRects()[0].height * 0.75) + 'px';
+            lM = ((c[i].getClientRects()[0].height * 0.75) + 10) + 'px';
+            lH = ((c[i].getClientRects()[0].height * 0.75) - 5) + 'px';
+        }
+
+        var oldIHb64 = window.encodeURI(c[i].innerHTML);
+        c[i].innerHTML = "<div class='zenreader-comment' onclick='(function(){parentNode.innerHTML = window.decodeURI(parentNode.getAttribute(\"zenreader-hidden-talkback\"));})()'><img src='https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/icon48.png' style='width: auto; height:" +  h + ";'><div style='text-shadow:white 0 1px 2px;padding-right:" + lM + ";bottom:" + lH + ";position: relative;'><strong>Zen Reader</strong>, &#1492;&#1505;&#1514;&#1497;&#1512; &#1514;&#1490;&#1493;&#1489;&#1492; &#1494;&#1493; &#1499;&#1491;&#1497; &#1500;&#1513;&#1502;&#1493;&#1512; &#1506;&#1500; &#1513;&#1500;&#1493;&#1493;&#1514;&#1499;&#1501; (&#1500;&#1497;&#1495;&#1510;&#1493; &#1499;&#1491;&#1497; &#1500;&#1490;&#1500;&#1493;&#1514; &#1488;&#1514; &#1492;&#1514;&#1490;&#1493;&#1489;&#1492; &#1513;&#1492;&#1493;&#1505;&#1514;&#1512;&#1492;).</div></div>";
+        c[i].setAttribute('zenreader-hidden-talkback', oldIHb64);
+    }
 };
 
 Ynet.prototype._hideTalkbacks = function() {
-	var self = publisherInstances["Ynet"];
-	if (!self._allowed())
-			return;
+    chrome.storage.sync.get('zen_options',
+						function(items) {
+                            if (items && items.zen_options["Ynet"]["comments"]) {
+                                var self = publisherInstances["Ynet"];
+                                if (!self._allowed())
+                                        return;
 
-	// Hide all FB comments (TODO provide an option to enable them back)
-	/*
-	var fbComments = document.getElementById('articleComments');
-	if (fbComments)
-		fbComments.style.setProperty('display', 'none', 'important');
-	*/
-	
-	var allTB = self._getTalkbacks();
-		
-	for (var i = 0; i < allTB.length; i++) {
-		self._parseTalkback(allTB[i]);
-	}
+                                // Hide all FB comments (TODO provide an option to enable them back)
+                                /*
+                                var fbComments = document.getElementById('articleComments');
+                                if (fbComments)
+                                    fbComments.style.setProperty('display', 'none', 'important');
+                                */
+
+                                var allTB = self._getTalkbacks();
+
+                                for (var i = 0; i < allTB.length; i++) {
+                                    self._parseTalkback(allTB[i]);
+                                }
+                            }
+                        });
+    
 };
 
 

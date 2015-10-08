@@ -1,27 +1,5 @@
 var numBlockedAuthors = 0;
 
-function set_zen_options_to_default() {
-    var publishers = Object.keys(zenOptions);
-    for (var i = 0; i < publishers.length; i++) {
-        var pName = publishers[i];
-        for (var j = 0; j < zenOptions[pName]["authors"].length; j++) {
-            zenOptions[pName]["authors_map"][zenOptions[pName]["authors"][j]] = true;
-        }
-    }
-    
-    zenOptions[_publisher]["comments"] = true;
-    
-    chrome.storage.sync.set({
-        "zen_options" : zenOptions
-    }, function() {
-        var status = document.getElementById('status');
-        status.innerHTML = 'Status: boot OK';
-    });
-
-    var trigger = Math.random();
-    chrome.storage.sync.set({'refresh': trigger});
-}
-
 function save_options() {
     'use strict';
 	
@@ -44,8 +22,9 @@ function save_options() {
 
                                 // Set the up to date authors map
                                 zenOptions[_publisher]["authors_map"] = authorsMap;
-
-                                // TODO change the commenat enable/diable state, and store it
+        
+                                // Save the current state of the comments hiding checkbox
+                                zenOptions[_publisher]["comments"] = document.getElementById('comments-enable').checked;
 
                                 chrome.storage.sync.set({
                                     "zen_options" : zenOptions
@@ -64,9 +43,14 @@ function save_options() {
 }
 
 function listenOnAllCheckboxes() {
-	var classname = document.getElementsByClassName("author-input");
-    for(var i=0;i<classname.length;i++){
-        classname[i].addEventListener('click', save_options, false);
+	var elements = document.getElementsByClassName("author-input");
+    for(var i=0; i < elements.length; i++){
+        elements[i].addEventListener('click', save_options, false);
+    }
+    
+    elements = document.getElementsByClassName("comments-input");
+    for(var j=0; j < elements.length; j++){
+        elements[j].addEventListener('click', save_options, false);
     }
 }
 
@@ -75,8 +59,8 @@ function restore_options() {
 	chrome.storage.sync.get("zen_options",
 							function(items) {
                                 if (!items || !items.zen_options) {
-                                    // Global options were never saved, set them to default 
-                                    set_zen_options_to_default();
+                                    // Global options were never saved, track this
+                                    console.error('Zen Reader options do not exist on restore, consider reinstalling/reloading extension.');
                                 }
                                 else {
                                     var authorsMap = items.zen_options[_publisher]["authors_map"];
@@ -89,7 +73,7 @@ function restore_options() {
                                             numBlockedAuthors += 1;
                                     }
 
-                                    // TODO set/unset the comments tick with item.options["comments"]
+                                    document.getElementById('comments-enable').checked = items.zen_options[_publisher]["comments"];
                                 }
 							});
 }

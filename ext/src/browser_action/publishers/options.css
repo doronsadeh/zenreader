@@ -35,8 +35,23 @@ span.author {
     
 }
 .author-input + span {
-    color:lightgray;
+    color:#CCC;
 }
 .author-input:checked + span {
     color:black;
+}
+
+#comments-box {
+    background-color: #FFF;
+    margin-top: 12px;
+}
+
+#authors-box {
+    background-color: #FFF;
+    margin-top: 12px;
+}
+
+.box-section-title {
+    background-color: #EEE;
+    padding: 4px 2px 2px 0px;
 }

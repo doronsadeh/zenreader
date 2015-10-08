@@ -108,16 +108,20 @@ Haaretz.prototype._hideAuthors = function() {
 };
 
 Haaretz.prototype._hideTalkbacks = function() {
-	var self = publisherInstances["Haaretz"];
-	if (!self._allowed())
-			return;
-		
-		// TODO move to object model
-		var allTB = self._getTalkbacks();
-		
-		for (var i = 0; i < allTB.length; i++) {
-			self._parseTalkback(allTB[i]);
-		}
+    chrome.storage.sync.get('zen_options',
+						function(items) {
+                            if (items && items.zen_options["Haaretz"]["comments"]) {
+                                var self = publisherInstances["Haaretz"];
+                                if (!self._allowed())
+                                        return;
+
+                                var allTB = self._getTalkbacks();
+
+                                for (var i = 0; i < allTB.length; i++) {
+                                    self._parseTalkback(allTB[i]);
+                                }
+                            }
+                        });
 };
 
 
