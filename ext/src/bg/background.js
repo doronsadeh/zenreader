@@ -21,7 +21,7 @@ function set_zen_options_to_default() {
     }
     
     
-    applyOptions();
+    applyOptions(zenOptions);
 }
 				   
 function updateOptions() {
@@ -38,6 +38,8 @@ function updateOptions() {
                                     var pAuthorsList = pOptions["authors"];
                                     var pAuthorsMap = pOptions["authors_map"];
                                     
+                                    console.log('opt ', zenOptions, pOptions);
+                                    
                                     numBlockedAuthors = 0;
                                     for (var i = 0; i < pAuthorsList.length; i++) {
                                         // If author already saved to local storgae, skip
@@ -50,7 +52,7 @@ function updateOptions() {
                                 }
         
                                 // Save changes
-                                applyOptions(pAuthorsMap);
+                                applyOptions(zenOptions);
         
 							});
 }
