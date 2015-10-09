@@ -20,7 +20,8 @@ var Publisher = function(tracker) {
 	 // GA tracker 
 	 this.tracker = tracker;
 	 
-	 // A set of CSS selectors idetifying article elements within the publisher domains
+     // TODO chnage this to fullArticlesSelectors
+     // A set of CSS selectors idetifying article elements within the publisher domains
 	 this.articleSelectors = [];
 	 
 	 // A set of CSS selectors idetifying authors elements within the publisher domains
@@ -136,6 +137,46 @@ Publisher.prototype = {
 
 		return null;
 	},
+    
+    _handleFullArticle : function(articleElement, author) {
+        
+        var fullArticle = false;
+        
+        var articles = document.querySelectorAll(this.articleSelectors);
+        for (var i = 0; i < articles.length; i++) {
+            if (articles[i].isSameNode(articleElement)) {
+                fullArticle = true;
+                break;
+            }
+        }
+        
+        if (fullArticle && articleElement.parentElement && !articleElement.parentElement.querySelector('.zen-reader-full-article')) {
+            var replace = document.createElement('DIV');
+            replace.innerHTML = "Zen Reader &#1492;&#1505;&#1514;&#1497;&#1512; &#1499;&#1514;&#1489;&#1492; &#1502;&#1488;&#1514; " + author;
+            replace.style.padding = "20px";
+            replace.style.paddingTop = "50px";
+            replace.style.textAlign = "center";
+            replace.style.width = '100%';
+            replace.className = "zen-reader-full-article";
+            
+            var logo = document.createElement('IMG');
+            logo.src = 'https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/icon48.png';
+            logo.style.width = '64px';
+            logo.style.height = 'auto';
+            
+            var logoDiv = document.createElement('DIV');
+            logoDiv.appendChild(logo);
+            logoDiv.style.width = '100%';
+            logoDiv.style.marginTop = '50px';
+            
+            
+            replace.appendChild(logoDiv);
+            
+            articleElement.parentElement.appendChild(replace);
+        }
+        
+        return fullArticle;
+    },
 
 	// @protected _eraseHiddenAuthors
 	//
@@ -144,6 +185,12 @@ Publisher.prototype = {
 	// Returns: nothing
 	_eraseHiddenAuthors : function(authorsMap) {
 		
+        // Remove any full article hide marker from the page
+        var fullArticleHideElements = document.querySelectorAll('.zen-reader-full-article');
+        for (var x = 0; x < fullArticleHideElements.length; x++) {
+            fullArticleHideElements[x].remove();
+        }
+        
 		// For tracking
 		var blockedAuthorsDict = {};
 
@@ -177,6 +224,9 @@ Publisher.prototype = {
 					if (toHide && this.authorsRegEx[a].test(candidate)) {
 						// Hide only if not already hidden
 						if (articleToHide !== null) {
+                            // Mark full article we hide with the Zen sign
+                            this._handleFullArticle(articleToHide, candidate);
+                            
 							if (articleToHide.style.display !== 'none') {
 								articleToHide.style.setProperty('display', 'none', 'important');
 							}

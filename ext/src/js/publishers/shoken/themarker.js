@@ -66,7 +66,9 @@ var TheMarker = function(tracker) {
 	for (var j = 0; j < this.authorsList.length; j++) {
 		this.authorsRegEx[j] = XRegExp(this.authorsList[j]);
 	}
-	
+
+    this.articleSelectors = ['article.has-l-fixed-column'];
+
 	this.talkbackParentClass = 'media__content';
 	
 	this.talkbackTitleSelectors = ['.cmt__title'];

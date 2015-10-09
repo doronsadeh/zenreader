@@ -57,7 +57,7 @@ var Haaretz = function(tracker) {
 
 	this.authorSelectors = ['address','a>h3[class*="teaser"]>span','a>header>p.pic__caption','address>a[rel="author"]','a>div.media__content>p.t-address','a>h3>span>span.t-kicker','a>article.media>div.media__content>h3>div.t-epsilon'];
 
-	// Create a uniform name list of authors for tracking
+    // Create a uniform name list of authors for tracking
 	var dpKeyList = Object.keys(this.authorsNormalizedXlatTable);
 	for (var i = 0; i < dpKeyList.length; i++) {
 		this.authorsTrackingUniformName[this.authorsNormalizedXlatTable[dpKeyList[i]]] = this.authorsNormalizedXlatTable[dpKeyList[i]];
@@ -67,7 +67,9 @@ var Haaretz = function(tracker) {
 		this.authorsRegEx[j] = XRegExp(this.authorsList[j]);
 	}
 	
-	this.talkbackParentClass = 'media__content';
+    this.articleSelectors = ['article.has-l-fixed-column'];
+
+    this.talkbackParentClass = 'media__content';
 	
 	this.talkbackTitleSelectors = ['.cmt__title'];
 	

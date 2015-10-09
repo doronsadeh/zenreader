@@ -27,7 +27,9 @@ var Ynet = function(tracker) {
 	for (var j = 0; j < this.authorsList.length; j++) {
 		this.authorsRegEx[j] = XRegExp(this.authorsList[j]);
 	}
-	
+
+    this.articleSelectors = ['div.block.B4.spacer'];
+    
 	this.talkbackParentClass = 'art_tkb_talkback';
 	
 	this.talkbackTitleSelectors = ['.art_tkb_talkback_title'];
