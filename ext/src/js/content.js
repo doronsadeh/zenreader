@@ -10,7 +10,7 @@ var publisherInstances = {};
 		if (!document.getElementById('mailto-proxy')) {
 			var a = document.createElement('a');
 			a.id = 'mailto-proxy';
-			a.href = "mailto:doron.sadeh.dev@gmail.com?subject=Request%20new%20author%20block&body=Please%20add:%20";
+			a.href = "mailto:doron.sadeh.dev@gmail.com?subject=Request%20additions/modifications%20in%20Zen%20Reader";
 			document.body.appendChild(a);
 		}
 

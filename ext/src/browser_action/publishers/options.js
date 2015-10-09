@@ -87,6 +87,11 @@ function toggle_all(e) {
 	for (var i = 0; i < authors.length; i++) {
 		authors[i].checked = state;
 	}
+    
+	var comments = document.querySelectorAll('input.comments-input');
+	for (var j = 0; j < comments.length; j++) {
+		comments[j].checked = state;
+	}
 	
 	save_options();
 }
@@ -113,7 +118,7 @@ if (window === window.top) {
 	
 	listenOnAllCheckboxes();
 	
-	document.getElementById('sel_des_all').addEventListener('click', function(e) {toggle_all(e);} );
+	document.getElementById('sel-des-all').addEventListener('click', function(e) {toggle_all(e);} );
 	document.getElementById('request-new-author').addEventListener('click', function(e) {request_new_author(e);} );
 }
 
