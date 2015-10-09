@@ -292,6 +292,46 @@ Publisher.prototype = {
 	//
 	//
 	
+    // _scoreWord
+    //
+    // Get a single word, and returns a score in [0,1], where higher is worse, i.e. the word
+    // is violent/abusive/misspelled/junk, etc.
+    _scoreWord : function(word) {
+        word = word.trim();
+        var ls = word.split('');
+        var h = {};
+        for (var i = 0; i < ls.length; i++) {
+            var l = ls[i];
+            if (h[l]) {
+                h[l] += 1;
+            }
+            else {
+                h[l] = 1;
+            }
+        }
+        
+        // Return the max norm of the histogram vector as score
+        for (var i = 0; i < ls.length; i++) {
+            var l = ls[i];
+            if (h[l] / ls.length > 0.5)
+                return 1;
+        }
+        
+        return 0;
+    },
+    
+    _scoreSentence : function(words) {
+        var sum = 0;
+        for (var i = 0; i < words.length; i++) {
+            if (words[i].length > 3) {
+                var score = this._scoreWord(words[i]);
+                sum += score;
+            }
+        }
+        
+        return (sum / words.length);
+    },
+    
 	_countStrongPunctMarks : function(word) {
 		return word.replace(/[^!?]/g, "").length;
 	},
@@ -347,10 +387,16 @@ Publisher.prototype = {
 		// TODO do we need to diff between hidden and flipped?
 		if (this._talkbackTouched(talkback))
 			return;
-		
-		var titleWords = talkback.title.split(" ");
-		var textWords = talkback.text.split(" ");
-		
+
+        var trimmedTTL = talkback.title.trim();
+        var trimmedTXT = talkback.text.trim();
+        if (trimmedTTL.length === 0 && trimmedTXT.length === 0) {
+            return;
+        }
+        
+		var titleWords = trimmedTTL.split(' ');
+		var textWords = trimmedTXT.split(' ');
+        
 		var kill = false;
 		
 		var countOffendingTitle = 0;
@@ -383,8 +429,16 @@ Publisher.prototype = {
 		var ratioTitle = countOffendingTitle / titleWords.length;
 		var ratioText = countOffendingText / textWords.length;
 		
-		// TODO tunes this and add word based classifiers
-		if (maxSingleWord > 2 || ratioTitle > 0.1 || ratioText > 0.15 || countNegWords >= 1) {
+        var ttlWordsScrore = this._scoreSentence(titleWords);
+        var txtWordsScore = this._scoreSentence(textWords);
+		
+        // TODO tunes this and add word based classifiers
+		if (maxSingleWord > 2         || 
+            ratioTitle > 0.1          || 
+            ratioText > 0.15          || 
+            countNegWords >= 1        || 
+            ttlWordsScrore > 0.3      || 
+            txtWordsScore > 0.3) {
 			this._hideTalkback(talkback);
 		}
 	},
