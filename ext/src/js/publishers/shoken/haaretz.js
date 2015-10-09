@@ -110,8 +110,8 @@ Haaretz.prototype._hideAuthors = function() {
 Haaretz.prototype._hideTalkbacks = function() {
     chrome.storage.sync.get('zen_options',
 						function(items) {
+                            var self = publisherInstances["Haaretz"];
                             if (items && items.zen_options["Haaretz"]["comments"]) {
-                                var self = publisherInstances["Haaretz"];
                                 if (!self._allowed())
                                         return;
 
@@ -120,6 +120,9 @@ Haaretz.prototype._hideTalkbacks = function() {
                                 for (var i = 0; i < allTB.length; i++) {
                                     self._parseTalkback(allTB[i]);
                                 }
+                            }
+                            else {
+                                self._revealTalkbacks();
                             }
                         });
 };

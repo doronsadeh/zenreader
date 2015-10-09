@@ -132,8 +132,8 @@ Ynet.prototype._hideTalkback = function(talkback) {
 Ynet.prototype._hideTalkbacks = function() {
     chrome.storage.sync.get('zen_options',
 						function(items) {
+                            var self = publisherInstances["Ynet"];
                             if (items && items.zen_options["Ynet"]["comments"]) {
-                                var self = publisherInstances["Ynet"];
                                 if (!self._allowed())
                                         return;
 
@@ -149,6 +149,9 @@ Ynet.prototype._hideTalkbacks = function() {
                                 for (var i = 0; i < allTB.length; i++) {
                                     self._parseTalkback(allTB[i]);
                                 }
+                            }
+                            else {
+                                self._revealTalkbacks();
                             }
                         });
     

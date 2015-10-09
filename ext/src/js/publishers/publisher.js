@@ -255,6 +255,16 @@ Publisher.prototype = {
 		return false;
 	},
 
+    _revealTalkbacks : function() {
+        var higlightedTalkbacksParents = document.querySelectorAll('[zenreader-hidden-talkback]');
+        for (var i = 0; i < higlightedTalkbacksParents.length; i++) {
+            var tParent = higlightedTalkbacksParents[i];
+            tParent.innerHTML = window.decodeURI(tParent.getAttribute('zenreader-hidden-talkback'));
+            tParent.removeAttribute('zenreader-hidden-talkback');
+            tParent.style.backgroundColor = '';
+        }
+    },
+    
 	_hideTalkback : function(talkback) {
 		// Set highlight just before we remove it so when its clicked we already have it
 		talkback.element.style.backgroundColor = 'rgba(255,255,0,0.4)';

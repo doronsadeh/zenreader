@@ -111,8 +111,8 @@ TheMarker.prototype._hideTalkbacks = function() {
     
      chrome.storage.sync.get('zen_options',
 						function(items) {
+                            var self = publisherInstances["TheMarker"];
                             if (items && items.zen_options["TheMarker"]["comments"]) {
-                                var self = publisherInstances["TheMarker"];
                                 if (!self._allowed())
                                         return;
 
@@ -122,6 +122,10 @@ TheMarker.prototype._hideTalkbacks = function() {
                                     self._parseTalkback(allTB[i]);
                                 }
                             }
+                            else {
+                                self._revealTalkbacks();
+                            }
+
                         });
 };
 
