@@ -153,6 +153,7 @@ Publisher.prototype = {
         if (fullArticle && articleElement.parentElement && !articleElement.parentElement.querySelector('.zen-reader-full-article')) {
             var replace = document.createElement('DIV');
             replace.innerHTML = "Zen Reader &#1492;&#1505;&#1514;&#1497;&#1512; &#1499;&#1514;&#1489;&#1492; &#1502;&#1488;&#1514; " + author;
+            replace.style.direction = "rtl";
             replace.style.padding = "20px";
             replace.style.paddingTop = "50px";
             replace.style.textAlign = "center";
