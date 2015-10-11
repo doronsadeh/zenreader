@@ -130,15 +130,33 @@ chrome.runtime.onInstalled.addListener(function(details) {
 var counter = 0;
 chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] });
 
+var lastNumBlockedArticles = -1;
+var lastNumBlockedComments = -1;
+
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-	 console.log('incr: ', request.incr);
-	if (request.incr && request.incr > 0) {
-		chrome.browserAction.setBadgeText({text: request.incr.toString()});
+	
+    var modified = false; 
+    if (request.incr && request.incr != lastNumBlockedArticles) {
+        if (request.incr > 0) {
+            chrome.browserAction.setBadgeText({text: request.incr.toString()});
+        }
+        else {
+            chrome.browserAction.setBadgeText({text: ''});
+        }
+        modified = true;
+        lastNumBlockedArticles = request.incr;
 	}
-	else {
-		chrome.browserAction.setBadgeText({text: ''});
+
+    if (request.comments && request.comments !== lastNumBlockedComments) {
+        modified = true;
+		lastNumBlockedComments = request.comments;
 	}
+
+    if (modified) { 
+        var tip = 'Zen Reader removed ' + (lastNumBlockedArticles !== 0 ? lastNumBlockedArticles.toString() : 'no') + ' articles, and ' + (lastNumBlockedComments !== 0 ? lastNumBlockedComments.toString() : 'no') + ' comments';
+        chrome.browserAction.setTitle({'title' : tip});
+    }
 
     sendResponse({result:"ok"});
   });

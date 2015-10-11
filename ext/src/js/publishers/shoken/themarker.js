@@ -128,6 +128,7 @@ TheMarker.prototype._hideTalkbacks = function() {
                                 self._revealTalkbacks();
                             }
 
+                            self._updateBadge();
                         });
 };
 

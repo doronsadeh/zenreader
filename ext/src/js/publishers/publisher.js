@@ -11,8 +11,12 @@ var Publisher = function(tracker) {
 	//
 
 	// Removed articles counter and snapshot
- 	this.copyModified = -1;
-	this.modified = 0;
+ 	this.modifiedArticlesLast = -1;
+	this.modifiedArticles = 0;
+
+    // Removed talkbacks counter and snapshot
+ 	this.modifiedCommentsLast = -1;
+	this.modifiedComments = 0;
 	 
 	 // The set of domains this publisher owns
 	 this.allowedDomains = [];
@@ -195,8 +199,6 @@ Publisher.prototype = {
 		// For tracking
 		var blockedAuthorsDict = {};
 
-		this.modified = 0;
-
 		var authorz = document.querySelectorAll(this.authorSelectors);
 		
 		for (var z = 0; z < authorz.length; z++) {
@@ -254,24 +256,15 @@ Publisher.prototype = {
 			}
 		}
 		
-		this.modified = document.querySelectorAll('[data-zenreader-hide-article]').length;
-
-		if (this.modified !== this.copyModified) {
-			this.copyModified = this.modified;
-			console.log('sending modified: ', this.copyModified);
-			chrome.runtime.sendMessage({incr: this.copyModified}, function(response) {
-			});
-
-			var kl = Object.keys(this.authorsTrackingUniformName);
-			for (var r = 0; r < kl.length; r++) {
-				if (blockedAuthorsDict[this.authorsTrackingUniformName[kl[r]]] > 0) {
-					this.tracker.sendEvent('BlockedAuthorOnPage', this.authorsTrackingUniformName[kl[r]], blockedAuthorsDict[this.authorsTrackingUniformName[kl[r]]]);
-				}
-			}
-		}
-
-		this.modified = 0;
-		
+        // Send each author and its numbers of blocks
+        var kl = Object.keys(this.authorsTrackingUniformName);
+        for (var r = 0; r < kl.length; r++) {
+            if (blockedAuthorsDict[this.authorsTrackingUniformName[kl[r]]] > 0) {
+                this.tracker.sendEvent('BlockedAuthorOnPage', this.authorsTrackingUniformName[kl[r]], blockedAuthorsDict[this.authorsTrackingUniformName[kl[r]]]);
+            }
+        }
+        
+        this._updateBadge();
 	},
 
 	// @protected hideAuthors
@@ -345,6 +338,37 @@ Publisher.prototype = {
 		
 		return false;
 	},
+    
+    _updateBadge : function() {
+        var mA = -1;
+        var mC = -1;
+        var modified = false;
+        
+        this.modifiedArticles = document.querySelectorAll('[data-zenreader-hide-article]').length;
+		if (this.modifiedArticles !== this.modifiedArticlesLast) {
+			this.modifiedArticlesLast = this.modifiedArticles;
+            modified = true;
+        }
+        
+        mA = this.modifiedArticlesLast;
+        this.modifiedArticles = 0;
+        
+        this.modifiedComments = document.querySelectorAll('[zenreader-hidden-talkback]').length;
+		if (this.modifiedComments !== this.modifiedCommentsLast) {
+			this.modifiedCommentsLast = this.modifiedComments;
+            modified = true;
+        }
+
+        mC = this.modifiedCommentsLast;
+		this.modifiedComments = 0;
+        
+        if (modified) {
+			chrome.runtime.sendMessage({incr: mA, 
+                                       comments: mC}, 
+                                       function(response) {
+			});
+        }
+    },
 
     _revealTalkbacks : function() {
         var higlightedTalkbacksParents = document.querySelectorAll('[zenreader-hidden-talkback]');

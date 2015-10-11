@@ -126,6 +126,8 @@ Haaretz.prototype._hideTalkbacks = function() {
                             else {
                                 self._revealTalkbacks();
                             }
+        
+                            self._updateBadge();
                         });
 };
 
