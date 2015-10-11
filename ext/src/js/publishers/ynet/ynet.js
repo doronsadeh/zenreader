@@ -53,13 +53,15 @@ Ynet.prototype._climbeToArticle = function(element) {
 	return null;
 };
 
-Ynet.prototype.uid = 	function() {
+Ynet.prototype.uid = function() {
 	return 'ynet';
 };
 
-Ynet.prototype.run = function(rerun) {
+Ynet.prototype.run = function(rerun, force) {
 	if (!this._allowed()) 
 		return;
+    
+    this.force = force;
 	
 	this._hideAuthors();
 	

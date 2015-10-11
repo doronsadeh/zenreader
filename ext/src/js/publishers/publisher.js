@@ -18,6 +18,9 @@ var Publisher = function(tracker) {
  	this.modifiedCommentsLast = -1;
 	this.modifiedComments = 0;
 	 
+    // Force to re-calc and show badge info (one shot, reset on used)
+    this.force = false;
+    
 	 // The set of domains this publisher owns
 	 this.allowedDomains = [];
 	 
@@ -64,14 +67,9 @@ var Publisher = function(tracker) {
 	this.talkbackTextSelectors = [];
 	
 	// Talkbacks neg words
-	this.talkbackNegKeywords = {"סמולנ" : 1, 
+    this.talkbackNegKeywords = {"סמולנ" : 1, 
 								"סמולן" : 1, 
 								"0מולן" : 1,
-								"מזוין" : 1,
-								"מזוינ" : 1,
-								"מזדיין" : 1,
-								"מזדיינ" : 1,
-								"מזדינ" : 1,
 								"גזען" : 1,
 								"טיפש" : 1, 
 								"אידיוט" : 1,
@@ -204,6 +202,9 @@ Publisher.prototype = {
 		for (var z = 0; z < authorz.length; z++) {
 			var author = authorz[z].firstChild;
 
+            if (!author) 
+                continue;
+            
 			var actualAuthorString = '';
 			if (typeof author.data != 'undefined') {
 				actualAuthorString = author.data;
@@ -340,8 +341,7 @@ Publisher.prototype = {
 	},
     
     _updateBadge : function() {
-        var mA = -1;
-        var mC = -1;
+
         var modified = false;
         
         this.modifiedArticles = document.querySelectorAll('[data-zenreader-hide-article]').length;
@@ -350,21 +350,16 @@ Publisher.prototype = {
             modified = true;
         }
         
-        mA = this.modifiedArticlesLast;
-        this.modifiedArticles = 0;
-        
         this.modifiedComments = document.querySelectorAll('[zenreader-hidden-talkback]').length;
 		if (this.modifiedComments !== this.modifiedCommentsLast) {
 			this.modifiedCommentsLast = this.modifiedComments;
             modified = true;
         }
 
-        mC = this.modifiedCommentsLast;
-		this.modifiedComments = 0;
-        
-        if (modified) {
-			chrome.runtime.sendMessage({incr: mA, 
-                                       comments: mC}, 
+        if (modified || this.force) {
+            this.force = false;
+			chrome.runtime.sendMessage({incr: this.modifiedArticles, 
+                                       comments: this.modifiedComments}, 
                                        function(response) {
 			});
         }
@@ -537,7 +532,7 @@ Publisher.prototype = {
 	// Runs the publisher logic (i.e. hide authors, talkbacks, etc.)
 	//
 	// Returns: nothing
-	run : function(rerun) {
+	run : function(rerun, force) {
 		console.error('run must be implemented, cannot use base class');
 	}
 };

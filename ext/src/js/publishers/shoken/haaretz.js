@@ -84,9 +84,11 @@ Haaretz.prototype.uid = 	function() {
 	return 'Haaretz';
 };
 
-Haaretz.prototype.run = function(rerun) {
+Haaretz.prototype.run = function(rerun, force) {
 	if (!this._allowed()) 
 		return;
+
+    this.force = force;
 
 	this._hideAuthors();
 	

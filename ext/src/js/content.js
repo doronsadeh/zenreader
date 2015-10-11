@@ -17,11 +17,11 @@ var publisherInstances = {};
 		document.getElementById('mailto-proxy').click();
 	}
 
-	function run(rerun) {
+	function run(rerun, force) {
 		// Run each publisher
 		var keys = Object.keys(publisherInstances)
 		for (var j = 0; j < keys.length; j++) {
-			publisherInstances[keys[j]].run(rerun);
+			publisherInstances[keys[j]].run(rerun, force);
 		}
 	}
 	
@@ -34,8 +34,11 @@ var publisherInstances = {};
 		chrome.storage.onChanged.addListener(function(changes, namespace) {
 		  for (key in changes) {
 			if (key === 'refresh') {
-				run(true);
+				run(true, false);
 			}
+            if (key === 'force_refresh') {
+                run(true, true);
+            }
 			if (key === 'req_new_author') {
 				req_new_author();
 			}

@@ -84,9 +84,11 @@ TheMarker.prototype.uid = 	function() {
 	return 'TheMarker';
 };
 
-TheMarker.prototype.run = function(rerun) {
+TheMarker.prototype.run = function(rerun, force) {
 	if (!this._allowed()) 
 		return;
+    
+    this.force = force;
 
 	this._hideAuthors();
 	
