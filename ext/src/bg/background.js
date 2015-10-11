@@ -137,27 +137,36 @@ chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
 	
     var modified = false; 
-    if (request.incr && request.incr != lastNumBlockedArticles) {
-        if (request.incr > 0) {
-            chrome.browserAction.setBadgeText({text: request.incr.toString()});
-        }
-        else {
-            chrome.browserAction.setBadgeText({text: ''});
-        }
+    if (typeof request.incr !== 'undefined' && request.incr != lastNumBlockedArticles) {
         modified = true;
         lastNumBlockedArticles = request.incr;
 	}
 
-    if (request.comments && request.comments !== lastNumBlockedComments) {
+    if (typeof request.comments !== 'undefined' && request.comments !== lastNumBlockedComments) {
         modified = true;
 		lastNumBlockedComments = request.comments;
 	}
 
     if (modified) { 
-        var tip = 'Zen Reader removed ' + (lastNumBlockedArticles !== 0 ? lastNumBlockedArticles.toString() : 'no') + ' articles, and ' + (lastNumBlockedComments !== 0 ? lastNumBlockedComments.toString() : 'no') + ' comments';
+        var allEvents = parseInt(lastNumBlockedArticles) + parseInt(lastNumBlockedComments);
+        if (allEvents > 0) {
+            chrome.browserAction.setBadgeText({text: allEvents.toString()});
+        }
+        else {
+            chrome.browserAction.setBadgeText({text: ''});
+        }
+
+        var tip = 'Zen Reader removed ' + (lastNumBlockedArticles > 0 ? lastNumBlockedArticles.toString() : 'no') + ' articles, and ' + (lastNumBlockedComments > 0 ? lastNumBlockedComments.toString() : 'no') + ' comments';
         chrome.browserAction.setTitle({'title' : tip});
     }
 
     sendResponse({result:"ok"});
   });
+
+// TODO make tab switching refresh the badge (consider two cases: switch to exisiting tab that has all zen-... markers, and
+//      opening and moving to new tab (use onUpdate in the second case)
+//chrome.tabs.onActivated.addListener(function() {
+//    var trigger = Math.random();
+//	chrome.storage.sync.set({'force_refresh': trigger});
+//});
   
