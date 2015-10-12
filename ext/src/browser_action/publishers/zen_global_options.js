@@ -12,7 +12,9 @@ var _haaretzAuthorsList = ["gideon-levi",
                            "carolina-landsman",
                            "tzafi-saar",
                            "noa-ast",
-                           "merav-michaeli"];
+                           "merav-michaeli",
+                           "amira-hess",
+                           "merav-alush-levron"];
 
 var _theMarkerAuthorsList = ["gideon-levi",
                             "merav-arlozorov",
@@ -23,7 +25,8 @@ var _theMarkerAuthorsList = ["gideon-levi",
                             "hani-zubida",
                             "nehamia-shtresler",
                             "carolina-landsman",
-                            "noa-ast"];
+                            "noa-ast",
+                            "amira-hess"];
 
 var _ynetAuthorsList = ["ron-ben-yishai",
                         "yoaz-hendel",

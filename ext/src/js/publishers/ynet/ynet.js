@@ -64,6 +64,8 @@ Ynet.prototype.run = function(rerun, force) {
     this.force = force;
 	
 	this._hideAuthors();
+    
+    this._hideSubjectTitle();
 	
 	if (!rerun) {
 		window.setInterval(this._hideTalkbacks, 1000);

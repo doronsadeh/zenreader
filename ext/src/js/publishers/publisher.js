@@ -513,7 +513,16 @@ Publisher.prototype = {
 	_hideTalkbacks : function() {
 		console.error('_blockTalkbacks must be implemented, cannot use base class');
 	},
-	
+
+    ///////////////////////////////////////////////
+    //
+    // Subjects
+    //
+    //
+    _hideSubjectTitle : function() {
+		console.error('_hideSubjectTitle must be implemented, cannot use base class');
+    },
+    
 	///////////////////////////////////////////////
 	//
 	// API 

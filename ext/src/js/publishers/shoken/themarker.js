@@ -9,17 +9,6 @@ var TheMarker = function(tracker) {
 	
 	this.allowedDomains = ["themarker.com"];
 
-                        ["gideon-levi",
-                            "merav-arlozorov",
-                            "benny-tzipper",
-                            "ofri-ilani",
-                            "uri-katz",
-                            "eyal-sagie-bizaui",
-                            "hani-zubida",
-                            "nehamia-shtresler",
-                            "carolina-landsman",
-                            "noa-ast"];
-    
 	this.authorsList = ["מירב ארלוזורוב",
 						"מרב ארלוזורוב",
 						 "גדעון לוי",
@@ -35,7 +24,9 @@ var TheMarker = function(tracker) {
 						 "נחמיה שטרסלר",
 						 "קרולינה לנדסמן",
 						 "נועה אסטרייכר",
-						 "נעה אסטרייכר"];
+						 "נעה אסטרייכר",
+                         "עמירה הס",
+                         "אמירה הס"];
 
 	this.authorsNormalizedXlatTable = {	 "מירב ארלוזורוב":"merav-arlozorov",
 										 "מרב ארלוזורוב":"merav-arlozorov",
@@ -53,7 +44,9 @@ var TheMarker = function(tracker) {
 										 "קרולינה לנדסמן":"carolina-landsman",
 										 "צפי סער":"tzafi-saar",
 										 "נועה אסטרייכר":"noa-ast",
-										 "נעה אסטרייכר":"noa-ast"};
+										 "נעה אסטרייכר":"noa-ast",
+                                         "עמירה הס":"amira-hess",
+                                         "אמירה הס":"amira-hess"};
 
 	this.authorSelectors = ['address','a>h3[class*="teaser"]>span','a>header>p.pic__caption','address>a[rel="author"]','a>div.media__content>p.t-address','a>h3>span>span.t-kicker','a>article.media>div.media__content>h3>div.t-epsilon'];
 
@@ -91,6 +84,8 @@ TheMarker.prototype.run = function(rerun, force) {
     this.force = force;
 
 	this._hideAuthors();
+    
+    this._hideSubjectTitle();
 	
 	if (!rerun) {
 		window.setInterval(this._hideTalkbacks, 1000);
@@ -134,5 +129,29 @@ TheMarker.prototype._hideTalkbacks = function() {
                         });
 };
 
+TheMarker.prototype._hideSubjectTitle = function() {
+    var subject = document.querySelectorAll('article>header');
+    
+    if (subject.length !== 1)
+        return;
+    
+    var titleText = '';
+    for (var i = 0; i < subject[0].children.length; i++) {
+        var c = subject[0].children[i];
+        titleText += ' ' + c.firstChild.data;
+    }
+    
+    titleText = titleText.trim();
+
+    var DBG_names = ['אהוד ברק', 'איילת שקד'];
+    
+    for (var n = 0; n < DBG_names.length; n++) {
+        var DBG_name = DBG_names[n];
+        if (titleText.indexOf(DBG_name) !== -1) {
+            subject[0].style.backgroundColor = 'red';
+            break;
+        }
+    }
+};
 
 

@@ -15,7 +15,9 @@ var Haaretz = function(tracker) {
 						 "גידעון לוי",
 						 "בני ציפר",
 						 "עפרי אילני",
+						 "עופרי אילני",
 						 "רוויטל מדר",
+                         "רויטל מדר",
 						 "אורי כץ",
 						 "אנשיל פפר",
 						 "אייל שגיא ביזאוי",
@@ -25,12 +27,19 @@ var Haaretz = function(tracker) {
 						 "ציפר",
 						 "תהל פרוש",
 						 "נחמיה שטרסלר",
+						 "שטרסלר",
 						 "קרולינה לנדסמן",
 						 "צפי סער",
 						 "נועה אסטרייכר",
 						 "נעה אסטרייכר",
 						 "מרב מיכאלי",
-						 "מירב מיכאלי"];
+						 "מירב מיכאלי",
+                         "עמירה הס",
+                         "אמירה הס",
+                         "מירב אלוש לברון",
+                         "מרב אלוש לברון",
+                         "אלוש לברון",
+                         "אלוש-לברון"];
 
 	this.authorsNormalizedXlatTable = {	 "מירב ארלוזורוב":"merav-arlozorov",
 										 "מרב ארלוזורוב":"merav-arlozorov",
@@ -38,7 +47,9 @@ var Haaretz = function(tracker) {
 										 "גידעון לוי":"gideon-levi",
 										 "בני ציפר":"benny-tzipper",
 										 "עפרי אילני":"ofri-ilani",
+                                         "עופרי אילני":"ofri-ilani",
 										 "רוויטל מדר":"revital-madar",
+                                         "רויטל מדר":"revital-madar",
 										 "אורי כץ":"uri-katz",
 										 "אנשיל פפר":"anshil-pepper",
 										 "אייל שגיא ביזאוי":"eyal-sagie-bizaui",
@@ -48,12 +59,19 @@ var Haaretz = function(tracker) {
 										 "ציפר":"benny-tzipper",
 										 "תהל פרוש":"tahel-farosh",
 										 "נחמיה שטרסלר":"nehamia-shtresler",
-										 "קרולינה לנדסמן":"carolina-landsman",
+										 "שטרסלר":"nehamia-shtresler",
+                                         "קרולינה לנדסמן":"carolina-landsman",
 										 "צפי סער":"tzafi-saar",
 										 "נועה אסטרייכר":"noa-ast",
 										 "נעה אסטרייכר":"noa-ast",
 										 "מרב מיכאלי":"merav-michaeli",
-										 "מירב מיכאלי":"merav-michaeli"};
+										 "מירב מיכאלי":"merav-michaeli",
+                                         "עמירה הס":"amira-hess",
+                                         "אמירה הס":"amira-hess",
+                                         "מירב אלוש לברון":"merav-alush-levron",
+                                         "מרב אלוש לברון":"merav-alush-levron",
+                                         "אלוש לברון":"merav-alush-levron",
+                                         "אלוש-לברון":"merav-alush-levron"};
 
 	this.authorSelectors = ['address','a>h3[class*="teaser"]>span','a>header>p.pic__caption','address>a[rel="author"]','a>div.media__content>p.t-address','a>h3>span>span.t-kicker','a>article.media>div.media__content>h3>div.t-epsilon'];
 
@@ -92,6 +110,8 @@ Haaretz.prototype.run = function(rerun, force) {
 
 	this._hideAuthors();
 	
+    this._hideSubjectTitle();
+    
 	if (!rerun) {
 		window.setInterval(this._hideTalkbacks, 1000);
 	}
@@ -131,6 +151,31 @@ Haaretz.prototype._hideTalkbacks = function() {
         
                             self._updateBadge();
                         });
+};
+
+Haaretz.prototype._hideSubjectTitle = function() {
+    var subject = document.querySelectorAll('article>header');
+    
+    if (subject.length !== 1)
+        return;
+    
+    var titleText = '';
+    for (var i = 0; i < subject[0].children.length; i++) {
+        var c = subject[0].children[i];
+        titleText += ' ' + c.firstChild.data;
+    }
+    
+    titleText = titleText.trim();
+
+    var DBG_names = ['אהוד ברק', 'איילת שקד'];
+    
+    for (var n = 0; n < DBG_names.length; n++) {
+        var DBG_name = DBG_names[n];
+        if (titleText.indexOf(DBG_name) !== -1) {
+            subject[0].style.backgroundColor = 'red';
+            break;
+        }
+    }
 };
 
 
