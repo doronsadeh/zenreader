@@ -26,6 +26,9 @@ function save_options() {
                                 // Save the current state of the comments hiding checkbox
                                 zenOptions[_publisher]["comments"] = document.getElementById('comments-enable').checked;
 
+                                // Save the current state of the labs features enable checkbox
+                                zenOptions[_publisher]["labs"] = { 'by-subject' : document.getElementById('labs-enable-by-subject').checked };
+
                                 chrome.storage.sync.set({
                                     "zen_options" : zenOptions
                                 }, function() {
@@ -52,6 +55,11 @@ function listenOnAllCheckboxes() {
     for(var j=0; j < elements.length; j++){
         elements[j].addEventListener('click', save_options, false);
     }
+
+    elements = document.getElementsByClassName("labs-input");
+    for(var j=0; j < elements.length; j++){
+        elements[j].addEventListener('click', save_options, false);
+    }
 }
 
 function restore_options() {
@@ -74,6 +82,8 @@ function restore_options() {
                                     }
 
                                     document.getElementById('comments-enable').checked = items.zen_options[_publisher]["comments"];
+                                    
+                                    document.getElementById('labs-enable-by-subject').checked = items.zen_options[_publisher]["labs"]["by-subject"];
                                 }
 							});
 }

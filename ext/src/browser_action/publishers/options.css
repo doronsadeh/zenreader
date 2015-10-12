@@ -54,6 +54,15 @@ span.author {
     margin-top: 12px;
 }
 
+#lab-box {
+    direction: ltr;
+}
+
+#lab-box>label>p {
+    background-color: orange;
+    color: #EEE;
+}
+
 .box-section-title {
     background-color: #EEE;
     padding: 4px 2px 2px 0px;

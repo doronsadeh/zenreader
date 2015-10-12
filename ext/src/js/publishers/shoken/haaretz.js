@@ -154,28 +154,34 @@ Haaretz.prototype._hideTalkbacks = function() {
 };
 
 Haaretz.prototype._hideSubjectTitle = function() {
-    var subject = document.querySelectorAll('article>header');
-    
-    if (subject.length !== 1)
-        return;
-    
-    var titleText = '';
-    for (var i = 0; i < subject[0].children.length; i++) {
-        var c = subject[0].children[i];
-        titleText += ' ' + c.firstChild.data;
-    }
-    
-    titleText = titleText.trim();
+    chrome.storage.sync.get('zen_options',
+						function(items) {
+                            var self = publisherInstances["Haaretz"];
+                            if (items && items.zen_options["Haaretz"]["labs"]["by-subject"]) {
+                                var subject = document.querySelectorAll('article>header');
 
-    var DBG_names = ['אהוד ברק', 'איילת שקד'];
-    
-    for (var n = 0; n < DBG_names.length; n++) {
-        var DBG_name = DBG_names[n];
-        if (titleText.indexOf(DBG_name) !== -1) {
-            subject[0].style.backgroundColor = 'red';
-            break;
-        }
-    }
+                                if (subject.length !== 1)
+                                    return;
+
+                                var titleText = '';
+                                for (var i = 0; i < subject[0].children.length; i++) {
+                                    var c = subject[0].children[i];
+                                    titleText += ' ' + c.firstChild.data;
+                                }
+
+                                titleText = titleText.trim();
+
+                                var DBG_names = ['אהוד ברק', 'איילת שקד'];
+
+                                for (var n = 0; n < DBG_names.length; n++) {
+                                    var DBG_name = DBG_names[n];
+                                    if (titleText.indexOf(DBG_name) !== -1) {
+                                        subject[0].style.backgroundColor = 'red';
+                                        break;
+                                    }
+                                }
+                            }
+    });
 };
 
 

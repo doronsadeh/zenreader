@@ -18,6 +18,8 @@ function set_zen_options_to_default() {
         }
         
         zenOptions[pName]["comments"] = true;
+        
+        zenOptions[pName]["labs"]["by-subject"] = false;
     }
     
     
@@ -46,6 +48,16 @@ function updateOptions() {
 
                                         // Else ... save it, and set by default
                                         zenOptions[pName]["authors_map"][pAuthorsList[i]] = true;
+                                    }
+                                    
+                                    // TODO a for loop over all lab features, when there are more than one
+                                    
+                                    // If labs-enable-by-subject not saved in local storage, set to default (false)
+                                    if (!zenOptions[pName]["labs"])
+                                        zenOptions[pName]["labs"] = {};
+                                    
+                                    if (!zenOptions[pName]["labs"]["by-subject"]) {
+                                        zenOptions[pName]["labs"]["by-subject"] = false;
                                     }
                                 }
         

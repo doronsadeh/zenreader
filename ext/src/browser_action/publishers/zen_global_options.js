@@ -36,16 +36,19 @@ var zenOptions = {
     "Haaretz" :{
         "authors" : _haaretzAuthorsList,
         "authors_map" : {},
-        "comments": "enable"
+        "comments": "enable",
+        "labs": {}
     },
     "TheMarker" : {
         "authors" : _theMarkerAuthorsList,
         "authors_map" : {},
-        "comments": "enable"
+        "comments": "enable",
+        "labs": {}
     },
     "Ynet" : {
         "authors" : _ynetAuthorsList,
         "authors_map" : {},
-        "comments": "enable"
+        "comments": "enable",
+        "labs": {}
     }
 };
