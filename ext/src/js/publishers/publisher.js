@@ -140,7 +140,7 @@ Publisher.prototype = {
 		return null;
 	},
     
-    _handleFullArticle : function(articleElement, author) {
+    _handleFullArticle : function(articleElement, prefix, person) {
         
         var fullArticle = false;
         
@@ -154,7 +154,7 @@ Publisher.prototype = {
         
         if (fullArticle && articleElement.parentElement && !articleElement.parentElement.querySelector('.zen-reader-full-article')) {
             var replace = document.createElement('DIV');
-            replace.innerHTML = "Zen Reader &#1492;&#1505;&#1514;&#1497;&#1512; &#1499;&#1514;&#1489;&#1492; &#1502;&#1488;&#1514; " + author;
+            replace.innerHTML = "Zen Reader &#1492;&#1505;&#1514;&#1497;&#1512; &#1499;&#1514;&#1489;&#1492; " + prefix + person;
             replace.style.direction = "rtl";
             replace.style.padding = "20px";
             replace.style.paddingTop = "50px";
@@ -229,7 +229,7 @@ Publisher.prototype = {
 						// Hide only if not already hidden
 						if (articleToHide !== null) {
                             // Mark full article we hide with the Zen sign
-                            this._handleFullArticle(articleToHide, candidate);
+                            this._handleFullArticle(articleToHide, '&#1502;&#1488;&#1514; ', candidate);
                             
 							if (articleToHide.style.display !== 'none') {
 								articleToHide.style.setProperty('display', 'none', 'important');

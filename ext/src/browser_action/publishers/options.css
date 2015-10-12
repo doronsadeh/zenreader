@@ -18,6 +18,14 @@ img {
     border-style: none;
     padding-top: 10px;
 }
+#mailto {
+    width:32px;
+    height:auto;
+    float:left;
+    border-style: none;
+    padding-top: 10px;
+    margin: 0px 10px 0px 10px;
+}
 #top-pub-logo {
     vertical-align:middle;
     width:64px;

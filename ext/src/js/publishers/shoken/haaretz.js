@@ -171,12 +171,16 @@ Haaretz.prototype._hideSubjectTitle = function() {
 
                                 titleText = titleText.trim();
 
-                                var DBG_names = ['אהוד ברק', 'איילת שקד'];
+                                var DBG_names = ['אהוד ברק', 'איילת שקד', 'נתניהו', 'בר רפאלי'];
 
                                 for (var n = 0; n < DBG_names.length; n++) {
                                     var DBG_name = DBG_names[n];
                                     if (titleText.indexOf(DBG_name) !== -1) {
-                                        subject[0].style.backgroundColor = 'red';
+                                        var a = self._climbeToArticle(subject[0]);
+                                        if (null !== a) {
+                                            a.style.setProperty('display', 'none', 'important');
+                                            self._handleFullArticle(a, '&#1492;&#1506;&#1493;&#1505;&#1511;&#1514; &#1489;', DBG_name);
+                                        }
                                         break;
                                     }
                                 }
