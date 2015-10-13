@@ -196,6 +196,8 @@ Ynet.prototype._hideSubjectTitle = function() {
                                                                           '.hpstrip_title',
                                                                           '.hpstrip_text',
                                                                           '.mta_title',
+                                                                          '.art_header_sub_title',
+                                                                          '.art_header_title',
                                                                           '.hp_lite_player_overlay_text']);
 
                                 for (var s = 0; s < subjects.length; s++) {
