@@ -46,10 +46,29 @@ Ynet.prototype._climbeToArticle = function(element) {
 	if (element.classList.contains('mta_gray_text') && element.parentElement && element.parentElement.tagName === 'LI') {
 		return element.parentElement;
 	}
+    if (element.classList.contains('mta_title') && element.parentElement && element.parentElement.tagName === 'LI') {
+		return element.parentElement;
+	}
 	else if (element.tagName === 'A' && element.parentElement && element.parentElement.tagName === 'SPAN') {
 		return document.querySelector('.block.B4.spacer');
 	}
-	
+    
+    var articleClasses = ['.top-story','.element.B3', '.hp_lite_player_item'];
+    
+    var e = element;
+    while (e && e !== document.body) {
+        e = e.parentElement;
+
+        for (var i = 0; i < articleClasses.length; i++) {
+            var aSel = articleClasses[i];
+            
+            var selE = e.parentElement.querySelector(aSel);
+            
+            if (selE && selE.isSameNode(e))
+                return e;
+        }
+    }
+
 	return null;
 };
 
@@ -164,6 +183,66 @@ Ynet.prototype._hideTalkbacks = function() {
                         });
     
 };
+
+Ynet.prototype._hideSubjectTitle = function() {
+    chrome.storage.sync.get('zen_options',
+						function(items) {
+                            var self = publisherInstances["Ynet"];
+                            if (items && items.zen_options["Ynet"]["labs"]["by-subject"]) {
+                                var subjects = document.querySelectorAll(['.subtitle', 
+                                                                          '.title',
+                                                                          '.sub_title',
+                                                                          '.sub-title',
+                                                                          '.hpstrip_title',
+                                                                          '.hpstrip_text',
+                                                                          '.mta_title',
+                                                                          '.hp_lite_player_overlay_text']);
+
+                                for (var s = 0; s < subjects.length; s++) {
+                                    var subject = subjects[s];
+                                    var titleText = '';
+
+                                    try {
+                                        
+                                        for (var i = 0; i < subject.children.length; i++) {
+                                            var c = subject.children[i];
+                                            try {
+                                                titleText += ' ' + c.firstChild.data;
+                                            } catch (e) {
+                                                // Quiet
+                                            }
+                                        }
+                                    
+                                        if (titleText.length === 0) {
+                                            titleText += subject.firstChild.data;
+                                            titleText += subject.nextSibling.data;
+                                        }
+                                        
+                                    } catch(e) {
+                                        // Quiet
+                                    }
+                                    
+                                    titleText = titleText.trim();
+
+                                    var DBG_names = ['טרור','פיגוע','פצועים','הרוגים','מחבל','מפגע','הרוג','פצוע','דקירה','דקירות','דריסה','דורס','המצב הבטחוני','המצב הביטחוני','מצב בטחוני','מצב ביטחוני'];
+
+                                    for (var n = 0; n < DBG_names.length; n++) {
+                                        var DBG_name = DBG_names[n];
+                                        if (titleText.indexOf(DBG_name) !== -1) {
+                                            var a = self._climbeToArticle(subject);
+                                            if (null !== a) {
+                                                a.style.setProperty('display', 'none', 'important');
+                                                self._handleFullArticle(a, '&#1492;&#1506;&#1493;&#1505;&#1511;&#1514; &#1489;', DBG_name);
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+    
+    });
+}
+
 
 
 

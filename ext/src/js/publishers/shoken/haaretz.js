@@ -158,30 +158,56 @@ Haaretz.prototype._hideSubjectTitle = function() {
 						function(items) {
                             var self = publisherInstances["Haaretz"];
                             if (items && items.zen_options["Haaretz"]["labs"]["by-subject"]) {
-                                var subject = document.querySelectorAll('article>header');
+                                var subjects = document.querySelectorAll(['article>header', 
+                                                                         '[class*="t-alpha"]',
+                                                                         '[class*="t-beta"]',
+                                                                         '[class*="t-gamma"]',
+                                                                         '[class*="t-delta"]',
+                                                                         '[class*="t-epsilon"]',
+                                                                         '[class*="t-zeta"]',
+                                                                         '[class*="t-zeta"]>span',
+                                                                         '[class*="t-kicker"]',
+                                                                         '[class*="mh__teaser"]',
+                                                                         '[class*="t-milli"]']);
 
-                                if (subject.length !== 1)
-                                    return;
+                                for (var s = 0; s < subjects.length; s++) {
+                                    var subject = subjects[s];
+                                    var titleText = '';
 
-                                var titleText = '';
-                                for (var i = 0; i < subject[0].children.length; i++) {
-                                    var c = subject[0].children[i];
-                                    titleText += ' ' + c.firstChild.data;
-                                }
-
-                                titleText = titleText.trim();
-
-                                var DBG_names = ['אהוד ברק', 'איילת שקד', 'נתניהו', 'בר רפאלי'];
-
-                                for (var n = 0; n < DBG_names.length; n++) {
-                                    var DBG_name = DBG_names[n];
-                                    if (titleText.indexOf(DBG_name) !== -1) {
-                                        var a = self._climbeToArticle(subject[0]);
-                                        if (null !== a) {
-                                            a.style.setProperty('display', 'none', 'important');
-                                            self._handleFullArticle(a, '&#1492;&#1506;&#1493;&#1505;&#1511;&#1514; &#1489;', DBG_name);
+                                    try {
+                                        
+                                        for (var i = 0; i < subject.children.length; i++) {
+                                            var c = subject.children[i];
+                                            try {
+                                                titleText += ' ' + c.firstChild.data;
+                                            } catch (e) {
+                                                // Quiet
+                                            }
                                         }
-                                        break;
+                                    
+                                        if (titleText.length === 0) {
+                                            titleText += subject.firstChild.data;
+                                            titleText += subject.nextSibling.data;
+                                        }
+                                        
+                                    } catch(e) {
+                                        // Quiet
+                                    }
+                                    
+                                    titleText = titleText.trim();
+
+                                    var DBG_names = ['טרור','פיגוע','פצועים','הרוגים','מחבל','מפגע','הרוג','פצוע','דקירה','דקירות','דריסה','דורס','המצב הבטחוני','המצב הביטחוני','מצב בטחוני','מצב ביטחוני'];
+
+                                    for (var n = 0; n < DBG_names.length; n++) {
+                                        var DBG_name = DBG_names[n];
+                                        if (titleText.indexOf(DBG_name) !== -1) {
+                                            var a = self._climbeToArticle(subject);
+                                            if (null !== a) {
+                                                a.style.setProperty('display', 'none', 'important');
+                                                self._handleFullArticle(a, '&#1492;&#1506;&#1493;&#1505;&#1511;&#1514; &#1489;', DBG_name);
+                                            }
+                                            break;
+                                        }
                                     }
                                 }
                             }
