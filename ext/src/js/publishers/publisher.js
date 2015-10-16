@@ -128,7 +128,7 @@ Publisher.prototype = {
 	//
 	// Returns: the article element whose a direct or non-direct parent of 'element', 
 	//          or null if no such element
-	_climbeToArticle : function(element) {
+	_climbeToArticle : function(self, element) {
 		var e = element;
 		while (e && e !== document.body && e.tagName !== 'ARTICLE') {
 			e = e.parentElement;
@@ -160,6 +160,7 @@ Publisher.prototype = {
             replace.style.paddingTop = "50px";
             replace.style.textAlign = "center";
             replace.style.width = '100%';
+            // replace.style.backgroundColor = '#FFE';
             replace.className = "zen-reader-full-article";
             
             var logo = document.createElement('IMG');
@@ -228,7 +229,7 @@ Publisher.prototype = {
 
                         var candidate = candidates[y];
 
-                        var articleToHide = this._climbeToArticle(authorz[z]);
+                        var articleToHide = this._climbeToArticle(this, authorz[z]);
 
                         var toHide = this._isHide(authorsMap, this.authorsNormalizedXlatTable, candidate);
                         
@@ -550,12 +551,12 @@ Publisher.prototype = {
 
             titleText = titleText.trim();
 
-            var DBG_names = ['אייל גולן','טרור','פיגוע','פצועים','הרוגים','מחבל','מפגע','הרוג','פצוע','דקירה','דקירות','דריסה','דורס','המצב הבטחוני','המצב הביטחוני','מצב בטחוני','מצב ביטחוני'];
+            var DBG_names = ['אייל גולן','טרור','פיגוע','פצועים','הרוגים','מחבל','מפגע','הרוג','פצוע','דקירה','דקירות','דריסה','דורס','המצב הבטחוני','המצב הביטחוני','מצב בטחוני','למצב הבטחוני','מצב ביטחוני'];
 
             for (var n = 0; n < DBG_names.length; n++) {
                 var DBG_name = DBG_names[n];
                 if (titleText.indexOf(DBG_name) !== -1) {
-                    var a = self._climbeToArticle(subject);
+                    var a = self._climbeToArticle(self, subject);
                     if (null !== a) {
                         a.style.setProperty('display', 'none', 'important');
                         a.setAttribute('data-zenreader-hide-article','true');

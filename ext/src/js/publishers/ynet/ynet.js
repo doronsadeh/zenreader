@@ -28,7 +28,7 @@ var Ynet = function(tracker) {
 		this.authorsRegEx[j] = XRegExp(this.authorsList[j]);
 	}
 
-    this.articleSelectors = ['div.block.B4.spacer'];
+    this.articleSelectors = ['ul.mta_pic_items','.hp_lite_player_item','.block.B6'];
     
 	this.talkbackParentClass = 'art_tkb_talkback';
 	
@@ -42,7 +42,7 @@ var Ynet = function(tracker) {
 Ynet.prototype = Object.create(Publisher.prototype);
 Ynet.prototype.constructor = Ynet;
 
-Ynet.prototype._climbeToArticle = function(element) {
+Ynet.prototype._climbeToArticle = function(self, element) {
 	if (element.classList.contains('mta_gray_text') && element.parentElement && element.parentElement.tagName === 'LI') {
 		return element.parentElement;
 	}
@@ -56,14 +56,12 @@ Ynet.prototype._climbeToArticle = function(element) {
 		return element.parentElement;
 	}
     
-    var articleClasses = ['.top-story','.block.B3>.element.B3>div>div>span', '.hp_lite_player_item'];
-    
     var e = element;
     while (e && e !== document.body) {
         e = e.parentElement;
 
-        for (var i = 0; i < articleClasses.length; i++) {
-            var aSel = articleClasses[i];
+        for (var i = 0; i < self.articleSelectors.length; i++) {
+            var aSel = self.articleSelectors[i];
             
             var selE = e.parentElement.querySelectorAll(aSel);
             
@@ -206,7 +204,8 @@ Ynet.prototype._hideSubjectTitle = function() {
                                                                           '.art_header_sub_title',
                                                                           '.art_header_title',
                                                                           '.hp_lite_player_overlay_text',
-                                                                          'li>div.transpernt-div']);
+                                                                          'li>div.transpernt-div',
+                                                                          'span.mta_pic_text>a']);
 
 
                                 self._hideSubjects(self, subjects);
