@@ -73,7 +73,7 @@ var Haaretz = function(tracker) {
                                          "אלוש לברון":"merav-alush-levron",
                                          "אלוש-לברון":"merav-alush-levron"};
 
-	this.authorSelectors = ['address','a>h3[class*="teaser"]>span','a>header>p.pic__caption','address>a[rel="author"]','a>div.media__content>p.t-address','a>h3>span>span.t-kicker','a>article.media>div.media__content>h3>div.t-epsilon'];
+	this.authorSelectors = ['a.t-txt-link', 'address','a>h3[class*="teaser"]>span','a>header>p.pic__caption','address>a[rel="author"]','a>div.media__content>p.t-address','a>h3>span>span.t-kicker','a>article.media>div.media__content>h3>div.t-epsilon'];
 
     // Create a uniform name list of authors for tracking
 	var dpKeyList = Object.keys(this.authorsNormalizedXlatTable);
@@ -100,6 +100,22 @@ Haaretz.prototype.constructor = Haaretz;
 
 Haaretz.prototype.uid = 	function() {
 	return 'Haaretz';
+};
+
+Haaretz.prototype._climbeToArticle = function(self, element) {
+		var e = element;
+    
+        if (e.tagName === 'A' && e.classList.contains('t-txt-link') && e.parentElement && e.parentElement.tagName === "LI")
+            return e.parentElement;
+    
+		while (e && e !== document.body && e.tagName !== 'ARTICLE') {
+			e = e.parentElement;
+		}
+
+		if (e && e.tagName === 'ARTICLE')
+			return e;
+
+		return null;
 };
 
 Haaretz.prototype.run = function(rerun, force) {
