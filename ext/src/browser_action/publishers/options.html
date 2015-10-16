@@ -7,7 +7,7 @@
             body {
                 width: 245px;
             }
-            a>img {
+            .publisher-logo_img {
                 margin: 1px;
                 border-style: dotted;
                 border-width: 1px;
@@ -44,6 +44,13 @@
                 color: black;
                 width: 100%;
             }
+            span#review>a>img {
+                width:10px;
+                height:auto;
+                float:right;
+                border-style: none;
+                margin: 0px 0px 0px 0px;
+            }
             .center {
                 margin: auto;
                 width: 100%;
@@ -56,17 +63,30 @@
         </div>
 
         <div class='pubs center'>
-            <a href='haaretz-options.html'><img title='&#1492;&#1488;&#1512;&#1509;' src='res/haaretz-logo_128x128.png'\></a>
-            <a href='themarker-options.html'><img title='&#1491;&#1492;-&#1502;&#1488;&#1512;&#1511;&#1512;' src='res/themarker-logo_128x128.png'\></a>
-            <a href='ynet-options.html'><img title='Ynet' src='res/ynet-logo_128x128.png'\></a>
-            <a href=#><img class='soon' title='Coming soon' src='res/maariv-logo_128x128.png'\></a>
-            <a href='#'><img class='soon' title='Coming soon' src='res/calcalist-logo_128x128.png'\></a>
-            <a href='#'><img class='soon' title='Coming soon' src='res/globes-logo_128x128.png'\></a>
-            <a href='#'><img class='soon' title='Coming soon' src='res/pnayplus-logo_128x128.png'\></a>
+            <a href='haaretz-options.html'><img class='publisher-logo_img' title='&#1492;&#1488;&#1512;&#1509;' src='res/haaretz-logo_128x128.png'\></a>
+            <a href='themarker-options.html'><img class='publisher-logo_img' title='&#1491;&#1492;-&#1502;&#1488;&#1512;&#1511;&#1512;' src='res/themarker-logo_128x128.png'\></a>
+            <a href='ynet-options.html'><img class='publisher-logo_img' title='Ynet' src='res/ynet-logo_128x128.png'\></a>
+            <a href=#><img class='publisher-logo_img soon' title='Coming soon' src='res/maariv-logo_128x128.png'\></a>
+            <a href='#'><img class='publisher-logo_img soon' title='Coming soon' src='res/calcalist-logo_128x128.png'\></a>
+            <a href='#'><img class='publisher-logo_img soon' title='Coming soon' src='res/globes-logo_128x128.png'\></a>
+            <a href='#'><img class='publisher-logo_img soon' title='Coming soon' src='res/pnayplus-logo_128x128.png'\></a>
         </div>
 
         <div id='copy-line'>
-            &copy; 2015 Doron Sadeh Labs
+            &copy; 2015 Doron Sadeh Labs <span style='padding-left:3px' id='zen_version'></span>
+            <span id='review'>
+                <a style="text-decoration:none;" id="review-frontpage" href="#">
+                <img src="res/rate.png" title="Rate Us"/>
+                <img src="res/rate.png" title="Rate Us"/>
+                <img src="res/rate.png" title="Rate Us"/>
+                <img src="res/rate.png" title="Rate Us"/>
+                <img src="res/rate.png" title="Rate Us"/>
+                </a>
+            </span>
         </div>
+
+        <script src="zen_global_options.js"></script>
+        <script src="options.js"></script>
+
     </body>      
 </html>

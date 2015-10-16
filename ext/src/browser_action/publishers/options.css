@@ -19,12 +19,20 @@ img {
     padding-top: 10px;
 }
 #mailto {
-    width:32px;
+    width:16px;
     height:auto;
     float:left;
     border-style: none;
     padding-top: 10px;
-    margin: 0px 10px 0px 10px;
+    margin: 0px 10px 0px 15px;
+}
+#review {
+    width:16px;
+    height:auto;
+    float:left;
+    border-style: none;
+    padding-top: 8px;
+    margin: 0px 10px 0px 1px;
 }
 #top-pub-logo {
     vertical-align:middle;
@@ -37,7 +45,6 @@ span.author {
     margin:0px;
     float:none;
 }
-
 .author-input + span {
     color: black;
 }

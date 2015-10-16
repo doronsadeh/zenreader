@@ -111,6 +111,10 @@ function request_new_author(e) {
 	chrome.storage.sync.set({'req_new_author': trigger});
 }
 
+function send_review(e) {
+    window.open("https://chrome.google.com/webstore/detail/zen-reader/mppoahikjcledceffobpdlainaeljaco/reviews?hl=he&gl=IL&authuser=0");
+}
+
 function onDOMLoaded() {
 	// Print the version number
 	var zVer = chrome.runtime.getManifest().version;
@@ -128,7 +132,20 @@ if (window === window.top) {
 	
 	listenOnAllCheckboxes();
 	
-	document.getElementById('sel-des-all').addEventListener('click', function(e) {toggle_all(e);} );
-	document.getElementById('request-new-author').addEventListener('click', function(e) {request_new_author(e);} );
+	var selDesAll = document.getElementById('sel-des-all');
+    if (selDesAll)
+        selDesAll.addEventListener('click', function(e) {toggle_all(e);} );
+	
+    var sendReq = document.getElementById('send-request');
+    if (sendReq)
+        sendReq.addEventListener('click', function(e) {request_new_author(e);} );
+
+    var sentRev = document.getElementById('send-review');
+    if (sentRev)
+        sentRev.addEventListener('click', function(e) {send_review(e);} );
+    
+    var revFP = document.getElementById('review-frontpage');
+    if (revFP)
+        revFP.addEventListener('click', function(e) {send_review(e);} );
 }
 
