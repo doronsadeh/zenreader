@@ -9,14 +9,15 @@ var Ynet = function(tracker) {
 	
 	this.allowedDomains = ["ynet.co.il"];
 
-	this.authorsList = ['רון בן ישי', 'רון  בן-ישי', 'יועז הנדל', 'איתי גל'];
+	this.authorsList = ['רון בן ישי', 'רון  בן-ישי', 'יועז הנדל', 'איתי גל','דנה ספקטור'];
 
 	this.authorsNormalizedXlatTable = {'רון בן ישי':'ron-ben-yishai',
 									   'רון בן-ישי' : 'ron-ben-yishai',
 									   'יועז הנדל' : 'yoaz-hendel',
-									   'איתי גל' : 'itay-gal'};
+									   'איתי גל' : 'itay-gal',
+                                       'דנה ספקטור':'dana-spector'};
 
-	this.authorSelectors = ['span.art_header_footer_author>span>a', 'span.mta_gray_text', '.sub_title.sub_title_no_credit'];
+	this.authorSelectors = ['span.art_header_footer_author>span>a', 'span.mta_gray_text', '.sub_title.sub_title_no_credit', '.authorHtmlCss'];
 
 	// Create a uniform name list of authors for tracking
 	var dpKeyList = Object.keys(this.authorsNormalizedXlatTable);

@@ -30,7 +30,8 @@ var _theMarkerAuthorsList = ["gideon-levi",
 
 var _ynetAuthorsList = ["ron-ben-yishai",
                         "yoaz-hendel",
-                        "itay-gal"];
+                        "itay-gal",
+                        "dana-spector"];
 
 var zenOptions = {
     "Haaretz" :{
