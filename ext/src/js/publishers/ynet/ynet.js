@@ -52,6 +52,9 @@ Ynet.prototype._climbeToArticle = function(element) {
 	else if (element.tagName === 'A' && element.parentElement && element.parentElement.tagName === 'SPAN') {
 		return document.querySelector('.block.B4.spacer');
 	}
+	else if (element.tagName === 'DIV' && element.classList.contains('transpernt-div') && element.parentElement && element.parentElement.tagName === 'LI') {
+		return element.parentElement;
+	}
     
     var articleClasses = ['.top-story','.element.B3', '.hp_lite_player_item'];
     
@@ -62,10 +65,13 @@ Ynet.prototype._climbeToArticle = function(element) {
         for (var i = 0; i < articleClasses.length; i++) {
             var aSel = articleClasses[i];
             
-            var selE = e.parentElement.querySelector(aSel);
+            var selE = e.parentElement.querySelectorAll(aSel);
             
-            if (selE && selE.isSameNode(e))
-                return e;
+            for (var r = 0; r < selE.length; r++) {
+                if (selE[r] && selE[r].isSameNode(e))
+                    return e;
+            }
+            
         }
     }
 
@@ -198,7 +204,8 @@ Ynet.prototype._hideSubjectTitle = function() {
                                                                           '.mta_title',
                                                                           '.art_header_sub_title',
                                                                           '.art_header_title',
-                                                                          '.hp_lite_player_overlay_text']);
+                                                                          '.hp_lite_player_overlay_text',
+                                                                          'li>div.transpernt-div']);
 
                                 for (var s = 0; s < subjects.length; s++) {
                                     var subject = subjects[s];
@@ -226,7 +233,7 @@ Ynet.prototype._hideSubjectTitle = function() {
                                     
                                     titleText = titleText.trim();
 
-                                    var DBG_names = ['טרור','פיגוע','פצועים','הרוגים','מחבל','מפגע','הרוג','פצוע','דקירה','דקירות','דריסה','דורס','המצב הבטחוני','המצב הביטחוני','מצב בטחוני','מצב ביטחוני'];
+                                    var DBG_names = ['אייל גולן','טרור','פיגוע','פצועים','הרוגים','מחבל','מפגע','הרוג','פצוע','דקירה','דקירות','דריסה','דורס','המצב הבטחוני','המצב הביטחוני','מצב בטחוני','מצב ביטחוני'];
 
                                     for (var n = 0; n < DBG_names.length; n++) {
                                         var DBG_name = DBG_names[n];

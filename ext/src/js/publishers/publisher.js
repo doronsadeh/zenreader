@@ -200,62 +200,70 @@ Publisher.prototype = {
 		var authorz = document.querySelectorAll(this.authorSelectors);
 		
 		for (var z = 0; z < authorz.length; z++) {
-			var author = authorz[z].firstChild;
-
-            if (!author) 
-                continue;
             
-			var actualAuthorString = '';
-			if (typeof author.data != 'undefined') {
-				actualAuthorString = author.data;
-			}
-			else if (typeof author.firstChild != 'undefined' && typeof author.firstChild.data != 'undefined') {
-				actualAuthorString = author.firstChild.data;
-			}
-			
-			actualAuthorString = actualAuthorString.replace(/\s+/g, ' ');
+            for (var c = 0; c < authorz[z].childNodes.length; c++) {
+                
+                var author = authorz[z].childNodes[c];
 
-			for (var a = 0; a < this.authorsRegEx.length; a++) {
+                if (!author) 
+                    continue;
 
-				var candidates = this.authorsRegEx[a].exec(actualAuthorString);
-				for (var y = 0; candidates !== null && y < candidates.length; y++) {
+                var actualAuthorString = '';
+                if (typeof author.data != 'undefined') {
+                    actualAuthorString = author.data;
+                }
+                else if (author.firstChild && typeof author.firstChild != 'undefined' && typeof author.firstChild.data != 'undefined') {
+                    actualAuthorString = author.firstChild.data;
+                }
 
-					var candidate = candidates[y];
+                actualAuthorString = actualAuthorString.replace(/\s+/g, ' ');
 
-					var articleToHide = this._climbeToArticle(authorz[z]);
+                if (actualAuthorString.length === 0)
+                    continue;
+                
+                for (var a = 0; a < this.authorsRegEx.length; a++) {
 
-					var toHide = this._isHide(authorsMap, this.authorsNormalizedXlatTable, candidate);
-					if (toHide && this.authorsRegEx[a].test(candidate)) {
-						// Hide only if not already hidden
-						if (articleToHide !== null) {
-                            // Mark full article we hide with the Zen sign
-                            this._handleFullArticle(articleToHide, '&#1502;&#1488;&#1514; ', candidate);
-                            
-							if (articleToHide.style.display !== 'none') {
-								articleToHide.style.setProperty('display', 'none', 'important');
-							}
+                    var candidates = this.authorsRegEx[a].exec(actualAuthorString);
+                    for (var y = 0; candidates !== null && y < candidates.length; y++) {
 
-							articleToHide.setAttribute('data-zenreader-hide-article','true');
-							authorz[z].setAttribute('data-zenreader-hide-author',candidate);
+                        var candidate = candidates[y];
 
-							var k = this._normalizeAuthor(this.authorsNormalizedXlatTable, candidate);
-							if (k) {
-								blockedAuthorsDict[k] = 1;
-							}
-						}
-					}
-					else if (!toHide && this.authorsRegEx[a].test(candidate)) {
-						articleToHide.style.setProperty('display', '', '');
-						articleToHide.removeAttribute('data-zenreader-hide-article');
+                        var articleToHide = this._climbeToArticle(authorz[z]);
 
-						var q = this._normalizeAuthor(this.authorsNormalizedXlatTable, candidate);
-						if (q) {
-							blockedAuthorsDict[q] = 0;
-						}
-					}
-				}
-			}
-		}
+                        var toHide = this._isHide(authorsMap, this.authorsNormalizedXlatTable, candidate);
+                        
+                        if (toHide && this.authorsRegEx[a].test(candidate)) {
+                            // Hide only if not already hidden
+                            if (articleToHide !== null) {
+                                // Mark full article we hide with the Zen sign
+                                this._handleFullArticle(articleToHide, '&#1502;&#1488;&#1514; ', candidate);
+
+                                if (articleToHide.style.display !== 'none') {
+                                    articleToHide.style.setProperty('display', 'none', 'important');
+                                }
+
+                                articleToHide.setAttribute('data-zenreader-hide-article','true');
+                                authorz[z].setAttribute('data-zenreader-hide-author',candidate);
+
+                                var k = this._normalizeAuthor(this.authorsNormalizedXlatTable, candidate);
+                                if (k) {
+                                    blockedAuthorsDict[k] = 1;
+                                }
+                            }
+                        }
+                        else if (!toHide && this.authorsRegEx[a].test(candidate)) {
+                            articleToHide.style.setProperty('display', '', '');
+                            articleToHide.removeAttribute('data-zenreader-hide-article');
+
+                            var q = this._normalizeAuthor(this.authorsNormalizedXlatTable, candidate);
+                            if (q) {
+                                blockedAuthorsDict[q] = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 		
         // Send each author and its numbers of blocks
         var kl = Object.keys(this.authorsTrackingUniformName);
