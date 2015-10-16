@@ -158,6 +158,7 @@ TheMarker.prototype._hideSubjectTitle = function() {
     chrome.storage.sync.get('zen_options',
 						function(items) {
                             var self = publisherInstances["TheMarker"];
+        
                             if (items && items.zen_options["TheMarker"]["labs"]["by-subject"]) {
                                 var subjects = document.querySelectorAll(['article>header', 
                                                                          '[class*="t-alpha"]',
@@ -171,7 +172,10 @@ TheMarker.prototype._hideSubjectTitle = function() {
                                                                          '[class*="mh__teaser"]',
                                                                          '[class*="t-milli"]']);
 
-                                self._hideSubject(self, subjects);
+                                self._hideSubjects(self, subjects);
+                            }
+                            else {
+                                self._revealSubjects(self);
                             }
     });
 };

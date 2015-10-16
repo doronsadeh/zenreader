@@ -56,7 +56,7 @@ Ynet.prototype._climbeToArticle = function(element) {
 		return element.parentElement;
 	}
     
-    var articleClasses = ['.top-story','.element.B3', '.hp_lite_player_item'];
+    var articleClasses = ['.top-story','.block.B3>.element.B3>div>div>span', '.hp_lite_player_item'];
     
     var e = element;
     while (e && e !== document.body) {
@@ -194,6 +194,7 @@ Ynet.prototype._hideSubjectTitle = function() {
     chrome.storage.sync.get('zen_options',
 						function(items) {
                             var self = publisherInstances["Ynet"];
+
                             if (items && items.zen_options["Ynet"]["labs"]["by-subject"]) {
                                 var subjects = document.querySelectorAll(['.subtitle', 
                                                                           '.title',
@@ -208,7 +209,10 @@ Ynet.prototype._hideSubjectTitle = function() {
                                                                           'li>div.transpernt-div']);
 
 
-                                self._hideSubject(self, subjects);
+                                self._hideSubjects(self, subjects);
+                            }
+                            else {
+                                self._revealSubjects(self);
                             }
     
     });

@@ -511,7 +511,19 @@ Publisher.prototype = {
 		return talkbacks;
 	},
     
-    _hideSubject(self, subjects) {
+    _revealSubjects(self) {
+        var bySubject = document.querySelectorAll('[data-zenreader-hide-by-subject]');
+        
+        for (var i = 0; i < bySubject.length; i++) {
+            bySubject[i].style.setProperty('display', '', '');
+            bySubject[i].removeAttribute('data-zenreader-hide-by-subject');
+            bySubject[i].removeAttribute('data-zenreader-hide-article');
+        }
+        
+        self._updateBadge();
+    },
+    
+    _hideSubjects(self, subjects) {
         for (var s = 0; s < subjects.length; s++) {
             var subject = subjects[s];
             var titleText = '';
@@ -538,7 +550,7 @@ Publisher.prototype = {
 
             titleText = titleText.trim();
 
-            var DBG_names = ['אייל גולן','טרור','פיגוע','פצועים','הרוגים','מחבל','מפגע','הרוג','פצוע','דקירה','דקירות','דריסה','דורס','המצב הבטחוני','המצב הביטחוני','מצב בטחוני','מצב ביטחוני', 'נתניהו'];
+            var DBG_names = ['אייל גולן','טרור','פיגוע','פצועים','הרוגים','מחבל','מפגע','הרוג','פצוע','דקירה','דקירות','דריסה','דורס','המצב הבטחוני','המצב הביטחוני','מצב בטחוני','מצב ביטחוני'];
 
             for (var n = 0; n < DBG_names.length; n++) {
                 var DBG_name = DBG_names[n];
@@ -546,6 +558,8 @@ Publisher.prototype = {
                     var a = self._climbeToArticle(subject);
                     if (null !== a) {
                         a.style.setProperty('display', 'none', 'important');
+                        a.setAttribute('data-zenreader-hide-article','true');
+                        a.setAttribute('data-zenreader-hide-by-subject','true');
                         self._handleFullArticle(a, '&#1492;&#1506;&#1493;&#1505;&#1511;&#1514; &#1489;', DBG_name);
                     }
                     break;
