@@ -510,6 +510,49 @@ Publisher.prototype = {
 		
 		return talkbacks;
 	},
+    
+    _hideSubject(self, subjects) {
+        for (var s = 0; s < subjects.length; s++) {
+            var subject = subjects[s];
+            var titleText = '';
+
+            try {
+
+                for (var i = 0; i < subject.childNodes.length; i++) {
+                    var c = subject.childNodes[i];
+                    try {
+                        titleText += ' ' + c.firstChild.data;
+                    } catch (e) {
+                        // Quiet
+                    }
+                }
+
+                if (titleText.length === 0) {
+                    titleText += subject.firstChild.data;
+                    titleText += subject.nextSibling.data;
+                }
+
+            } catch(e) {
+                // Quiet
+            }
+
+            titleText = titleText.trim();
+
+            var DBG_names = ['אייל גולן','טרור','פיגוע','פצועים','הרוגים','מחבל','מפגע','הרוג','פצוע','דקירה','דקירות','דריסה','דורס','המצב הבטחוני','המצב הביטחוני','מצב בטחוני','מצב ביטחוני', 'נתניהו'];
+
+            for (var n = 0; n < DBG_names.length; n++) {
+                var DBG_name = DBG_names[n];
+                if (titleText.indexOf(DBG_name) !== -1) {
+                    var a = self._climbeToArticle(subject);
+                    if (null !== a) {
+                        a.style.setProperty('display', 'none', 'important');
+                        self._handleFullArticle(a, '&#1492;&#1506;&#1493;&#1505;&#1511;&#1514; &#1489;', DBG_name);
+                    }
+                    break;
+                }
+            }
+        }
+    },
 	
 	// @protected hideTalkbacks
 	//
