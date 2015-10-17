@@ -284,7 +284,7 @@ Haaretz.prototype._computeMainTerms = function() {
         var pInfo = pData[x];
         
         var sentences = pInfo["text"].split(/[.!?]+/);
-        synopsis += '<span>';
+        synopsis += '<div style="padding-bottom:2px;">';
         for (var y = 0; y < sentences.length; y++) {
             var tokens = TFIDF_tokenize(sentences[y]);
             if (tokens.length >= 7 && sentences[y].indexOf(pInfo["max-term-text"]) !== -1) {
@@ -292,7 +292,7 @@ Haaretz.prototype._computeMainTerms = function() {
                 break;
             }
         }
-        synopsis += '</span>';
+        synopsis += '</div>';
     }
     
     return synopsis;
