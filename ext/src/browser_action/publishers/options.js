@@ -147,5 +147,10 @@ if (window === window.top) {
     var revFP = document.getElementById('review-frontpage');
     if (revFP)
         revFP.addEventListener('click', function(e) {send_review(e);} );
+    
+    var relNotes = document.getElementById('zen_version');
+    if (relNotes)
+        relNotes.addEventListener('click', function(e) { window.open('./relnotes.html'); } );
+    
 }
 
