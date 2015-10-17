@@ -121,7 +121,7 @@ Haaretz.prototype._climbeToArticle = function(self, element) {
 Haaretz.prototype.run = function(rerun, force) {
 	if (!this._allowed()) 
 		return;
-
+    
     this.force = force;
 
 	this._hideAuthors();
@@ -131,6 +131,35 @@ Haaretz.prototype.run = function(rerun, force) {
 	if (!rerun) {
 		window.setInterval(this._hideTalkbacks, 1000);
 	}
+    
+    // DEBUG
+    var synopsis = this._computeMainTerms();
+    
+    var articleHeader = document.querySelectorAll('article>header');
+    if (articleHeader.length === 1) {
+        var logo = document.createElement('IMG');
+        logo.src = 'https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/icon48.png';
+        logo.style.width = '32px';
+        logo.style.height = 'auto';
+        logo.style.margin = '5px 5px 5px 15px';
+
+        var logoSpan = document.createElement('SPAN');
+        logoSpan.appendChild(logo);
+        logoSpan.style.float = 'right';
+
+        var sChild = document.createElement("DIV");
+        
+        sChild.appendChild(logoSpan);
+
+        sChild.innerHTML += synopsis;
+        sChild.style.backgroundColor = 'rgba(255,255,0,0.4)';
+        sChild.style.padding = '10px 10px 10px 5px';
+        sChild.style.margin = '10px 0px 10px 0px';
+        sChild.id = "zen-reader-synopsis";
+        
+        // Put it all together
+        articleHeader[0].appendChild(sChild);
+    }
 };
 
 Haaretz.prototype._hideAuthors = function() {
@@ -195,5 +224,300 @@ Haaretz.prototype._hideSubjectTitle = function() {
     });
 };
 
+Haaretz.prototype._computeMainTerms = function() {
+    // Extract all paragraphs, and treat each as a doc, creating a list of such
+    var paragraphs = document.querySelectorAll('section.article__entry>p.t-body-text');
+    if (!paragraphs || paragraphs.length === 0) {
+        return [];
+    }
+    
+    var pArray = Array.prototype.slice.call(paragraphs);
+    var docs = [];
+    var article = '';
+    for (var i = 0; i < pArray.length; i++) {
+        var pT = '';
+        for (var c = 0; c < pArray[i].childNodes.length; c++) {
+            var cN = pArray[i].childNodes[c];
+            pT += ' ' + ((cN !== null && cN.data) || (cN.firstChild !== null && cN.firstChild.data));
+        }
+        
+        docs.push(pT.trim());
+        article += ' ' + pT;
+    }
+    
+    article = article.trim();
+    
+    var dataModel = TFIDF_analyze(docs, hebrewStopWords);
 
+    var terms = TFIDF_tokenize(article);
+    
+    // Stores paragraphs data, per each paragraph
+    var pData = {};
+    
+    for (var j = 0; j < docs.length; j++) {
+        var maxTermScore = -1.0;
+        var maxTermText = '-';
+        for (var k = 0; k < terms.length; k++) {
+            
+            // Skip term which are stop words
+            if (terms[k].length <= 2 || hebrewStopWords.indexOf(terms[k]) >= 0)
+                continue;
+            
+            var tScore = dataModel.tfidf(terms[k], docs[j]);
+            if (tScore > 0.0 && tScore > maxTermScore) {
+                maxTermScore = tScore;
+                maxTermText = terms[k];
+            }
+        }
 
+        // Store paragraph info
+        if (maxTermScore > 0 && docs[j])  {
+            pData[j] = { 'text' : docs[j],
+                         'max-term-text' : maxTermText,
+                         'max-term-score': maxTermScore
+                       };
+        }
+    }
+    
+    var synopsis = '';
+    for (var x = 0; x < Object.keys(pData).length; x++) {
+        var pInfo = pData[x];
+        
+        var sentences = pInfo["text"].split(/[.!?]+/);
+        synopsis += '<span>';
+        for (var y = 0; y < sentences.length; y++) {
+            var tokens = TFIDF_tokenize(sentences[y]);
+            if (tokens.length >= 7 && sentences[y].indexOf(pInfo["max-term-text"]) !== -1) {
+                synopsis += sentences[y] + '. ';
+                break;
+            }
+        }
+        synopsis += '</span>';
+    }
+    
+    return synopsis;
+};
+
+var hebrewStopWords = [
+    'אני',
+    'את',
+    'אתה',
+    'אנחנו',
+    'אתן',
+    'אתם',
+    'הם',
+    'הן',
+    'היא',
+    'הוא',
+    'שלי',
+    'שלו',
+    'שלך',
+    'שלה',
+    'שלנו',
+    'שלכם',
+    'שלכן',
+    'שלהם',
+    'שלהן',
+    'לי',
+    'לו',
+    'לה',
+    'לנו',
+    'לכם',
+    'לכן',
+    'להם',
+    'להן',
+    'אותה',
+    'אותו',
+    'זה',
+    'זאת',
+    'אלה',
+    'אלו',
+    'תחת',
+    'מתחת',
+    'מעל',
+    'בין',
+    'עם',
+    'עד',
+    'נגר',
+    'על',
+    'אל',
+    'מול',
+    'של',
+    'אצל',
+    'כמו',
+    'אחר',
+    'אותו',
+    'בלי',
+    'לפני',
+    'אחרי',
+    'מאחורי',
+    'עלי',
+    'עליו',
+    'עליה',
+    'עליך',
+    'עלינו',
+    'עליכם',
+    'לעיכן',
+    'עליהם',
+    'עליהן',
+    'כל',
+    'כולם',
+    'כולן',
+    'כך',
+    'ככה',
+    'כזה',
+    'זה',
+    'זות',
+    'אותי',
+    'אותה',
+    'אותם',
+    'אותך',
+    'אותו',
+    'אותן',
+    'אותנו',
+    'ואת',
+    'את',
+    'אתכם',
+    'אתכן',
+    'איתי',
+    'איתו',
+    'איתך',
+    'איתה',
+    'איתם',
+    'איתן',
+    'איתנו',
+    'איתכם',
+    'איתכן',
+    'יהיה',
+    'תהיה',
+    'היתי',
+    'היתה',
+    'היה',
+    'להיות',
+    'עצמי',
+    'עצמו',
+    'עצמה',
+    'עצמם',
+    'עצמן',
+    'עצמנו',
+    'עצמהם',
+    'עצמהן',
+    'מי',
+    'מה',
+    'איפה',
+    'היכן',
+    'במקום שבו',
+    'אם',
+    'לאן',
+    'למקום שבו',
+    'מקום בו',
+    'איזה',
+    'מהיכן',
+    'איך',
+    'כיצד',
+    'באיזו מידה',
+    'מתי',
+    'בשעה ש',
+    'כאשר',
+    'כש',
+    'למרות',
+    'לפני',
+    'אחרי',
+    'מאיזו סיבה',
+    'הסיבה שבגללה',
+    'למה',
+    'מדוע',
+    'לאיזו תכלית',
+    'כי',
+    'יש',
+    'אין',
+    'אך',
+    'מנין',
+    'מאין',
+    'מאיפה',
+    'יכל',
+    'יכלה',
+    'יכלו',
+    'יכול',
+    'יכולה',
+    'יכולים',
+    'יכולות',
+    'יוכלו',
+    'יוכל',
+    'מסוגל',
+    'לא',
+    'רק',
+    'אולי',
+    'אין',
+    'לאו',
+    'אי',
+    'כלל',
+    'נגד',
+    'אם',
+    'עם',
+    'אל',
+    'אלה',
+    'אלו',
+    'אף',
+    'על',
+    'מעל',
+    'מתחת',
+    'מצד',
+    'בשביל',
+    'לבין',
+    'באמצע',
+    'בתוך',
+    'דרך',
+    'מבעד',
+    'באמצעות',
+    'למעלה',
+    'למטה',
+    'מחוץ',
+    'מן',
+    'לעבר',
+    'מכאן',
+    'כאן',
+    'הנה',
+    'הרי',
+    'פה',
+    'שם',
+    'אך',
+    'ברם',
+    'שוב',
+    'אבל',
+    'מבלי',
+    'בלי',
+    'מלבד',
+    'רק',
+    'בגלל',
+    'מכיוון',
+    'עד',
+    'אשר',
+    'ואילו',
+    'למרות',
+    'אס',
+    'כמו',
+    'כפי',
+    'אז',
+    'אחרי',
+    'כן',
+    'לכן',
+    'לפיכך',
+    'מאד',
+    'עז',
+    'מעט',
+    'מעטים',
+    'במידה',
+    'שוב',
+    'יותר',
+    'מדי',
+    'גם',
+    'כן',
+    'נו',
+    'אחר',
+    'אחרת',
+    'אחרים',
+    'אחרות',
+    'אשר',
+    'או'
+];

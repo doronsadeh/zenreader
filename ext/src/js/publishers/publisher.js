@@ -589,6 +589,15 @@ Publisher.prototype = {
 		console.error('_hideSubjectTitle must be implemented, cannot use base class');
     },
     
+    ///////////////////////////////////////////////
+    //
+    // Summarization
+    //
+    //
+    _computeMainTerms : function() {
+		console.error('_computeMainTerms must be implemented, cannot use base class');
+    },
+    
 	///////////////////////////////////////////////
 	//
 	// API 

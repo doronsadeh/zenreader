@@ -42,6 +42,8 @@
 	  "run_at": "document_end",
 	  "all_frames": true,
       "js": [
+        "src/js/libs/md5.js",
+        "src/js/libs/tfidf.js",
 		"src/js/libs/google-analytics-bundle.js",
 		"src/js/libs/xregexp.js",
 		"src/js/libs/addons/unicode/unicode-base.js",
