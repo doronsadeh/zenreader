@@ -29,7 +29,7 @@ var Ynet = function(tracker) {
 		this.authorsRegEx[j] = XRegExp(this.authorsList[j]);
 	}
 
-    this.articleSelectors = ['ul.mta_pic_items','.hp_lite_player_item','.block.B6'];
+    this.articleSelectors = ['ul.mta_pic_items','.hp_lite_player_item','.element.B3.ghcite.noBottomPadding','.block.B6'];
     
 	this.talkbackParentClass = 'art_tkb_talkback';
 	
