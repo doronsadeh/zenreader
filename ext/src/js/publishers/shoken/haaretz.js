@@ -135,31 +135,30 @@ Haaretz.prototype.run = function(rerun, force) {
     // DEBUG
     var synopsis = this._computeMainTerms();
     
-    var articleHeader = document.querySelectorAll('article>header');
-    if (articleHeader.length === 1) {
-        var logo = document.createElement('IMG');
-        logo.src = 'https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/icon48.png';
-        logo.style.width = '32px';
-        logo.style.height = 'auto';
-        logo.style.margin = '5px 5px 5px 15px';
+    var articleFirstParag = document.querySelector('section.article__entry>p.t-body-text');
 
-        var logoSpan = document.createElement('SPAN');
-        logoSpan.appendChild(logo);
-        logoSpan.style.float = 'right';
+    var logo = document.createElement('IMG');
+    logo.src = 'https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/icon48.png';
+    logo.style.width = '32px';
+    logo.style.height = 'auto';
+    logo.style.margin = '5px 5px 5px 15px';
 
-        var sChild = document.createElement("DIV");
-        
-        sChild.appendChild(logoSpan);
+    var logoSpan = document.createElement('SPAN');
+    logoSpan.appendChild(logo);
+    logoSpan.style.float = 'right';
 
-        sChild.innerHTML += synopsis;
-        sChild.style.backgroundColor = 'rgba(0,255,0,0.25)';
-        sChild.style.padding = '10px 10px 10px 5px';
-        sChild.style.margin = '10px 0px 10px 0px';
-        sChild.id = "zen-reader-synopsis";
-        
-        // Put it all together
-        articleHeader[0].appendChild(sChild);
-    }
+    var sChild = document.createElement("P");
+
+    sChild.appendChild(logoSpan);
+
+    sChild.innerHTML += synopsis;
+    sChild.style.backgroundColor = 'rgba(0,255,0,0.25)';
+    sChild.style.fontSize = '90%';
+    sChild.id = "zen-reader-synopsis";
+    sChild.classList.add('t-body-text');
+
+    // Put it all together
+    articleFirstParag.parentElement.insertBefore(sChild, articleFirstParag);
 };
 
 Haaretz.prototype._hideAuthors = function() {
