@@ -288,8 +288,8 @@ Publisher.prototype = {
             var replace = document.createElement('DIV');
             replace.innerHTML = "Zen Reader &#1492;&#1505;&#1514;&#1497;&#1512; &#1499;&#1514;&#1489;&#1492; " + prefix + person;
             replace.style.direction = "rtl";
-            replace.style.padding = "20px";
-            replace.style.paddingTop = "50px";
+            // replace.style.padding = "20px";
+            replace.style.paddingTop = "15px";
             replace.style.textAlign = "center";
             replace.style.width = '100%';
             // replace.style.backgroundColor = '#FFE';
@@ -297,15 +297,15 @@ Publisher.prototype = {
             
             var logo = document.createElement('IMG');
             logo.src = 'https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/icon48.png';
-            logo.style.width = '64px';
+            // logo.style.width = '64px';
             logo.style.height = 'auto';
             
             var logoDiv = document.createElement('DIV');
             logoDiv.appendChild(logo);
             logoDiv.style.width = '100%';
-            logoDiv.style.marginTop = '50px';
-            
-            
+            logoDiv.style.marginTop = '10px';
+            logoDiv.style.marginBottom = '10px';
+                        
             replace.appendChild(logoDiv);
             
             articleElement.parentElement.appendChild(replace);
