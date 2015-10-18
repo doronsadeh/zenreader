@@ -32,7 +32,9 @@ var Ynet = function(tracker) {
     this.articleSelectors = ['#multiarticles-1 > div.content_wrap > ul.mta_pic_ites',
                              'div.hp_lite_player_item_wrapper>div.hp_lite_player_item_wrapper>div.hp_lite_player_item',
                              '#main > div.area.content.no_trajectory > div.block.B6 > div.block.B6 > div.block.B3 > div.block.B3 > div.element.B3.ghcite.noBottomPadding',
-                             'div#main>div.area.content > div > div.block.B4.spacer'];
+                             'div#main>div.area.content > div > div.block.B4.spacer',
+                             'div > div.pphp_main > ul > li > div.pphp_li_items',
+                             'div.top-story>div.top-story-main'];
     
 	this.talkbackParentClass = 'art_tkb_talkback';
 	
@@ -209,7 +211,8 @@ Ynet.prototype._hideSubjectTitle = function() {
                                                                           '.art_header_title',
                                                                           '.hp_lite_player_overlay_text',
                                                                           'li>div.transpernt-div',
-                                                                          'span.mta_pic_text>a']);
+                                                                          'span.mta_pic_text>a',
+                                                                          'div.pphp_li_items > div.pphp_main_li_title > a.rpphp_main_title > span']);
 
 
                                 self._hideSubjects(self, subjects);
