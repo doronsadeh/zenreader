@@ -42,6 +42,7 @@
 	  "run_at": "document_end",
 	  "all_frames": true,
       "js": [
+        "src/js/libs/he-stopwords.js",
         "src/js/libs/tfidf.js",
 		"src/js/libs/google-analytics-bundle.js",
 		"src/js/libs/xregexp.js",

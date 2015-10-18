@@ -131,35 +131,42 @@ Haaretz.prototype.run = function(rerun, force) {
 	if (!rerun) {
 		window.setInterval(this._hideTalkbacks, 1000);
 	}
-    
-    // DEBUG
+
+    this._synopsis();
+};
+
+Haaretz.prototype._synopsis = function() {
     var synopsis = this._computeMainTerms();
     
-    var articleFirstParag = document.querySelector('section.article__entry>p.t-body-text');
+    if (null !== synopsis) {
+        var articleFirstParag = document.querySelector('section.article__entry>p.t-body-text');
 
-    var logo = document.createElement('IMG');
-    logo.src = 'https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/icon48.png';
-    logo.style.width = '32px';
-    logo.style.height = 'auto';
-    logo.style.margin = '5px 5px 5px 15px';
+        var logo = document.createElement('IMG');
+        logo.src = 'https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/icon48.png';
+        logo.style.width = '32px';
+        logo.style.height = 'auto';
+        logo.style.margin = '5px 5px 5px 15px';
 
-    var logoSpan = document.createElement('SPAN');
-    logoSpan.appendChild(logo);
-    logoSpan.style.float = 'right';
+        var logoSpan = document.createElement('SPAN');
+        logoSpan.appendChild(logo);
+        logoSpan.style.float = 'right';
 
-    var sChild = document.createElement("P");
+        var sChild = document.createElement("P");
 
-    sChild.appendChild(logoSpan);
+        sChild.appendChild(logoSpan);
 
-    sChild.innerHTML += synopsis;
-    sChild.style.backgroundColor = 'rgba(0,255,0,0.25)';
-    sChild.style.fontSize = '90%';
-    sChild.id = "zen-reader-synopsis";
-    sChild.classList.add('t-body-text');
+        sChild.innerHTML += synopsis;
+        sChild.style.backgroundColor = 'rgba(0,255,0,0.25)';
+        sChild.style.fontSize = '90%';
+        sChild.id = "zen-reader-synopsis";
+        sChild.classList.add('t-body-text');
+        sChild.style.padding = '15px';
+        sChild.style.marginBottom = '50px';
 
-    // Put it all together
-    articleFirstParag.parentElement.insertBefore(sChild, articleFirstParag);
-};
+        // Put it all together
+        articleFirstParag.parentElement.insertBefore(sChild, articleFirstParag);
+    }
+}
 
 Haaretz.prototype._hideAuthors = function() {
 	if (!this._allowed()) {
@@ -271,255 +278,65 @@ Haaretz.prototype._computeMainTerms = function() {
 
         // Store paragraph info
         if (maxTermScore > 0 && docs[j])  {
-            pData[j] = { 'text' : docs[j],
-                         'max-term-text' : maxTermText,
+            pData[j] = { 'text' : docs[j].trim(),
+                         'max-term-text' : maxTermText.trim(),
                          'max-term-score': maxTermScore
                        };
         }
     }
     
+    var mainTerms = {};
     var synopsis = '';
+    var volume = 0;
+    
     for (var x = 0; x < Object.keys(pData).length; x++) {
         var pInfo = pData[x];
         
-        if (!pInfo || !pInfo["text"])
+        if (!pInfo || !pInfo["text"] || !pInfo["max-term-text"] || !pInfo["max-term-score"])
             continue;
         
-        var sentences = pInfo["text"].split(/[.!?]+/);
-        synopsis += '<div style="padding-bottom:2px;">';
+        volume += pInfo["text"].length;
+        
+        var sentences = pInfo["text"].split(/[.]+/);
+        
+        mainTerms[pInfo["max-term-score"]]= pInfo["max-term-text"];
+        
+        var prgT = '';
         for (var y = 0; y < sentences.length; y++) {
             var tokens = TFIDF_tokenize(sentences[y]);
-            if (tokens.length >= 7 && sentences[y].indexOf(pInfo["max-term-text"]) !== -1) {
-                synopsis += sentences[y] + '. ';
+            if (tokens.length >= 20 && sentences[y].indexOf(pInfo["max-term-text"]) !== -1) {
+                prgT += sentences[y] + '. ';
                 break;
             }
         }
-        synopsis += '</div>';
+        
+        if (prgT.length > 0) {
+            prgT = '<p style="padding:2px 52px 2px 20px;">' + prgT + '</p>';
+            synopsis += prgT;
+        }
     }
+
+    /* DEPRECATED
+    var sorted = [];
+    for(var key in mainTerms) {
+        sorted[sorted.length] = key;
+    }
+    sorted.sort();
+    sorted.reverse();
     
+    var termStr = '';
+    for (var t = 0; t < sorted.length && t < 3; t++) {
+        termStr += '<span class="zen-reader-main-term" style="padding:5px;">' + sorted[t] + ':' + mainTerms[sorted[t]] + '</span>';
+    }
+    termStr = '<div>' + termStr + '</div>';
+
+    synopsis = termStr + synopsis;
+    */
+
+    if (volume === 0 || synopsis.length === 0)
+        return null;
+
+    synopsis += '<p style="direction:ltr;position:relative;top:17px;left:-7px;float:left">&copy; 2015 Synopsis&#8482; by Zen Reader</p>';
     return synopsis;
 };
 
-var hebrewStopWords = [
-    'אני',
-    'את',
-    'אתה',
-    'אנחנו',
-    'אתן',
-    'אתם',
-    'הם',
-    'הן',
-    'היא',
-    'הוא',
-    'שלי',
-    'שלו',
-    'שלך',
-    'שלה',
-    'שלנו',
-    'שלכם',
-    'שלכן',
-    'שלהם',
-    'שלהן',
-    'לי',
-    'לו',
-    'לה',
-    'לנו',
-    'לכם',
-    'לכן',
-    'להם',
-    'להן',
-    'אותה',
-    'אותו',
-    'זה',
-    'זאת',
-    'אלה',
-    'אלו',
-    'תחת',
-    'מתחת',
-    'מעל',
-    'בין',
-    'עם',
-    'עד',
-    'נגר',
-    'על',
-    'אל',
-    'מול',
-    'של',
-    'אצל',
-    'כמו',
-    'אחר',
-    'אותו',
-    'בלי',
-    'לפני',
-    'אחרי',
-    'מאחורי',
-    'עלי',
-    'עליו',
-    'עליה',
-    'עליך',
-    'עלינו',
-    'עליכם',
-    'לעיכן',
-    'עליהם',
-    'עליהן',
-    'כל',
-    'כולם',
-    'כולן',
-    'כך',
-    'ככה',
-    'כזה',
-    'זה',
-    'זות',
-    'אותי',
-    'אותה',
-    'אותם',
-    'אותך',
-    'אותו',
-    'אותן',
-    'אותנו',
-    'ואת',
-    'את',
-    'אתכם',
-    'אתכן',
-    'איתי',
-    'איתו',
-    'איתך',
-    'איתה',
-    'איתם',
-    'איתן',
-    'איתנו',
-    'איתכם',
-    'איתכן',
-    'יהיה',
-    'תהיה',
-    'היתי',
-    'היתה',
-    'היה',
-    'להיות',
-    'עצמי',
-    'עצמו',
-    'עצמה',
-    'עצמם',
-    'עצמן',
-    'עצמנו',
-    'עצמהם',
-    'עצמהן',
-    'מי',
-    'מה',
-    'איפה',
-    'היכן',
-    'במקום שבו',
-    'אם',
-    'לאן',
-    'למקום שבו',
-    'מקום בו',
-    'איזה',
-    'מהיכן',
-    'איך',
-    'כיצד',
-    'באיזו מידה',
-    'מתי',
-    'בשעה ש',
-    'כאשר',
-    'כש',
-    'למרות',
-    'לפני',
-    'אחרי',
-    'מאיזו סיבה',
-    'הסיבה שבגללה',
-    'למה',
-    'מדוע',
-    'לאיזו תכלית',
-    'כי',
-    'יש',
-    'אין',
-    'אך',
-    'מנין',
-    'מאין',
-    'מאיפה',
-    'יכל',
-    'יכלה',
-    'יכלו',
-    'יכול',
-    'יכולה',
-    'יכולים',
-    'יכולות',
-    'יוכלו',
-    'יוכל',
-    'מסוגל',
-    'לא',
-    'רק',
-    'אולי',
-    'אין',
-    'לאו',
-    'אי',
-    'כלל',
-    'נגד',
-    'אם',
-    'עם',
-    'אל',
-    'אלה',
-    'אלו',
-    'אף',
-    'על',
-    'מעל',
-    'מתחת',
-    'מצד',
-    'בשביל',
-    'לבין',
-    'באמצע',
-    'בתוך',
-    'דרך',
-    'מבעד',
-    'באמצעות',
-    'למעלה',
-    'למטה',
-    'מחוץ',
-    'מן',
-    'לעבר',
-    'מכאן',
-    'כאן',
-    'הנה',
-    'הרי',
-    'פה',
-    'שם',
-    'אך',
-    'ברם',
-    'שוב',
-    'אבל',
-    'מבלי',
-    'בלי',
-    'מלבד',
-    'רק',
-    'בגלל',
-    'מכיוון',
-    'עד',
-    'אשר',
-    'ואילו',
-    'למרות',
-    'אס',
-    'כמו',
-    'כפי',
-    'אז',
-    'אחרי',
-    'כן',
-    'לכן',
-    'לפיכך',
-    'מאד',
-    'עז',
-    'מעט',
-    'מעטים',
-    'במידה',
-    'שוב',
-    'יותר',
-    'מדי',
-    'גם',
-    'כן',
-    'נו',
-    'אחר',
-    'אחרת',
-    'אחרים',
-    'אחרות',
-    'אשר',
-    'או'
-];
