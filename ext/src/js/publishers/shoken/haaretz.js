@@ -136,6 +136,12 @@ Haaretz.prototype.run = function(rerun, force) {
 };
 
 Haaretz.prototype._synopsis = function() {
+    
+    var existingSyn = document.getElementById('zen-reader-synopsis');
+    if (existingSyn) {
+        document.removeChild(existingSyn);
+    }
+    
     var synopsis = this._computeMainTerms();
     
     if (null !== synopsis) {
