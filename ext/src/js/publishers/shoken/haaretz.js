@@ -336,7 +336,7 @@ Haaretz.prototype._computeMainTerms = function() {
     if (volume === 0 || synopsis.length === 0)
         return null;
 
-    synopsis += '<p style="direction:ltr;position:relative;top:17px;left:-7px;float:left">&copy; 2015 Synopsis&#8482; by Zen Reader</p>';
+    synopsis += '<p style="direction:ltr;position:relative;top:17px;left:-7px;float:left;font-size:11px!important;">&copy; 2015 Synopsis&#8482; by Zen Reader</p>';
     return synopsis;
 };
 
