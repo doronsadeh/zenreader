@@ -56,7 +56,17 @@ TFIDF_analyze = function analyze(corpus, _stopWords) {
 
     // Key the corpus on their md5 hash
     function hash(doc) {
-        return md5(doc);
+        var hash = 0, i, chr, len;
+        if (doc.length == 0) 
+            return hash;
+
+        for (var i = 0, len = doc.length; i < len; i++) {
+            chr   = doc.charCodeAt(i);
+            hash  = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+        }
+
+        return hash;
     }
 
     function add(h, doc) {
