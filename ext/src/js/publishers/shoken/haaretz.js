@@ -152,7 +152,7 @@ Haaretz.prototype.run = function(rerun, force) {
         sChild.appendChild(logoSpan);
 
         sChild.innerHTML += synopsis;
-        sChild.style.backgroundColor = 'rgba(255,255,0,0.4)';
+        sChild.style.backgroundColor = 'rgba(0,255,0,0.25)';
         sChild.style.padding = '10px 10px 10px 5px';
         sChild.style.margin = '10px 0px 10px 0px';
         sChild.id = "zen-reader-synopsis";
@@ -282,6 +282,9 @@ Haaretz.prototype._computeMainTerms = function() {
     var synopsis = '';
     for (var x = 0; x < Object.keys(pData).length; x++) {
         var pInfo = pData[x];
+        
+        if (!pInfo || !pInfo["text"])
+            continue;
         
         var sentences = pInfo["text"].split(/[.!?]+/);
         synopsis += '<div style="padding-bottom:2px;">';
