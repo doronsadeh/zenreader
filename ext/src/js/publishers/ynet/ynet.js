@@ -29,7 +29,10 @@ var Ynet = function(tracker) {
 		this.authorsRegEx[j] = XRegExp(this.authorsList[j]);
 	}
 
-    this.articleSelectors = ['ul.mta_pic_items','.hp_lite_player_item','.element.B3.ghcite.noBottomPadding','.block.B6'];
+    this.articleSelectors = ['#multiarticles-1 > div.content_wrap > ul.mta_pic_ites',
+                             'div.hp_lite_player_item_wrapper>div.hp_lite_player_item_wrapper>div.hp_lite_player_item',
+                             '#main > div.area.content.no_trajectory > div.block.B6 > div.block.B6 > div.block.B3 > div.block.B3 > div.element.B3.ghcite.noBottomPadding',
+                             'div#main>div.area.content > div > div.block.B4.spacer'];
     
 	this.talkbackParentClass = 'art_tkb_talkback';
 	
