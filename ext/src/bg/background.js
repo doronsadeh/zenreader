@@ -20,6 +20,7 @@ function set_zen_options_to_default() {
         zenOptions[pName]["comments"] = true;
         
         zenOptions[pName]["labs"]["by-subject"] = false;
+        zenOptions[pName]["labs"]["summarization"] = true;
     }
     
     
@@ -58,6 +59,10 @@ function updateOptions() {
                                     
                                     if (!zenOptions[pName]["labs"]["by-subject"]) {
                                         zenOptions[pName]["labs"]["by-subject"] = false;
+                                    }
+
+                                    if (!zenOptions[pName]["labs"]["summarization"]) {
+                                        zenOptions[pName]["labs"]["summarization"] = true;
                                     }
                                 }
         

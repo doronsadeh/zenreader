@@ -136,42 +136,52 @@ Haaretz.prototype.run = function(rerun, force) {
 };
 
 Haaretz.prototype._synopsis = function() {
-    
-    var existingSyn = document.getElementById('zen-reader-synopsis');
-    if (existingSyn) {
-        document.removeChild(existingSyn);
-    }
-    
-    var synopsis = this._computeMainTerms();
-    
-    if (null !== synopsis) {
-        var articleFirstParag = document.querySelector('section.article__entry>p.t-body-text');
+    chrome.storage.sync.get('zen_options',
+						function(items) {
+                            
+                            var self = publisherInstances["Haaretz"];
+                            
+                            if (!items || !items.zen_options["Haaretz"]["labs"]["summarization"]) {
+                                self._removeSynopsis(self);
+                                return;
+                            }
 
-        var logo = document.createElement('IMG');
-        logo.src = 'https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/icon48.png';
-        logo.style.width = '32px';
-        logo.style.height = 'auto';
-        logo.style.margin = '5px 5px 5px 15px';
+                            var existingSyn = document.getElementById('zen-reader-synopsis');
+                            if (existingSyn) {
+                                document.removeChild(existingSyn);
+                            }
 
-        var logoSpan = document.createElement('SPAN');
-        logoSpan.appendChild(logo);
-        logoSpan.style.float = 'right';
+                            var synopsis = self._computeMainTerms(self, 'section.article__entry>p.t-body-text');
 
-        var sChild = document.createElement("P");
+                            if (null !== synopsis) {
+                                var articleFirstParag = document.querySelector('section.article__entry>p.t-body-text');
 
-        sChild.appendChild(logoSpan);
+                                var logo = document.createElement('IMG');
+                                logo.src = 'https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/icon48.png';
+                                logo.style.width = '32px';
+                                logo.style.height = 'auto';
+                                logo.style.margin = '5px 5px 5px 15px';
 
-        sChild.innerHTML += synopsis;
-        sChild.style.backgroundColor = 'rgba(0,255,0,0.25)';
-        sChild.style.fontSize = '90%';
-        sChild.id = "zen-reader-synopsis";
-        sChild.classList.add('t-body-text');
-        sChild.style.padding = '15px';
-        sChild.style.marginBottom = '50px';
+                                var logoSpan = document.createElement('SPAN');
+                                logoSpan.appendChild(logo);
+                                logoSpan.style.float = 'right';
 
-        // Put it all together
-        articleFirstParag.parentElement.insertBefore(sChild, articleFirstParag);
-    }
+                                var sChild = document.createElement("P");
+
+                                sChild.appendChild(logoSpan);
+
+                                sChild.innerHTML += synopsis;
+                                sChild.style.backgroundColor = 'rgba(0,255,0,0.25)';
+                                sChild.style.fontSize = '90%';
+                                sChild.id = "zen-reader-synopsis";
+                                sChild.classList.add('t-body-text');
+                                sChild.style.padding = '15px';
+                                sChild.style.marginBottom = '50px';
+
+                                // Put it all together
+                                articleFirstParag.parentElement.insertBefore(sChild, articleFirstParag);
+                            }
+    });
 }
 
 Haaretz.prototype._hideAuthors = function() {
@@ -234,115 +244,5 @@ Haaretz.prototype._hideSubjectTitle = function() {
                                 self._revealSubjects(self);
                             }
     });
-};
-
-Haaretz.prototype._computeMainTerms = function() {
-    // Extract all paragraphs, and treat each as a doc, creating a list of such
-    var paragraphs = document.querySelectorAll('section.article__entry>p.t-body-text');
-    if (!paragraphs || paragraphs.length === 0) {
-        return [];
-    }
-    
-    var pArray = Array.prototype.slice.call(paragraphs);
-    var docs = [];
-    var article = '';
-    for (var i = 0; i < pArray.length; i++) {
-        var pT = '';
-        for (var c = 0; c < pArray[i].childNodes.length; c++) {
-            var cN = pArray[i].childNodes[c];
-            pT += ' ' + ((cN !== null && cN.data) || (cN.firstChild !== null && cN.firstChild.data));
-        }
-        
-        docs.push(pT.trim());
-        article += ' ' + pT;
-    }
-    
-    article = article.trim();
-    
-    var dataModel = TFIDF_analyze(docs, hebrewStopWords);
-
-    var terms = TFIDF_tokenize(article);
-    
-    // Stores paragraphs data, per each paragraph
-    var pData = {};
-    
-    for (var j = 0; j < docs.length; j++) {
-        var maxTermScore = -1.0;
-        var maxTermText = '-';
-        for (var k = 0; k < terms.length; k++) {
-            
-            // Skip term which are stop words
-            if (terms[k].length <= 2 || hebrewStopWords.indexOf(terms[k]) >= 0)
-                continue;
-            
-            var tScore = dataModel.tfidf(terms[k], docs[j]);
-            if (tScore > 0.0 && tScore > maxTermScore) {
-                maxTermScore = tScore;
-                maxTermText = terms[k];
-            }
-        }
-
-        // Store paragraph info
-        if (maxTermScore > 0 && docs[j])  {
-            pData[j] = { 'text' : docs[j].trim(),
-                         'max-term-text' : maxTermText.trim(),
-                         'max-term-score': maxTermScore
-                       };
-        }
-    }
-    
-    var mainTerms = {};
-    var synopsis = '';
-    var volume = 0;
-    
-    for (var x = 0; x < Object.keys(pData).length; x++) {
-        var pInfo = pData[x];
-        
-        if (!pInfo || !pInfo["text"] || !pInfo["max-term-text"] || !pInfo["max-term-score"])
-            continue;
-        
-        volume += pInfo["text"].length;
-        
-        var sentences = pInfo["text"].split(/[.]+/);
-        
-        mainTerms[pInfo["max-term-score"]]= pInfo["max-term-text"];
-        
-        var prgT = '';
-        for (var y = 0; y < sentences.length; y++) {
-            var tokens = TFIDF_tokenize(sentences[y]);
-            if (tokens.length >= 20 && sentences[y].indexOf(pInfo["max-term-text"]) !== -1) {
-                prgT += sentences[y] + '. ';
-                break;
-            }
-        }
-        
-        if (prgT.length > 0) {
-            prgT = '<p style="padding:2px 52px 2px 20px;">' + prgT + '</p>';
-            synopsis += prgT;
-        }
-    }
-
-    /* DEPRECATED
-    var sorted = [];
-    for(var key in mainTerms) {
-        sorted[sorted.length] = key;
-    }
-    sorted.sort();
-    sorted.reverse();
-    
-    var termStr = '';
-    for (var t = 0; t < sorted.length && t < 3; t++) {
-        termStr += '<span class="zen-reader-main-term" style="padding:5px;">' + sorted[t] + ':' + mainTerms[sorted[t]] + '</span>';
-    }
-    termStr = '<div>' + termStr + '</div>';
-
-    synopsis = termStr + synopsis;
-    */
-
-    if (volume === 0 || synopsis.length === 0)
-        return null;
-
-    synopsis += '<p style="direction:ltr;position:relative;top:17px;left:-7px;float:left;font-size:11px!important;">&copy; 2015 Synopsis&#8482; by Zen Reader</p>';
-    return synopsis;
 };
 

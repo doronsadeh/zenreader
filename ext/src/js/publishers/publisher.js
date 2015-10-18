@@ -99,6 +99,138 @@ Publisher.prototype = {
 		return false;
 	},
 	
+    ///////////////////////////////////////////////
+    //
+    // Synopsis
+    //
+    //
+    
+    _text : function(self, node, limit) {
+        if (limit < 0)
+            return '';
+
+        if (node && node.data && typeof node.data === 'string')
+            return node.data.trim();
+
+        var t = '';
+        for (var c = 0; c < node.childNodes.length; c++) {
+            t += ' ' + self._text(self, node.childNodes[c], limit-1);
+        }
+
+        return t.trim();
+    },
+        
+    _computeMainTerms : function(self, prgSelector) {
+        // Extract all paragraphs, and treat each as a doc, creating a list of such
+        var paragraphs = document.querySelectorAll(prgSelector);
+        if (!paragraphs || paragraphs.length === 0) {
+            return [];
+        }
+
+        var pArray = Array.prototype.slice.call(paragraphs);
+        var docs = [];
+        var article = '';
+        for (var i = 0; i < pArray.length; i++) {
+            var pT = self._text(self, pArray[i], 3);
+            docs.push(pT.trim());
+            article += ' ' + pT;
+        }
+
+        article = article.trim();
+
+        var dataModel = TFIDF_analyze(docs, hebrewStopWords);
+
+        var terms = TFIDF_tokenize(article);
+
+        // Stores paragraphs data, per each paragraph
+        var pData = {};
+
+        for (var j = 0; j < docs.length; j++) {
+            var maxTermScore = -1.0;
+            var maxTermText = '-';
+            for (var k = 0; k < terms.length; k++) {
+
+                // Skip term which are stop words
+                if (terms[k].length <= 2 || hebrewStopWords.indexOf(terms[k]) >= 0)
+                    continue;
+
+                var tScore = dataModel.tfidf(terms[k], docs[j]);
+                if (tScore > 0.0 && tScore > maxTermScore) {
+                    maxTermScore = tScore;
+                    maxTermText = terms[k];
+                }
+            }
+
+            // Store paragraph info
+            if (maxTermScore > 0 && docs[j])  {
+                pData[j] = { 'text' : docs[j].trim(),
+                             'max-term-text' : maxTermText.trim(),
+                             'max-term-score': maxTermScore
+                           };
+            }
+        }
+
+        var mainTerms = {};
+        var synopsis = '';
+        var volume = 0;
+
+        for (var x = 0; x < Object.keys(pData).length; x++) {
+            var pInfo = pData[x];
+
+            if (!pInfo || !pInfo["text"] || !pInfo["max-term-text"] || !pInfo["max-term-score"])
+                continue;
+
+            volume += pInfo["text"].length;
+
+            var sentences = pInfo["text"].split(/[.]+/);
+
+            mainTerms[pInfo["max-term-score"]]= pInfo["max-term-text"];
+
+            var prgT = '';
+            for (var y = 0; y < sentences.length; y++) {
+                var tokens = TFIDF_tokenize(sentences[y]);
+                if (tokens.length >= 20 && sentences[y].indexOf(pInfo["max-term-text"]) !== -1) {
+                    prgT += sentences[y] + '. ';
+                    break;
+                }
+            }
+
+            if (prgT.length > 0) {
+                prgT = '<p style="padding:2px 52px 2px 20px;">' + prgT + '</p>';
+                synopsis += prgT;
+            }
+        }
+
+        /* DEPRECATED
+        var sorted = [];
+        for(var key in mainTerms) {
+            sorted[sorted.length] = key;
+        }
+        sorted.sort();
+        sorted.reverse();
+
+        var termStr = '';
+        for (var t = 0; t < sorted.length && t < 3; t++) {
+            termStr += '<span class="zen-reader-main-term" style="padding:5px;">' + sorted[t] + ':' + mainTerms[sorted[t]] + '</span>';
+        }
+        termStr = '<div>' + termStr + '</div>';
+
+        synopsis = termStr + synopsis;
+        */
+
+        if (volume === 0 || synopsis.length === 0)
+            return null;
+
+        var synLength = TFIDF_tokenize(synopsis).length;
+        var articleLength = TFIDF_tokenize(article).length;
+        var synRatio = synLength/articleLength;
+        if (articleLength > 0 && synRatio >= 0.5)
+            return null;
+
+        synopsis += '<p style="direction:ltr;position:relative;top:17px;left:-7px;float:left;font-size:11px!important;">&copy; 2015 Synopsis&#8482; by Zen Reader (saved <strong>' + Math.round((1.0-synRatio)*100) + '%</strong> of your reading time)</p>';
+        return synopsis;
+    },
+    
 	///////////////////////////////////////////////
 	//
 	// Articles 
@@ -523,7 +655,16 @@ Publisher.prototype = {
         
         self._updateBadge();
     },
-    
+
+    _removeSynopsis(self) {
+        var synPrgs = document.querySelectorAll('#zen-reader-synopsis');
+        
+        for (var i = 0; i < synPrgs.length; i++) {
+            if (synPrgs[i].parentElement)
+                synPrgs[i].parentElement.removeChild(synPrgs[i]);
+        }
+    },
+
     _hideSubjects(self, subjects) {
         for (var s = 0; s < subjects.length; s++) {
             var subject = subjects[s];
@@ -587,15 +728,6 @@ Publisher.prototype = {
     //
     _hideSubjectTitle : function() {
 		console.error('_hideSubjectTitle must be implemented, cannot use base class');
-    },
-    
-    ///////////////////////////////////////////////
-    //
-    // Summarization
-    //
-    //
-    _computeMainTerms : function() {
-		console.error('_computeMainTerms must be implemented, cannot use base class');
     },
     
 	///////////////////////////////////////////////

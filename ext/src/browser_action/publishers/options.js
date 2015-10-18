@@ -27,7 +27,8 @@ function save_options() {
                                 zenOptions[_publisher]["comments"] = document.getElementById('comments-enable').checked;
 
                                 // Save the current state of the labs features enable checkbox
-                                zenOptions[_publisher]["labs"] = { 'by-subject' : document.getElementById('labs-enable-by-subject').checked };
+                                zenOptions[_publisher]["labs"] = { 'by-subject' : document.getElementById('labs-enable-by-subject').checked,
+                                                                   'summarization': document.getElementById('labs-enable-synopsis').checked};
 
                                 chrome.storage.sync.set({
                                     "zen_options" : zenOptions
@@ -84,6 +85,7 @@ function restore_options() {
                                     document.getElementById('comments-enable').checked = items.zen_options[_publisher]["comments"];
                                     
                                     document.getElementById('labs-enable-by-subject').checked = items.zen_options[_publisher]["labs"]["by-subject"];
+                                    document.getElementById('labs-enable-synopsis').checked = items.zen_options[_publisher]["labs"]["summarization"];
                                 }
 							});
 }
