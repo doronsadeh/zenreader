@@ -1,9 +1,12 @@
 var Publisher = function(tracker) {
 	 
-	 //
-	 // Constructor
-	 //
+    //
+    // Constructor
+    //
 
+    // dd.mm.yyyy identifier
+    this.dateRegEx = XRegExp('[0-9]+\.[0-9]+\.[0-9]+');
+    
  	///////////////////////////////////////////////
 	//
 	// Articles 
@@ -104,7 +107,6 @@ Publisher.prototype = {
     // Synopsis
     //
     //
-    
     _text : function(self, node, limit) {
         if (limit < 0)
             return '';
@@ -117,6 +119,18 @@ Publisher.prototype = {
             t += ' ' + self._text(self, node.childNodes[c], limit-1);
         }
 
+        if (this.dateRegEx.test(t)) {
+            var dates = this.dateRegEx.exec(t);
+            for (var i = 0; i < dates.length; i++) {
+                var date = dates[i];
+                var fixedDate = date.replace(/\./g, '/');
+                t = t.replace(date, fixedDate);
+            }
+            
+            // DEBUG
+            console.log(t);
+        }
+        
         return t.trim();
     },
         
@@ -131,7 +145,7 @@ Publisher.prototype = {
         var docs = [];
         var article = '';
         for (var i = 0; i < pArray.length; i++) {
-            var pT = self._text(self, pArray[i], 3);
+            var pT = self._text(self, pArray[i], 100);
             docs.push(pT.trim());
             article += ' ' + pT;
         }
