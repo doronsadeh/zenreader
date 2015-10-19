@@ -138,7 +138,7 @@ Publisher.prototype = {
         // Extract all paragraphs, and treat each as a doc, creating a list of such
         var paragraphs = document.querySelectorAll(prgSelector);
         if (!paragraphs || paragraphs.length === 0) {
-            return [];
+            return null;
         }
 
         var pArray = Array.prototype.slice.call(paragraphs);

@@ -153,7 +153,7 @@ Haaretz.prototype._synopsis = function() {
 
                             var synopsis = self._computeSynopsis(self, 'section.article__entry>p.t-body-text');
 
-                            if (null !== synopsis) {
+                            if (null !== synopsis ) {
                                 var articleFirstParag = document.querySelector('section.article__entry>p.t-body-text');
 
                                 var logo = document.createElement('IMG');
@@ -182,7 +182,7 @@ Haaretz.prototype._synopsis = function() {
                                 articleFirstParag.parentElement.insertBefore(sChild, articleFirstParag);
                             }
     });
-}
+};
 
 Haaretz.prototype._hideAuthors = function() {
 	if (!this._allowed()) {

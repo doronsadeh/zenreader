@@ -99,6 +99,57 @@ Ynet.prototype.run = function(rerun, force) {
 	if (!rerun) {
 		window.setInterval(this._hideTalkbacks, 1000);
 	}
+    
+    this._synopsis();
+};
+
+Ynet.prototype._synopsis = function() {
+    chrome.storage.sync.get('zen_options',
+						  function(items) {
+        
+                            var self = publisherInstances["Ynet"];
+        
+                            if (!items || !items.zen_options["Ynet"]["labs"]["summarization"]) {
+                                self._removeSynopsis(self);
+                                return;
+                            }
+
+                            var existingSyn = document.getElementById('zen-reader-synopsis');
+                            if (existingSyn) {
+                                document.removeChild(existingSyn);
+                            }
+
+                            var synopsis = self._computeSynopsis(self, '#main>div.area.content>div>div.block.B4.spacer>div.block.B4>div.block.B3>div.block.B3>div.element.B3.ghcite>div>div[class^="text"]>span>p');
+
+                            if (null !== synopsis) {
+                                var articleFirstParag = document.querySelector('#main>div.area.content>div>div.block.B4.spacer>div.block.B4>div.block.B3>div.block.B3>div.element.B3.ghcite>div>div[class^="text"]>span');
+
+                                var logo = document.createElement('IMG');
+                                logo.src = 'https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/icon48.png';
+                                logo.style.width = '32px';
+                                logo.style.height = 'auto';
+                                logo.style.margin = '5px 5px 5px 15px';
+
+                                var logoSpan = document.createElement('SPAN');
+                                logoSpan.appendChild(logo);
+                                logoSpan.style.float = 'right';
+
+                                var sChild = document.createElement("P");
+
+                                sChild.appendChild(logoSpan);
+
+                                sChild.innerHTML += synopsis;
+                                sChild.style.backgroundColor = 'rgba(0,255,0,0.25)';
+                                sChild.style.fontSize = '90%';
+                                sChild.id = "zen-reader-synopsis";
+                                sChild.classList.add('t-body-text');
+                                sChild.style.padding = '15px';
+                                sChild.style.marginBottom = '50px';
+
+                                // Put it all together
+                                articleFirstParag.parentElement.insertBefore(sChild, articleFirstParag);
+                            }
+    });
 };
 
 Ynet.prototype._hideAuthors = function() {

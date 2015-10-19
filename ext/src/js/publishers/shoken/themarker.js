@@ -141,7 +141,7 @@ TheMarker.prototype._synopsis = function() {
                                 articleFirstParag.parentElement.insertBefore(sChild, articleFirstParag);
                             }
     });
-}
+};
 
 TheMarker.prototype._hideAuthors = function() {
 	if (!this._allowed()) {
