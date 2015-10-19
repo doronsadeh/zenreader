@@ -217,8 +217,9 @@ Publisher.prototype = {
                 var tokens = TFIDF_tokenize(sentences[selectedSentenceIndex].trim());
                 if (tokens.length > 0) {
                     while (selectedSentenceIndex > 0 && 
-                           (hebrewStopWords.indexOf(tokens[0]) >= 0 || 
-                            tokens[0].indexOf('ה') === 0 )          ||
+                            hebrewStopWords.indexOf(tokens[0]) >= 0 || 
+                            tokens[0].indexOf('ה') === 0            ||
+                            tokens[0].indexOf('ו') === 0            ||
                             tokens[0].trim().length <= 2) {
                         // Prepend the previous sentence
                         prgT = sentences[selectedSentenceIndex - 1] + '. ' + prgT;
@@ -232,6 +233,8 @@ Publisher.prototype = {
             }
             
             if (prgT.length > 0) {
+                prgT = prgT.replace(/undefined\./g, '');
+                prgT = prgT.replace(/undefined/g, '');
                 prgT = '<p style="padding:2px 52px 2px 20px;">' + prgT + '</p>';
                 synopsis += prgT;
             }
