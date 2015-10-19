@@ -151,7 +151,7 @@ Haaretz.prototype._synopsis = function() {
                                 document.removeChild(existingSyn);
                             }
 
-                            var synopsis = self._computeMainTerms(self, 'section.article__entry>p.t-body-text');
+                            var synopsis = self._computeSynopsis(self, 'section.article__entry>p.t-body-text');
 
                             if (null !== synopsis) {
                                 var articleFirstParag = document.querySelector('section.article__entry>p.t-body-text');

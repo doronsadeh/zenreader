@@ -134,7 +134,7 @@ Publisher.prototype = {
         return t.trim();
     },
         
-    _computeMainTerms : function(self, prgSelector) {
+    _computeSynopsis : function(self, prgSelector) {
         // Extract all paragraphs, and treat each as a doc, creating a list of such
         var paragraphs = document.querySelectorAll(prgSelector);
         if (!paragraphs || paragraphs.length === 0) {
@@ -201,14 +201,36 @@ Publisher.prototype = {
             mainTerms[pInfo["max-term-score"]]= pInfo["max-term-text"];
 
             var prgT = '';
+            var selectedSentenceIndex = -1;
             for (var y = 0; y < sentences.length; y++) {
                 var tokens = TFIDF_tokenize(sentences[y]);
                 if (tokens.length >= 20 && sentences[y].indexOf(pInfo["max-term-text"]) !== -1) {
                     prgT += sentences[y] + '. ';
+                    selectedSentenceIndex = y;
                     break;
                 }
             }
 
+            prgT = prgT.trim();
+            
+            if (selectedSentenceIndex > 0) {
+                var tokens = TFIDF_tokenize(sentences[selectedSentenceIndex].trim());
+                if (tokens.length > 0) {
+                    while (selectedSentenceIndex > 0 && 
+                           (hebrewStopWords.indexOf(tokens[0]) >= 0 || 
+                            tokens[0].indexOf('ה') === 0 )          ||
+                            tokens[0].trim().length <= 2) {
+                        // Prepend the previous sentence
+                        prgT = sentences[selectedSentenceIndex - 1] + '. ' + prgT;
+                        prgT = prgT.trim();
+                        
+                        // SEt the tokens to the new text, and step back the sentences index
+                        tokens = TFIDF_tokenize(prgT);
+                        selectedSentenceIndex -= 1;
+                    }
+                }
+            }
+            
             if (prgT.length > 0) {
                 prgT = '<p style="padding:2px 52px 2px 20px;">' + prgT + '</p>';
                 synopsis += prgT;
