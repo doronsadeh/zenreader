@@ -92,6 +92,15 @@ var Publisher = function(tracker) {
         twitterLib.innerHTML = 'window.twttr = (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0],t = window.twttr || {};if (d.getElementById(id)) return t;js = d.createElement(s);js.id = id;js.src = "https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, "script", "twitter-wjs"));';
         document.body.appendChild(twitterLib);
     }
+    
+    /*
+    // Facebook libs validate/install
+    if (!window.FB.XFBML) {
+        var facebookLib = document.createElement('SCRIPT');
+        facebookLib.innerHTML = "<div id='fb-root'></div><script>(function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = '//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5';fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));</script>";    
+        document.body.appendChild(facebookLib);
+    }
+    */
 };	
 
 Publisher.prototype = {
@@ -204,6 +213,8 @@ Publisher.prototype = {
         var mainTerms = {};
         var synopsis = '';
         var volume = 0;
+        
+        var synSentences = [];
 
         for (var x = 0; x < Object.keys(pData).length; x++) {
             var pInfo = pData[x];
@@ -252,6 +263,10 @@ Publisher.prototype = {
             if (prgT.length > 0) {
                 prgT = prgT.replace(/undefined\./g, '');
                 prgT = prgT.replace(/undefined/g, '');
+                
+                // Save for social publishing 
+                synSentences.push(prgT);
+                
                 prgT = '<p style="padding:2px 52px 2px 20px;">' + prgT + '</p>';
                 synopsis += prgT;
             }
@@ -260,8 +275,11 @@ Publisher.prototype = {
         if (volume === 0 || synopsis.length === 0)
             return null;
 
+        // TODO this includes the meta HTML tags, and should not
         var synLength = TFIDF_tokenize(synopsis).length;
+        
         var articleLength = TFIDF_tokenize(article).length;
+        
         var synRatio = synLength/articleLength;
         if (articleLength > 0 && synRatio >= 0.5)
             return null;
@@ -269,12 +287,13 @@ Publisher.prototype = {
         // Reinstate dots
         synopsis = XRegExp.replace(synopsis, this.dotPRegEx, '\.', 'all');
         
-        // Add a twitter button
+        // Add a twitter button, and text
         var twittrButton = "<div style='padding:15px 52px 2px 20px;'>" +
-                            "<a href='https://twitter.com/share' class='twitter-share-button' data-via='zen_reader at bit.ly/1NlVjvl'>Tweet</a>" + 
-                            "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>" +
-                            "<script>twttr.widgets.load();</script>" +
+                              '<a href="https://twitter.com/share" class="twitter-share-button" data-via="zen_reader">Tweet</a>' + 
+                              "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>" +
+                              "<script>twttr.widgets.load();</script>" +
                           "</div>";
+        
         
         synopsis += twittrButton;
 
