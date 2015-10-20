@@ -267,6 +267,14 @@ Publisher.prototype = {
             return null;
 
         synopsis += '<p style="direction:ltr;position:relative;top:17px;left:-7px;float:left;font-size:11px!important;">&copy; 2015 Zynopsis&#8482; by Zen Reader (saved <strong>' + Math.round((1.0-synRatio)*100) + '%</strong> of your reading time)</p>';
+        
+        var TWT = "<div style='padding:15px 52px 2px 20px;'>" +
+                  "<a href='https://twitter.com/share' class='twitter-share-button' data-via='zen_reader at bit.ly/1NlVjvl'>Tweet</a>" + 
+                  "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>" +
+                  "</div>";
+        
+        synopsis += TWT;
+        
         return synopsis;
     },
     
