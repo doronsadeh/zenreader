@@ -4,8 +4,12 @@ var Publisher = function(tracker) {
     // Constructor
     //
 
-    // dd.mm.yyyy identifier
+    this.dotPlaceholder = '_-D-_';
+    this.dotPRegEx = XRegExp(this.dotPlaceholder);
+    
     this.dateRegEx = XRegExp('[0-9]+\.[0-9]+\.[0-9]+');
+    this.numberRegEx = XRegExp('[0-9]+\.[0-9]+%?');
+    this.shortNumberRegEx = XRegExp('[0-9]+%');
     
  	///////////////////////////////////////////////
 	//
@@ -107,6 +111,20 @@ Publisher.prototype = {
     // Synopsis
     //
     //
+    
+    _encodeDots : function(t, regex) {
+        if (regex.test(t)) {
+            var strs = regex.exec(t);
+            for (var i = 0; i < strs.length; i++) {
+                var s = strs[i];
+                var fixedS = s.replace(/\./g, this.dotPlaceholder);
+                t = t.replace(s, fixedS);
+            }
+        }
+        
+        return t;
+    },
+    
     _text : function(self, node, limit) {
         if (limit < 0)
             return '';
@@ -119,18 +137,10 @@ Publisher.prototype = {
             t += ' ' + self._text(self, node.childNodes[c], limit-1);
         }
 
-        if (this.dateRegEx.test(t)) {
-            var dates = this.dateRegEx.exec(t);
-            for (var i = 0; i < dates.length; i++) {
-                var date = dates[i];
-                var fixedDate = date.replace(/\./g, '/');
-                t = t.replace(date, fixedDate);
-            }
-            
-            // DEBUG
-            console.log(t);
-        }
-        
+        t = this._encodeDots(t, this.dateRegEx);
+        t = this._encodeDots(t, this.numberRegEx);
+        t = this._encodeDots(t, this.shortNumberRegEx);
+
         return t.trim();
     },
         
@@ -266,6 +276,9 @@ Publisher.prototype = {
         if (articleLength > 0 && synRatio >= 0.5)
             return null;
 
+        // Reinstate dots
+        synopsis = XRegExp.replace(synopsis, this.dotPRegEx, '\.', 'all');
+        
         synopsis += '<p style="direction:ltr;position:relative;top:17px;left:-7px;float:left;font-size:11px!important;">&copy; 2015 Zynopsis&#8482; by Zen Reader (saved <strong>' + Math.round((1.0-synRatio)*100) + '%</strong> of your reading time)</p>';
         
         var TWT = "<div style='padding:15px 52px 2px 20px;'>" +
