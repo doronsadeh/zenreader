@@ -85,6 +85,13 @@ var Publisher = function(tracker) {
 								"דביל" : 1,
 								"מפגר" : 1,
 								"חחח" : 1};
+    
+    // Twitter libs verification/installation
+    if (!window.twttr) {
+        var twitterLib = document.createElement('SCRIPT');
+        twitterLib.innerHTML = 'window.twttr = (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0],t = window.twttr || {};if (d.getElementById(id)) return t;js = d.createElement(s);js.id = id;js.src = "https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, "script", "twitter-wjs"));';
+        document.body.appendChild(twitterLib);
+    }
 };	
 
 Publisher.prototype = {
@@ -250,23 +257,6 @@ Publisher.prototype = {
             }
         }
 
-        /* DEPRECATED
-        var sorted = [];
-        for(var key in mainTerms) {
-            sorted[sorted.length] = key;
-        }
-        sorted.sort();
-        sorted.reverse();
-
-        var termStr = '';
-        for (var t = 0; t < sorted.length && t < 3; t++) {
-            termStr += '<span class="zen-reader-main-term" style="padding:5px;">' + sorted[t] + ':' + mainTerms[sorted[t]] + '</span>';
-        }
-        termStr = '<div>' + termStr + '</div>';
-
-        synopsis = termStr + synopsis;
-        */
-
         if (volume === 0 || synopsis.length === 0)
             return null;
 
@@ -279,15 +269,18 @@ Publisher.prototype = {
         // Reinstate dots
         synopsis = XRegExp.replace(synopsis, this.dotPRegEx, '\.', 'all');
         
+        // Add a twitter button
+        var twittrButton = "<div style='padding:15px 52px 2px 20px;'>" +
+                            "<a href='https://twitter.com/share' class='twitter-share-button' data-via='zen_reader at bit.ly/1NlVjvl'>Tweet</a>" + 
+                            "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>" +
+                            "<script>twttr.widgets.load();</script>" +
+                          "</div>";
+        
+        synopsis += twittrButton;
+
+        // Add signature and savings figure
         synopsis += '<p style="direction:ltr;position:relative;top:17px;left:-7px;float:left;font-size:11px!important;">&copy; 2015 Zynopsis&#8482; by Zen Reader (saved <strong>' + Math.round((1.0-synRatio)*100) + '%</strong> of your reading time)</p>';
-        
-        var TWT = "<div style='padding:15px 52px 2px 20px;'>" +
-                  "<a href='https://twitter.com/share' class='twitter-share-button' data-via='zen_reader at bit.ly/1NlVjvl'>Tweet</a>" + 
-                  "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>" +
-                  "</div>";
-        
-        synopsis += TWT;
-        
+                
         return synopsis;
     },
     
