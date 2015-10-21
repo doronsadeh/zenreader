@@ -77,10 +77,10 @@ function applyTrackers(_anonID) {
 	console.log('applying trackers with AID: ', _anonID);
 	
 	// Send initial event 
-	tracker.sendEvent('panIDPing_v135', _anonID,  Date.now());
+	tracker.sendEvent('panIDPing_v136', _anonID,  Date.now());
 
 	// Ping GA every half an hour, with anonymized random ID to show how many active users we really have
-	window.setInterval(function() {tracker.sendEvent('panIDPing_v135', _anonID,  Date.now());},  1000*60*30);
+	window.setInterval(function() {tracker.sendEvent('panIDPing_v136', _anonID,  Date.now());},  1000*60*30);
 }
 
 function startTracker() {
@@ -95,7 +95,7 @@ function startTracker() {
 								}
 								else {
 									// Else, tell me, cause this is a bug
-									tracker.sendEvent('panIDPing_v135', 'AID regenerated',  Date.now());
+									tracker.sendEvent('panIDPing_v136', 'AID regenerated',  Date.now());
 									
 									// But, don't leave it empty. Set it. And start trackers
 									anonID = 'aid_' + Math.random();
