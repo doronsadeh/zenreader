@@ -85,16 +85,6 @@ var Publisher = function(tracker) {
 								"דביל" : 1,
 								"מפגר" : 1,
 								"חחח" : 1};
-    
-    // Twitter libs verification/installation
-    if (!window.twttr) {
-        var twitterLib = document.createElement('SCRIPT');
-        twitterLib.innerHTML = 'window.twttr = (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0],t = window.twttr || {};if (d.getElementById(id)) return t;js = d.createElement(s);js.id = id;js.src = "https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, "script", "twitter-wjs"));';
-        document.body.appendChild(twitterLib);
-    }
-    else {
-        window.twttr.widgets.load();
-    }
 };	
 
 Publisher.prototype = {
@@ -295,14 +285,12 @@ Publisher.prototype = {
         
         var twitterText = baseText.substring(0,97) + "...";
         twitterText = twitterText.replace(/"/g,"'");
-        var twittrButton = "<span style='float:left;left:-2%;'>" +
+        var twitterButton = "<span style='float:left;left:-2%;'>" +
                               '<a href="https://twitter.com/share" class="twitter-share-button" data-via="zen_reader" data-text="' + twitterText + '" lang="en">Tweet</a>' + 
-                              "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>" +
-                              "<script>window.twttr.widgets.load();</script>" +
+                              "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');twttr.widgets.load();</script>" +
                            "</span>";
         
-        
-        synopsis += twittrButton;
+        synopsis += twitterButton;
 
         // Add signature and savings figure
         synopsis += '<span style="direction:ltr;font-size: 11px!important;float:right;right:-2%;">&copy; 2015 Zynopsis&#8482; by Zen Reader (saved <strong>' + Math.round((1.0-synRatio)*100) + '%</strong> of your reading time)</span>';
