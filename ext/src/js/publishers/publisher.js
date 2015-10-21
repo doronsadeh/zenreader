@@ -136,8 +136,22 @@ Publisher.prototype = {
         if (limit < 0)
             return '';
 
+        // This MUST be first, as the text node is not an Element, and would 
+        // raise an exception, BUT we want the text and go back, so we must put this here
+        // and let the following code filter out all non elements, and/or non-viewable ones
         if (node && node.data && typeof node.data === 'string')
             return node.data.trim();
+
+        // Skip invisible elements
+        try {
+            var nodeComputedStyle = window.getComputedStyle(node);
+            if (nodeComputedStyle.display === 'none' || nodeComputedStyle.visibility === 'hidden')
+                return '';
+        }
+        catch (e) {
+            // Not a DOM element
+            return '';
+        }
 
         var t = '';
         for (var c = 0; c < node.childNodes.length; c++) {
