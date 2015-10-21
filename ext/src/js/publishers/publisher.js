@@ -266,8 +266,10 @@ Publisher.prototype = {
         if (volume === 0 || synopsis.length === 0)
             return null;
 
-        // TODO this includes the meta HTML tags, and should not
-        var synLength = TFIDF_tokenize(synopsis).length;
+        var synLength = 0;
+        for (var k = 0; k < synSentences.length; k++) {
+            synLength += TFIDF_tokenize(synSentences[k] || '').length || 0;
+        }
         
         var articleLength = TFIDF_tokenize(article).length;
         
@@ -278,19 +280,23 @@ Publisher.prototype = {
         // Reinstate dots
         synopsis = XRegExp.replace(synopsis, this.dotPRegEx, '\.', 'all');
         
+        synopsis += '<div style="    height: 20px;position: relative;top:40px;">';
+        
         // Add a twitter button, and text
-        var twittrButton = "<div style='padding:15px 52px 2px 20px;'>" +
-                              '<a href="https://twitter.com/share" class="twitter-share-button" data-via="zen_reader">Tweet</a>' + 
+        var twittrButton = "<span style='float: left;left: -2%;'>" +
+                              '<a href="https://twitter.com/share" class="twitter-share-button" data-via="zen_reader" lang="en">Tweet</a>' + 
                               "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>" +
                               "<script>twttr.widgets.load();</script>" +
-                          "</div>";
+                           "</span>";
         
         
         synopsis += twittrButton;
 
         // Add signature and savings figure
-        synopsis += '<p style="direction:ltr;position:relative;top:17px;left:-7px;float:left;font-size:11px!important;">&copy; 2015 Zynopsis&#8482; by Zen Reader (saved <strong>' + Math.round((1.0-synRatio)*100) + '%</strong> of your reading time)</p>';
+        synopsis += '<span style="direction:ltr;font-size: 11px!important;float:right;right:-2%;">&copy; 2015 Zynopsis&#8482; by Zen Reader (saved <strong>' + Math.round((1.0-synRatio)*100) + '%</strong> of your reading time)</span>';
                 
+        synopsis += '</div>';
+        
         return synopsis;
     },
     
