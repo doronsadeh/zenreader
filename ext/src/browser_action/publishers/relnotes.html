@@ -2,39 +2,59 @@
     <head>
         <style>
             body {
+                font-family: monospace;
                 background-image: "https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/icon48.png";
             }
             .release-item {
                 
             }
             .version {
+                padding: 15px 0px 0px 0px;
+            }
+            div.version>h2 {
+                margin: 0px;
+                padding: 0px;
+            }
+            div.notes>ul {
+                margin: 0px;
+                padding: 0px;
             }
             .notes {
                 font-size:18px;
             }
             .notes>ul>li {
-                padding-bottom: 3px;
+                padding: 0px 0px 0px 7px;
+                background-color: #EEE;
+                margin: 3px;
+                font-size: 14px;
             }
         </style>
     </head>
 	<body>
     <h1>Zen Reader Release Notes</h1>
 	<div class='release-item'>
+        <div class='version'><h2>Release 1.3.5 (Highlight: Social Sharing)</h2></div>
+            <div class='notes'>
+                <ul>
+                    <li>Added a Tweet button to article synopsis</li>
+                    <li>Bug fixes: summaries with date, and numerical patterns are now better handled</li>
+                </ul>
+            </div>
         <div class='version'><h2>Release 1.3.4 (Highlight: Ynet Zynopsis Support)</h2></div>
-        <div class='notes'>
-            <ul>
-                <li>YNET now supports article's summarization (Zynopsis)</li>
-                <li>Better, more readable synopsis, and some bug fixes</li>
-                <li>YNET hiding bug fixes</li>
-            </ul>
-        </div>
+            <div class='notes'>
+                <ul>
+                    <li>YNET now supports article's summarization (Zynopsis)</li>
+                    <li>Better, more readable synopsis, and some bug fixes</li>
+                    <li>YNET hiding bug fixes</li>
+                </ul>
+            </div>
         <div class='version'><h2>Release 1.3.3 (Highlight: Article's Automated Summarization)</h2></div>
-        <div class='notes'>
-            <ul>
-                <li>Automatic articles' summarization</li>
-                <li>YNET terror articles hiding bug fixes</li>
-                <li>YNET generic article hiding bug fixes</li>
-            </ul>
-        </div>
+            <div class='notes'>
+                <ul>
+                    <li>Automatic articles' summarization</li>
+                    <li>YNET terror articles hiding bug fixes</li>
+                    <li>YNET generic article hiding bug fixes</li>
+                </ul>
+            </div>
 	</body>
 </html>
