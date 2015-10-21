@@ -273,7 +273,7 @@ Publisher.prototype = {
         // Reinstate dots
         synopsis = XRegExp.replace(synopsis, this.dotPRegEx, '\.', 'all');
         
-        synopsis += '<div style="height:20px;position:relative;top:40px;">';
+        synopsis += '<div style="    height: 20px;position: relative;top:40px;">';
         
         // Add a twitter button, and text
         var baseText = '';
