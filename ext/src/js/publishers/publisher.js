@@ -327,7 +327,7 @@ Publisher.prototype = {
                               "<script>twttr.widgets.load();</script>" +
                            "</span>";
         
-        var fbButton = "<div style='float: left;margin-right: 10px; margin-left: -10px; margin-top: -2.0px;' onclick=\"FB.ui({method: 'feed',link: '" + window.location.href + "', caption: 'via @" + window.location.host + "', description: 'Get Zen Reader at bit.ly/1NlVjvl'}, function(response){});\"><img src='https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/fb-recom.png'></img></div>";
+        var fbButton = "<div style='float: left;margin-right: 10px; margin-left: -10px; margin-top: -2.0px;' onclick=\"FB.ui({method: 'feed',link: '" + window.location.href + "', caption: '@" + window.location.host + "', description: 'via Zen Reader at bit.ly/1NlVjvl'}, function(response){});\"><img src='https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/fb-recom.png'></img></div>";
         
         synopsis += fbButton + twittrButton;
 
