@@ -103,7 +103,7 @@ var Publisher = function(tracker) {
                 '          }(document, \'script\', \'facebook-jssdk\'));</script>';
     
     // If not yet there, stick it first thing after body tag
-    if (!window.FB) {
+    if (!document.getElementById('fb-root') && !window.FB) {
         document.body.innerHTML = fb_script + document.body.innerHTML;
     }
     
