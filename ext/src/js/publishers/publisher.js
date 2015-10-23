@@ -92,6 +92,21 @@ var Publisher = function(tracker) {
         twitterLib.innerHTML = 'window.twttr = (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0],t = window.twttr || {};if (d.getElementById(id)) return t;js = d.createElement(s);js.id = id;js.src = "https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, "script", "twitter-wjs"));';
         document.body.appendChild(twitterLib);
     }
+    
+    fb_script = '<div id="fb-root"></div>' +
+                '<script>(function(d, s, id) {' +
+                '           var js, fjs = d.getElementsByTagName(s)[0];' +
+                '           if (d.getElementById(id)) return;'           +   
+                '           js = d.createElement(s); js.id = id;'        +   
+                '           js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";' +
+                '           fjs.parentNode.insertBefore(js, fjs);'       +
+                '          }(document, \'script\', \'facebook-jssdk\'));</script>';
+    
+    // If not yet there, stick it first thing after body tag
+    if (!window.FB) {
+        document.body.innerHTML = fb_script + document.body.innerHTML;
+    }
+    
 };	
 
 Publisher.prototype = {
@@ -312,8 +327,9 @@ Publisher.prototype = {
                               "<script>twttr.widgets.load();</script>" +
                            "</span>";
         
+        var fbButton = "<div style='float: left;margin-right: 10px; margin-left: -10px; margin-top: -2.0px;' onclick=\"FB.ui({method: 'feed',link: '" + window.location.href + "', caption: 'via @" + window.location.host + "', description: 'Get Zen Reader at bit.ly/1NlVjvl'}, function(response){});\"><img src='https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/fb-recom.png'></img></div>";
         
-        synopsis += twittrButton;
+        synopsis += fbButton + twittrButton;
 
         // Add signature and savings figure
         synopsis += '<span style="direction:ltr;font-size: 11px!important;float:right;right:-2%;">&copy; 2015 Zynopsis&#8482; by Zen Reader (saved <strong>' + Math.round((1.0-synRatio)*100) + '%</strong> of your reading time)</span>';

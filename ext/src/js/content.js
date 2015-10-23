@@ -5,7 +5,6 @@ var publisherInstances = {};
 
 	var tracker = null;
 	
-	
 	function req_new_author() {
 		if (!document.getElementById('mailto-proxy')) {
 			var a = document.createElement('a');
