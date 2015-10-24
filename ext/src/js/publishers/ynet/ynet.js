@@ -138,8 +138,10 @@ Ynet.prototype._synopsis = function() {
                             var synopsis = self._computeSynopsis(self, '#main>div.area.content>div>div.block.B4.spacer>div.block.B4>div.block.B3>div.block.B3>div.element.B3.ghcite>div>div[class^="text"]>span>p');
 
                             var bgColor = 'rgba(0,255,0,0.25)';
+                            var marginB = '75px';
                             if (null === synopsis) {
                                 bgColor = 'rgba(255,0,0,0.25)';
+                                marginB = '10px';
                                 synopsis = "<div>&#1492;&#1502;&#1506;&#1512;&#1499;&#1514; &#1492;&#1495;&#1500;&#1497;&#1496;&#1492; &#1500;&#1488; &#1500;&#1492;&#1510;&#1497;&#1490; &#1505;&#1497;&#1499;&#1493;&#1501; &#1500;&#1502;&#1488;&#1502;&#1512; &#1494;&#1492;. &#1497;&#1514;&#1499;&#1503; &#1513;&#1492;&#1502;&#1488;&#1502;&#1512; &#1511;&#1510;&#1512; &#1493;&#1502;&#1502;&#1510;&#1492;, &#1488;&#1493; &#1513;&#1500;&#1488; &#1504;&#1497;&#1514;&#1503; &#1492;&#1497;&#1492; &#1500;&#1492;&#1508;&#1497;&#1511; &#1505;&#1497;&#1499;&#1493;&#1501; &#1488;&#1497;&#1499;&#1493;&#1514;&#1497; &#1491;&#1497;&#1493;.</div>";
                             }
         
@@ -163,7 +165,7 @@ Ynet.prototype._synopsis = function() {
                             sChild.id = "zen-reader-synopsis";
                             sChild.classList.add('t-body-text');
                             sChild.style.padding = '15px';
-                            sChild.style.marginBottom = '75px';
+                            sChild.style.marginBottom = marginB;
 
                             // Put it all together
                             pendingDiv.removeChild(document.getElementById('zen-review-pending-GIF'));
