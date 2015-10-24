@@ -163,7 +163,7 @@ Ynet.prototype._synopsis = function() {
                             sChild.id = "zen-reader-synopsis";
                             sChild.classList.add('t-body-text');
                             sChild.style.padding = '15px';
-                            sChild.style.marginBottom = '50px';
+                            sChild.style.marginBottom = '75px';
 
                             // Put it all together
                             pendingDiv.removeChild(document.getElementById('zen-review-pending-GIF'));
