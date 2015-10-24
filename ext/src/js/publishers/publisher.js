@@ -412,7 +412,6 @@ Publisher.prototype = {
             
             var logo = document.createElement('IMG');
             logo.src = 'https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/icon48.png';
-            // logo.style.width = '64px';
             logo.style.height = 'auto';
             
             var logoDiv = document.createElement('DIV');
