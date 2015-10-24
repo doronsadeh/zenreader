@@ -85,28 +85,6 @@ var Publisher = function(tracker) {
 								"דביל" : 1,
 								"מפגר" : 1,
 								"חחח" : 1};
-    
-    // Twitter libs verification/installation
-    if (!window.twttr) {
-        var twitterLib = document.createElement('SCRIPT');
-        twitterLib.innerHTML = 'window.twttr = (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0],t = window.twttr || {};if (d.getElementById(id)) return t;js = d.createElement(s);js.id = id;js.src = "https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, "script", "twitter-wjs"));';
-        document.body.appendChild(twitterLib);
-    }
-    
-    fb_script = '<div id="fb-root"></div>' +
-                '<script>(function(d, s, id) {' +
-                '           var js, fjs = d.getElementsByTagName(s)[0];' +
-                '           if (d.getElementById(id)) return;'           +   
-                '           js = d.createElement(s); js.id = id;'        +   
-                '           js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";' +
-                '           fjs.parentNode.insertBefore(js, fjs);'       +
-                '          }(document, \'script\', \'facebook-jssdk\'));</script>';
-    
-    // If not yet there, stick it first thing after body tag
-    if (!document.getElementById('fb-root') && !window.FB) {
-        document.body.innerHTML = fb_script + document.body.innerHTML;
-    }
-    
 };	
 
 Publisher.prototype = {
@@ -310,6 +288,25 @@ Publisher.prototype = {
         synopsis = XRegExp.replace(synopsis, this.dotPRegEx, '\.', 'all');
         
         synopsis += '<div style="height:20px;position:relative;top:40px;">';
+        
+        if (!window.twttr) {
+            synopsis += '<script>window.twttr = (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0],t = window.twttr || {};if (d.getElementById(id)) return t;js = d.createElement(s);js.id = id;js.src = "https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, "script", "twitter-wjs"));</script>';
+        }
+
+        // If not yet there, stick it first thing after body tag
+        if (!document.getElementById('fb-root') && !window.FB) {
+            fb_script = '<div id="fb-root"></div>' +
+                        '<script>(function(d, s, id) {' +
+                        '           var js, fjs = d.getElementsByTagName(s)[0];' +
+                        '           if (d.getElementById(id)) return;'           +   
+                        '           js = d.createElement(s); js.id = id;'        +   
+                        '           js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";' +
+                        '           fjs.parentNode.insertBefore(js, fjs);'       +
+                        '          }(document, \'script\', \'facebook-jssdk\'));</script>';
+
+            synopsis += fb_script;
+        }
+
         
         // Add a twitter button, and text
         var baseText = '';
