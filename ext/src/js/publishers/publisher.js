@@ -289,25 +289,6 @@ Publisher.prototype = {
         
         synopsis += '<div style="height:20px;position:relative;top:40px;">';
         
-        if (!window.twttr) {
-            synopsis += '<script>window.twttr = (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0],t = window.twttr || {};if (d.getElementById(id)) return t;js = d.createElement(s);js.id = id;js.src = "https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, "script", "twitter-wjs"));</script>';
-        }
-
-        // If not yet there, stick it first thing after body tag
-        if (!document.getElementById('fb-root') && !window.FB) {
-            fb_script = '<div id="fb-root"></div>' +
-                        '<script>(function(d, s, id) {' +
-                        '           var js, fjs = d.getElementsByTagName(s)[0];' +
-                        '           if (d.getElementById(id)) return;'           +   
-                        '           js = d.createElement(s); js.id = id;'        +   
-                        '           js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";' +
-                        '           fjs.parentNode.insertBefore(js, fjs);'       +
-                        '          }(document, \'script\', \'facebook-jssdk\'));</script>';
-
-            synopsis += fb_script;
-        }
-
-        
         // Add a twitter button, and text
         var baseText = '';
         for (var b = 0; b < synSentences.length; b++) {
@@ -332,8 +313,37 @@ Publisher.prototype = {
         synopsis += '<span style="direction:ltr;font-size: 11px!important;float:right;right:-2%;">&copy; 2015 Zynopsis&#8482; by Zen Reader (saved <strong>' + Math.round((1.0-synRatio)*100) + '%</strong> of your reading time)</span>';
                 
         synopsis += '</div>';
+
+        // Add those just before sticking the social buttons 
+        self._addSocialLibs();
         
         return synopsis;
+    },
+    
+    _addSocialLibs : function() {
+        if (!window.twttr) {
+            var twitter_script = document.createElement('SCRIPT');
+            twitter_script.innerHTML = 'window.twttr = (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0],t = window.twttr || {};if (d.getElementById(id)) return t;js = d.createElement(s);js.id = id;js.src = "https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, "script", "twitter-wjs"));';
+            document.body.appendChild(twitter_script);
+        }
+
+        // If not yet there, stick it first thing after body tag
+        if (!document.getElementById('fb-root') && !window.FB) {
+            var fb_root = document.createElement('DIV');
+            fb_root.id = 'fb_root';
+            
+            var fb_script = document.createElement('SCRIPT');
+            fb_script.innerHTML = '(function(d, s, id) {' +
+                        '           var js, fjs = d.getElementsByTagName(s)[0];' +
+                        '           if (d.getElementById(id)) return;'           +   
+                        '           js = d.createElement(s); js.id = id;'        +   
+                        '           js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";' +
+                        '           fjs.parentNode.insertBefore(js, fjs);'       +
+                        '          }(document, \'script\', \'facebook-jssdk\'));';
+            
+            document.body.appendChild(fb_root);
+            document.body.appendChild(fb_script);
+        }
     },
     
 	///////////////////////////////////////////////
