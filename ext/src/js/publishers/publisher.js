@@ -299,13 +299,13 @@ Publisher.prototype = {
         
         var twitterText = baseText.substring(0,97) + "...";
         twitterText = twitterText.replace(/"/g,"'");
-        var twittrButton = "<span style='float:left;left:-2%;'>" +
+        var twittrButton = "<span style='float:left;left:-2%;margin-bottom:10px;'>" +
                               '<a href="https://twitter.com/share" class="twitter-share-button" data-via="zen_reader" data-text="' + twitterText + '" lang="en">Tweet</a>' + 
                               "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>" +
                               "<script>twttr.widgets.load();</script>" +
                            "</span>";
         
-        var fbButton = "<div style='float: left;margin-right: 10px; margin-left: -10px; margin-top: -2.0px;' onclick=\"FB.ui({method: 'feed',link: '" + window.location.href + "', caption: '@" + window.location.host + "', description: 'via Zen Reader @ bit.ly/1NlVjvl'}, function(response){});\"><img src='https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/fb-recom.png'></img></div>";
+        var fbButton = "<div style='float: left;margin-right: 10px; margin-left: -10px; margin-top: -2.0px; margin-bottom:10px;' onclick=\"FB.ui({method: 'feed',link: '" + window.location.href + "', caption: '@" + window.location.host + "', description: 'via Zen Reader @ bit.ly/1NlVjvl'}, function(response){});\"><img src='https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/fb-recom.png'></img></div>";
         
         synopsis += fbButton + twittrButton;
 
