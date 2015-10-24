@@ -124,12 +124,15 @@ Ynet.prototype._synopsis = function() {
                             // Place visual queue while computing synopsis
                             var pendingDiv = document.createElement('DIV');
                             pendingDiv.id = 'zen-pending-review';
+                            pendingDiv.style.width = '100%';
+                            pendingDiv.style.textAlign = 'center';
         
                             var pendingGIF = document.createElement('IMG');
                             pendingGIF.src = 'https://raw.githubusercontent.com/doronsadeh/media/master/zenreader/loading-animated.gif';
                             pendingGIF.style.width = '32px';
                             pendingGIF.style.height = '32px';
                             pendingGIF.id = 'zen-review-pending-GIF';
+                            pendingGIF.title = 'Zen Reader בונה תקציר למאמר';
 
                             pendingDiv.appendChild(pendingGIF);
         
@@ -169,6 +172,7 @@ Ynet.prototype._synopsis = function() {
 
                             // Put it all together
                             pendingDiv.removeChild(document.getElementById('zen-review-pending-GIF'));
+                            pendingDiv.style.textAlign = '';
                             pendingDiv.appendChild(sChild);
     });
 };
