@@ -42,6 +42,8 @@
 	  "run_at": "document_end",
 	  "all_frames": true,
       "js": [
+        "src/js/libs/jquery-1.11.3.min.js",
+        "src/js/libs/google-api.js",
         "src/js/libs/he-stopwords.js",
         "src/js/libs/tfidf.js",
 		"src/js/libs/google-analytics-bundle.js",

