@@ -26,6 +26,9 @@ function save_options() {
                                 // Save the current state of the comments hiding checkbox
                                 zenOptions[_publisher]["comments"] = document.getElementById('comments-enable').checked;
 
+                                // Save the search term, and derive imgs and store them
+                                zenOptions[_publisher]["image-bank"] = document.getElementById('image-search-text').value;
+    
                                 // Save the current state of the labs features enable checkbox
                                 zenOptions[_publisher]["labs"] = { 'by-subject' : document.getElementById('labs-enable-by-subject').checked,
                                                                    'summarization': document.getElementById('labs-enable-synopsis').checked};
@@ -83,6 +86,8 @@ function restore_options() {
                                     }
 
                                     document.getElementById('comments-enable').checked = items.zen_options[_publisher]["comments"];
+                                    
+                                    document.getElementById('image-search-text').value = items.zen_options[_publisher]["image-bank"];
                                     
                                     document.getElementById('labs-enable-by-subject').checked = items.zen_options[_publisher]["labs"]["by-subject"];
                                     document.getElementById('labs-enable-synopsis').checked = items.zen_options[_publisher]["labs"]["summarization"];
@@ -153,6 +158,5 @@ if (window === window.top) {
     var relNotes = document.getElementById('zen_version');
     if (relNotes)
         relNotes.addEventListener('click', function(e) { window.open('./relnotes.html'); } );
-    
 }
 

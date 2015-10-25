@@ -38,18 +38,21 @@ var zenOptions = {
         "authors" : _haaretzAuthorsList,
         "authors_map" : {},
         "comments": "enable",
+        "image-bank" : 'Enter an image search term',
         "labs": {}
     },
     "TheMarker" : {
         "authors" : _theMarkerAuthorsList,
         "authors_map" : {},
         "comments": "enable",
+        "image-bank" : 'Enter an image search term',
         "labs": {}
     },
     "Ynet" : {
         "authors" : _ynetAuthorsList,
         "authors_map" : {},
         "comments": "enable",
+        "image-bank" : 'Enter an image search term',
         "labs": {}
     }
 };

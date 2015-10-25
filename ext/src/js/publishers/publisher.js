@@ -844,6 +844,14 @@ Publisher.prototype = {
 		console.error('_hideSubjectTitle must be implemented, cannot use base class');
     },
     
+    ///////////////////////////////////////////////
+    //
+    // Unicorn Mode
+    // 
+    _unicornMode : function() {
+		console.error('_unicornMode must be implemented, cannot use base class');
+    },
+    
 	///////////////////////////////////////////////
 	//
 	// API 

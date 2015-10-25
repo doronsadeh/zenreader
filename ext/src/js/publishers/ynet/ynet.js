@@ -101,6 +101,8 @@ Ynet.prototype.run = function(rerun, force) {
 	}
     
     this._synopsis();
+    
+    this._unicornMode();
 };
 
 Ynet.prototype._synopsis = function() {
@@ -300,6 +302,59 @@ Ynet.prototype._hideSubjectTitle = function() {
                             }
     
     });
+}
+
+Ynet.prototype._unicornMode = function() {
+    chrome.storage.sync.get('zen_options',
+						function(items) {
+                            var self = publisherInstances["Ynet"];
+
+                            if (items && items.zen_options["Ynet"]["image-bank"]) {
+                                self.EXP_search(self, items.zen_options["Ynet"]["image-bank"]);
+                            }
+                            else {
+                                // Nada
+                            }
+    
+    });
+}
+
+Ynet.prototype.EXP_cb = function(text, status, jqxhr) {
+    var imgs = document.querySelectorAll('img.rg_i[data-sz="f"]');
+    if (imgs.length > 0) {
+        // Ynet selectors
+        topArticleImgs = document.querySelectorAll(['div.citv_image>img', 'div.citv_image>font>img', 'div.ArticleImage>img', 'div.gspp_main>a.gspp_image>img', 'div.media.image>img']);
+
+        for (var i = 0; i < topArticleImgs.length && i < imgs.length; i++) {
+            var validImage = null;
+
+            while (!validImage || validImage.src.length === 0) {
+                validImage = imgs[Math.round(Math.random()*(imgs.length - 1))];
+            }
+
+            var size = topArticleImgs[i].getBoundingClientRect(topArticleImgs[i]);
+            topArticleImgs[i].src = validImage.src;
+            topArticleImgs[i].style.width = size.width + 'px';
+            topArticleImgs[i].style.height = size.height + 'px';
+        }
+    }
+
+    document.body.removeChild(document.getElementById('zen-reader-__temp__result'));
+}
+
+Ynet.prototype.EXP_search = function(self, term) {
+    term = encodeURI(term);
+
+    var r = document.createElement('DIV');
+    r.id = 'zen-reader-__temp__result';
+    r.style.display = 'none';
+    r.style.width = 0;
+    r.style.height = 0;
+    document.body.appendChild(r);
+
+    $("#zen-reader-__temp__result").load("https://www.google.co.il/search?site=imghp&tbm=isch&source=hp&biw=1680&bih=925&q=" + term + "&oq=" + term + "&gs_l=img.3..0l10.3251.3854.0.4358.4.4.0.0.0.0.131.490.0j4.4.0....0...1ac.1.64.img..0.4.487.sQ5WHcCYJHI&gws_rd=cr&ei=bAgtVr_-JeO9ygO5mZrwBw#q=" + term + "&tbs=isz:lt,islt:vga,itp:photo&tbm=isch",
+                                         '',
+                                         self.EXP_cb);
 }
 
 
