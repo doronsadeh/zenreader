@@ -17,7 +17,7 @@ var Ynet = function(tracker) {
 									   'איתי גל' : 'itay-gal',
                                        'דנה ספקטור':'dana-spector'};
 
-	this.authorSelectors = ['span.art_header_footer_author>span>a', 'span.mta_gray_text', '.sub_title.sub_title_no_credit', '.authorHtmlCss'];
+	this.authorSelectors = ['span.art_header_footer_author>span', 'span.art_header_footer_author>span>a', 'span.mta_gray_text', '.sub_title.sub_title_no_credit', '.authorHtmlCss'];
 
 	// Create a uniform name list of authors for tracking
 	var dpKeyList = Object.keys(this.authorsNormalizedXlatTable);
