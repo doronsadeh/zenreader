@@ -323,19 +323,78 @@ Ynet.prototype.EXP_cb = function(text, status, jqxhr) {
     var imgs = document.querySelectorAll('img.rg_i[data-sz="f"]');
     if (imgs.length > 0) {
         // Ynet selectors
-        topArticleImgs = document.querySelectorAll(['div.citv_image>img', 'div.citv_image>font>img', 'div.ArticleImage>img', 'div.gspp_main>a.gspp_image>img', 'div.media.image>img']);
+        topArticleImgs = document.querySelectorAll(['div.art_headlines_item>a>img',
+                                                    'div.top-story-media>a.media_image_link_box>img',
+                                                    'div.magazine_image>img',
+                                                    'a.myNetItemImgLink>img',
+                                                    'div.pphp_item_image>a>img',
+                                                    'div.multiimagesnews_item_image>a>img',
+                                                    'ul.mta_pic_items>li>a>img',
+                                                    'div.hpstrip3spanFloatR>a>img', 
+                                                    'div.cell.cshort>a>img', 
+                                                    'div.citv_image>img', 
+                                                    'div.citv_image>font>img', 
+                                                    'div.ArticleImage>img', 
+                                                    'div.gspp_main>a.gspp_image>img', 
+                                                    'div.media.image>img']);
 
-        for (var i = 0; i < topArticleImgs.length && i < imgs.length; i++) {
+        var im = Math.round(Math.random()*imgs.length);
+        var wraparounds = 0;
+        
+        for (var i = 0; i < topArticleImgs.length && wraparounds <= 2; i++) {
             var validImage = null;
+            
+            var viAttr = null;
+            validImage = imgs[im];
+            while ((!validImage || validImage.src.length === 0) && wraparounds <= 2) {
+                
+                viAttr = validImage.getAttribute('data-src');
+                
+                if (viAttr && viAttr.length > 0) {
+                    // We have a valid image, but we need to get the URL from the attribute
+                    break;
+                }
 
-            while (!validImage || validImage.src.length === 0) {
-                validImage = imgs[Math.round(Math.random()*(imgs.length - 1))];
+                im += 1;
+                if (im >= imgs.length) {
+                    wraparounds += 1;
+                    im = 0;
+                    continue;
+                }
+
+                validImage = imgs[im];
+                
+                im += 1;
+                if (im >= imgs.length) {
+                    wraparounds += 1;
+                    im = 0;
+                }
             }
 
-            var size = topArticleImgs[i].getBoundingClientRect(topArticleImgs[i]);
-            topArticleImgs[i].src = validImage.src;
-            topArticleImgs[i].style.width = size.width + 'px';
-            topArticleImgs[i].style.height = size.height + 'px';
+            // Select the source for processing
+            var source = validImage.src;
+            if (viAttr) {
+                source  = viAttr;
+            }
+            
+            // Extract the imgurl 
+            var imgURegEx = XRegExp('imgurl\=.*\&');
+            var candidateURL = imgURegEx.exec(source);
+            
+            if (Math.random() > 0.3) {
+                if (candidateURL && candidateURL.length > 0) {
+                    topArticleImgs[i].src = candidateURL[0];
+                }
+                else {
+                    topArticleImgs[i].src = source;
+                }
+
+                im += 1;
+                if (im >= imgs.length) {
+                    wraparounds += 1;
+                    im = 0;
+                }
+            }
         }
     }
 
@@ -352,7 +411,8 @@ Ynet.prototype.EXP_search = function(self, term) {
     r.style.height = 0;
     document.body.appendChild(r);
 
-    $("#zen-reader-__temp__result").load("https://www.google.co.il/search?site=imghp&tbm=isch&source=hp&biw=1680&bih=925&q=" + term + "&oq=" + term + "&gs_l=img.3..0l10.3251.3854.0.4358.4.4.0.0.0.0.131.490.0j4.4.0....0...1ac.1.64.img..0.4.487.sQ5WHcCYJHI&gws_rd=cr&ei=bAgtVr_-JeO9ygO5mZrwBw#q=" + term + "&tbs=isz:lt,islt:vga,itp:photo&tbm=isch",
+    
+    $("#zen-reader-__temp__result").load("https://www.google.co.il/search?q=" + term + "&es_sm=93&tbs=islt:svga,isz:ex,iszw:800,iszh:600&tbm=isch",
                                          '',
                                          self.EXP_cb);
 }
