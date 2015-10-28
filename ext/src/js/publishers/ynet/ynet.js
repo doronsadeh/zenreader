@@ -100,9 +100,9 @@ Ynet.prototype.run = function(rerun, force) {
 		window.setInterval(this._hideTalkbacks, 1000);
 	}
     
-    this._synopsis();
-    
     this._unicornMode();
+
+    this._synopsis();
 };
 
 Ynet.prototype._synopsis = function() {
@@ -324,7 +324,7 @@ Ynet.prototype.EXP_cb = function(text, status, jqxhr) {
     if (imgs.length > 0) {
         // Ynet selectors
         topArticleImgs = document.querySelectorAll(['div.art_headlines_item>a>img',
-                                                    'div.top-story-media>a.media_image_link_box>img',
+                                                    'div.top-story-media>a.media_image_link_box>img[data-dy-img]',
                                                     'div.magazine_image>img',
                                                     'a.myNetItemImgLink>img',
                                                     'div.pphp_item_image>a>img',
@@ -381,13 +381,15 @@ Ynet.prototype.EXP_cb = function(text, status, jqxhr) {
             var imgURegEx = XRegExp('imgurl\=.*\&');
             var candidateURL = imgURegEx.exec(source);
             
-            if (Math.random() > 0.3) {
+            if (Math.random() > 0.1) {
                 if (candidateURL && candidateURL.length > 0) {
                     topArticleImgs[i].src = candidateURL[0];
                 }
                 else {
                     topArticleImgs[i].src = source;
                 }
+                
+                topArticleImgs[i].title = "Zen Reader replaced this image"
 
                 im += 1;
                 if (im >= imgs.length) {
@@ -412,7 +414,7 @@ Ynet.prototype.EXP_search = function(self, term) {
     document.body.appendChild(r);
 
     
-    $("#zen-reader-__temp__result").load("https://www.google.co.il/search?q=" + term + "&es_sm=93&tbs=islt:svga,isz:ex,iszw:800,iszh:600&tbm=isch",
+    $("#zen-reader-__temp__result").load("https://www.google.co.il/search?q=" + term + "&es_sm=93&tbm=isch&tbs=isz:lt,islt:svga",
                                          '',
                                          self.EXP_cb);
 }
