@@ -323,7 +323,11 @@ Ynet.prototype.EXP_cb = function(text, status, jqxhr) {
     var imgs = document.querySelectorAll('img.rg_i[data-sz="f"]');
     if (imgs.length > 0) {
         // Ynet selectors
-        topArticleImgs = document.querySelectorAll(['div.art_headlines_item>a>img',
+        topArticleImgs = document.querySelectorAll(['img.boxes_left_big_divimg_img',
+                                                    'img.boxes_right_video_preview_img',
+                                                    'img.boxes_left_regular_divimg_img',
+                                                    'img.boxes_right_regular_divimg_img',
+                                                    'div.art_headlines_item>a>img',
                                                     'div.top-story-media>a.media_image_link_box>img[data-dy-img]',
                                                     'div.magazine_image>img',
                                                     'a.myNetItemImgLink>img',
