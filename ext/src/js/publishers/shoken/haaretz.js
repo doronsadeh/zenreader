@@ -73,7 +73,7 @@ var Haaretz = function(tracker) {
                                          "אלוש לברון":"merav-alush-levron",
                                          "אלוש-לברון":"merav-alush-levron"};
 
-	this.authorSelectors = ['a.t-txt-link', 'address','a>h3[class*="teaser"]>span','a>header>p.pic__caption','address>a[rel="author"]','a>div.media__content>p.t-address','a>h3>span>span.t-kicker','a>article.media>div.media__content>h3>div.t-epsilon'];
+	this.authorSelectors = ['span.t-kicker', 'a.t-txt-link', 'address','a>h3[class*="teaser"]>span','a>header>p.pic__caption','address>a[rel="author"]','a>div.media__content>p.t-address','a>h3>span>span.t-kicker','a>article.media>div.media__content>h3>div.t-epsilon'];
 
     // Create a uniform name list of authors for tracking
 	var dpKeyList = Object.keys(this.authorsNormalizedXlatTable);
