@@ -431,7 +431,7 @@ Ynet.prototype.EXP_search = function(self, term) {
     r.style.height = 0;
     document.body.appendChild(r);
 
-		var baseWidth = 1024;
+		var baseWidth = 800;
 		var width = baseWidth;
 		var height = Math.round((1/sizeRatios[0])*baseWidth);
 
