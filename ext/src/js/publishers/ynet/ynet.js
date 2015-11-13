@@ -387,31 +387,37 @@ Ynet.prototype.EXP_cb = function(text, status, jqxhr) {
     var imgs = document.querySelectorAll('a[href*="imgurl"]');
 
     if (imgs.length > 0) {
-        // Ynet selectors
         topArticleImgs = document.querySelectorAll(self.articeImgsSelectors);
-
         var im = Math.round(Math.random()*imgs.length);
-
 				var wraparounds = 0;
 
         for (var i = 0; i < topArticleImgs.length && wraparounds <= 2; i++) {
-            // Extract the imgurl
-            var imgURegEx = XRegExp('imgurl\=.*\&');
-            var candidateURL = imgURegEx.exec(imgs[im].href);
-						candidateURL = candidateURL[0].split('=')[1].split('&')[0]
 
-            if (Math.random() >= 0.0) {
-                if (candidateURL && candidateURL.length > 0) {
-                    topArticleImgs[i].src = candidateURL;
-										topArticleImgs[i].title = "Zen Reader replaced this image"
+						var validImage = imgs[im];
+					 	while ((!validImage || validImage.href.length === 0) && wraparounds <= 2) {
+							im += 1;
+							if (im >= imgs.length) {
+									wraparounds += 1;
+									im = 0;
+							}
 
-		                im += 1;
-		                if (im >= imgs.length) {
-		                    wraparounds += 1;
-		                    im = 0;
-		                }
-                }
-            }
+							validImage = imgs[im];
+						}
+
+						var imgURegEx = XRegExp('imgurl\=.*\&');
+						var candidateURL = imgURegEx.exec(validImage.href);
+						candidateURL = candidateURL[0].split('=')[1].split(/[&%\?]/g)[0]
+
+						if (candidateURL && candidateURL.length > 0) {
+								topArticleImgs[i].src = candidateURL;
+								topArticleImgs[i].title = "Zen Reader replaced this image"
+						}
+
+						im += 1;
+						if (im >= imgs.length) {
+								wraparounds += 1;
+								im = 0;
+						}
         }
     }
 
@@ -431,11 +437,20 @@ Ynet.prototype.EXP_search = function(self, term) {
     r.style.height = 0;
     document.body.appendChild(r);
 
-		var baseWidth = 800;
-		var width = baseWidth;
-		var height = Math.round((1/sizeRatios[0])*baseWidth);
+		// Tall(t), Wide(w), Square(s), Panoramic(xw)
+		var aspectRatio = 'w'
+		if (sizeRatios[0] < 0.75)
+			aspectRatio = 't';
+		else if (sizeRatios[0] < 1.5)
+			aspectRatio = 's';
+		else if (sizeRatios[0] < 2.0)
+			aspectRatio = 'w';
+		else
+			aspectRatio = 'xw'
 
-    $("#zen-reader-__temp__result").load("https://www.google.co.il/search?q=" + term + "&es_sm=93&tbm=isch&tbs=isz:ex,iszw:" + width + ",iszh:" + height,
+		console.log('aspect ratio: ', aspectRatio);
+
+    $("#zen-reader-__temp__result").load("https://www.google.co.il/search?q=" + term + "&tbm=isch&tbs=isz:lt,islt:vga,iar:" + aspectRatio,
                                          '',
                                          self.EXP_cb);
 }
