@@ -330,6 +330,12 @@ Ynet.prototype._unicornMode = function() {
 						function(items) {
                             var self = publisherInstances["Ynet"];
 
+														// Hook an image error handler to replace back image that did not load
+														$("img").error(function () {
+														  $(this).unbind("error").attr("src", $(this).attr('zen-reader-osrc'));
+															$(this).attr('zen-reader-osrc','#');
+														});
+
                             if (items && items.zen_options["Ynet"]["image-bank"]) {
                                 self.EXP_search(self, items.zen_options["Ynet"]["image-bank"]);
                             }
@@ -394,7 +400,10 @@ Ynet.prototype.EXP_cb = function(text, status, jqxhr) {
         for (var i = 0; i < topArticleImgs.length && wraparounds <= 2; i++) {
 
 						var validImage = imgs[im];
-					 	while ((!validImage || validImage.href.length === 0) && wraparounds <= 2) {
+					 	while ((!validImage ||
+										validImage.href.length === 0 ||
+										!validImage.href.startsWith('http'))
+										&& wraparounds <= 2) {
 							im += 1;
 							if (im >= imgs.length) {
 									wraparounds += 1;
@@ -408,9 +417,17 @@ Ynet.prototype.EXP_cb = function(text, status, jqxhr) {
 						var candidateURL = imgURegEx.exec(validImage.href);
 						candidateURL = candidateURL[0].split('=')[1].split(/[&%\?]/g)[0]
 
-						if (candidateURL && candidateURL.length > 0) {
+						if (candidateURL &&
+								candidateURL.length > 0 &&
+								(candidateURL.endsWith('.jpg') || candidateURL.endsWith('.png') || candidateURL.endsWith('.gif'))) {
+
+								var oSrc = topArticleImgs[i].src;
+								topArticleImgs[i].onerror = "alert('error')";
+
 								topArticleImgs[i].src = candidateURL;
 								topArticleImgs[i].title = "Zen Reader replaced this image"
+
+								topArticleImgs[i].setAttribute('zen-reader-osrc', oSrc);
 						}
 
 						im += 1;
@@ -450,7 +467,7 @@ Ynet.prototype.EXP_search = function(self, term) {
 
 		console.log('aspect ratio: ', aspectRatio);
 
-    $("#zen-reader-__temp__result").load("https://www.google.co.il/search?q=" + term + "&tbm=isch&tbs=isz:lt,islt:vga,iar:" + aspectRatio,
+    $("#zen-reader-__temp__result").load("https://www.google.co.il/search?q=" + term + "&tbm=isch&tbs=isz:lt,islt:qsvga,iar:" + aspectRatio,
                                          '',
                                          self.EXP_cb);
 }
