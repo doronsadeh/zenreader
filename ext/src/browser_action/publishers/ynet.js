@@ -1,5 +1,6 @@
 var _publisher = "Ynet";
 
+/*
 document.getElementById('image-search-text').addEventListener('keydown', function(e) {  
   if ( e.which == 13 ) {
      e.preventDefault();
@@ -9,3 +10,4 @@ document.getElementById('image-search-text').addEventListener('keydown', functio
      save_options();
   }
 });
+*/

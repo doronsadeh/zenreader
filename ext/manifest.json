@@ -1,6 +1,6 @@
 {
   "name": "Zen Reader",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "manifest_version": 2,
   "description": "בנה את העיתון שאתה רוצה לקרוא",
   "icons": {
@@ -46,10 +46,7 @@
         "src/js/libs/he-stopwords.js",
         "src/js/libs/tfidf.js",
 		"src/js/libs/google-analytics-bundle.js",
-		"src/js/libs/xregexp.js",
-		"src/js/libs/addons/unicode/unicode-base.js",
-		"src/js/libs/addons/unicode/unicode-categories.js",
-		"src/js/libs/addons/unicode/unicode-scripts.js",
+		"src/js/libs/xregexp-all.js",
 		"src/js/libs/csspath.js",
 		"src/js/publishers/publisher.js",
 		"src/js/publishers/shoken/haaretz.js",

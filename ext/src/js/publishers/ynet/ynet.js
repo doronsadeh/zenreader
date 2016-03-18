@@ -120,7 +120,7 @@ Ynet.prototype.run = function(rerun, force) {
 		window.setInterval(this._hideTalkbacks, 1000);
 	}
 
-    this._unicornMode();
+    // this._unicornMode();
 
     this._synopsis();
 };
@@ -141,8 +141,14 @@ Ynet.prototype._synopsis = function() {
                                 document.removeChild(existingSyn);
                             }
 
-                            var articleFirstParag = document.querySelector('#main>div.area.content>div>div.block.B4.spacer>div.block.B4>div.block.B3>div.block.B3>div.element.B3.ghcite>div>div[class^="text"]>span');
+							// var articleFirstParag = document.querySelector('#main>div.area.content>div>div.block.B4.spacer>div.block.B4>div.block.B3>div.block.B3>div.element.B3.ghcite>div>div[class^="text"]>span');
+							var articleFirstParag = document.querySelector('div.art_header_bottom, div.hr.solid, div#ahpp-1');
 
+							if (!articleFirstParag) {
+								console.log("Cannot insert synopsis, since cannot detect articleFirstParag!");
+								return;
+							}
+							
                             // Place visual queue while computing synopsis
                             var pendingDiv = document.createElement('DIV');
                             pendingDiv.id = 'zen-pending-review';
@@ -158,10 +164,11 @@ Ynet.prototype._synopsis = function() {
 
                             pendingDiv.appendChild(pendingGIF);
 
-                            // TODO parentElement null
-                            articleFirstParag.parentElement.insertBefore(pendingDiv, articleFirstParag);
+                            // articleFirstParag.parentElement.insertBefore(pendingDiv, articleFirstParag);
+							articleFirstParag.parentElement.insertBefore(pendingDiv, articleFirstParag.nextSibling);
 
-                            var synopsis = self._computeSynopsis(self, '#main>div.area.content>div>div.block.B4.spacer>div.block.B4>div.block.B3>div.block.B3>div.element.B3.ghcite>div>div[class^="text"]>span>p');
+                            // var synopsis = self._computeSynopsis(self, '#main>div.area.content>div>div.block.B4.spacer>div.block.B4>div.block.B3>div.block.B3>div.element.B3.ghcite>div>div[class^="text"]>span>p');
+							var synopsis = self._computeSynopsis(self, 'div.art_body, div.element.B3.ghcite>div>div[class^="text"]>span>p');
 
                             var bgColor = 'rgba(0,255,0,0.25)';
                             var marginB = '75px';
