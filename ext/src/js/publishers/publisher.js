@@ -286,6 +286,11 @@ Publisher.prototype = {
 
         // Reinstate dots
         synopsis = XRegExp.replace(synopsis, this.dotPRegEx, '\.', 'all');
+		
+		// Trim to ~100 words
+		hardLimit = 100*7;
+		if (synopsis.length > hardLimit)
+			synopsis = synopsis.substring(0, Math.min(hardLimit, synopsis.length)) + " ...";
         
         synopsis += '<div style="height:20px;position:relative;top:40px;">';
         

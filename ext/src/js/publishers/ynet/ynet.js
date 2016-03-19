@@ -170,11 +170,11 @@ Ynet.prototype._synopsis = function() {
                             // var synopsis = self._computeSynopsis(self, '#main>div.area.content>div>div.block.B4.spacer>div.block.B4>div.block.B3>div.block.B3>div.element.B3.ghcite>div>div[class^="text"]>span>p');
 							var synopsis = self._computeSynopsis(self, 'div.art_body, div.element.B3.ghcite>div>div[class^="text"]>span>p');
 
-                            var bgColor = 'rgba(0,255,0,0.25)';
+                            var bgColor = 'rgba(240,240,240,0.35)';
                             var marginB = '75px';
                             var paddingB = '15px 15px 15px 15px';
                             if (null === synopsis) {
-                                bgColor = 'rgba(180,180,180,0.25)';
+                                bgColor = 'rgba(200,200,200,0.65)';
                                 marginB = '10px';
                                 paddingB = '15px 15px 25px 15px';
                                 synopsis = "<div>&#1492;&#1502;&#1506;&#1512;&#1499;&#1514; &#1492;&#1495;&#1500;&#1497;&#1496;&#1492; &#1500;&#1488; &#1500;&#1492;&#1510;&#1497;&#1490; &#1505;&#1497;&#1499;&#1493;&#1501; &#1500;&#1502;&#1488;&#1502;&#1512; &#1494;&#1492;. &#1497;&#1514;&#1499;&#1503; &#1513;&#1492;&#1502;&#1488;&#1502;&#1512; &#1511;&#1510;&#1512; &#1493;&#1502;&#1502;&#1510;&#1492;, &#1488;&#1493; &#1513;&#1500;&#1488; &#1504;&#1497;&#1514;&#1503; &#1492;&#1497;&#1492; &#1500;&#1492;&#1508;&#1497;&#1511; &#1505;&#1497;&#1499;&#1493;&#1501; &#1488;&#1497;&#1499;&#1493;&#1514;&#1497; &#1491;&#1497;&#1493;.</div>";
@@ -196,7 +196,7 @@ Ynet.prototype._synopsis = function() {
 
                             sChild.innerHTML += synopsis;
                             sChild.style.backgroundColor = bgColor;
-                            sChild.style.fontSize = '90%';
+                            sChild.style.fontSize = '115%';
                             sChild.id = "zen-reader-synopsis";
                             sChild.classList.add('t-body-text');
                             sChild.style.padding = paddingB;
