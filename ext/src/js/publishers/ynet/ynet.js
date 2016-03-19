@@ -168,7 +168,7 @@ Ynet.prototype._synopsis = function() {
 							articleFirstParag.parentElement.insertBefore(pendingDiv, articleFirstParag.nextSibling);
 
                             // var synopsis = self._computeSynopsis(self, '#main>div.area.content>div>div.block.B4.spacer>div.block.B4>div.block.B3>div.block.B3>div.element.B3.ghcite>div>div[class^="text"]>span>p');
-							var synopsis = self._computeSynopsis(self, 'div.art_body, div.element.B3.ghcite>div>div[class^="text"]>span>p');
+							var synopsis = self._computeSynopsis(self, 'div.art_body>div[class^="text"]>span>p, div.element.B3.ghcite>div>div[class^="text"]>span>p');
 
                             var bgColor = 'rgba(240,240,240,0.35)';
                             var marginB = '75px';
