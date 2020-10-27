@@ -20,18 +20,11 @@ function save_options() {
                                     authorsMap[new String(authors[i].id)] = authors[i].checked;
                                 }
 
-                                // Set the up to date authors map
-                                zenOptions[_publisher]["authors_map"] = authorsMap;
-        
-                                // Save the current state of the comments hiding checkbox
-                                zenOptions[_publisher]["comments"] = document.getElementById('comments-enable').checked;
-
                                 // Save the search term, and derive imgs and store them
                                 // zenOptions[_publisher]["image-bank"] = document.getElementById('image-search-text').value;
     
                                 // Save the current state of the labs features enable checkbox
-                                zenOptions[_publisher]["labs"] = { 'by-subject' : document.getElementById('labs-enable-by-subject').checked,
-                                                                   'summarization': document.getElementById('labs-enable-synopsis').checked};
+                                zenOptions[_publisher]["labs"] = { 'summarization': document.getElementById('labs-enable-synopsis').checked};
 
                                 chrome.storage.sync.set({
                                     "zen_options" : zenOptions
@@ -50,16 +43,6 @@ function save_options() {
 }
 
 function listenOnAllCheckboxes() {
-	var elements = document.getElementsByClassName("author-input");
-    for(var i=0; i < elements.length; i++){
-        elements[i].addEventListener('click', save_options, false);
-    }
-    
-    elements = document.getElementsByClassName("comments-input");
-    for(var j=0; j < elements.length; j++){
-        elements[j].addEventListener('click', save_options, false);
-    }
-
     elements = document.getElementsByClassName("labs-input");
     for(var j=0; j < elements.length; j++){
         elements[j].addEventListener('click', save_options, false);
@@ -75,22 +58,11 @@ function restore_options() {
                                     console.error('Zen Reader options do not exist on restore, consider reinstalling/reloading extension.');
                                 }
                                 else {
-                                    var authorsMap = items.zen_options[_publisher]["authors_map"];
-                                    var _publisherAuthorsList = zenOptions[_publisher]["authors"];
-                                    for (var i = 0; i < _publisherAuthorsList.length; i++) {
-                                        var author = _publisherAuthorsList[i];
-                                        var checked = authorsMap[author];
-                                        document.getElementById(author).checked = checked;
-                                        if (checked)
-                                            numBlockedAuthors += 1;
+                                    try {
+                                        document.getElementById('labs-enable-synopsis').checked = items.zen_options[_publisher]["labs"]["summarization"];
+                                    } catch (e) {
+                                        // Silent
                                     }
-
-                                    document.getElementById('comments-enable').checked = items.zen_options[_publisher]["comments"];
-                                    
-                                    // document.getElementById('image-search-text').value = items.zen_options[_publisher]["image-bank"];
-                                    
-                                    document.getElementById('labs-enable-by-subject').checked = items.zen_options[_publisher]["labs"]["by-subject"];
-                                    document.getElementById('labs-enable-synopsis').checked = items.zen_options[_publisher]["labs"]["summarization"];
                                 }
 							});
 }
@@ -100,26 +72,12 @@ function toggle_all(e) {
 	if (event.shiftKey)
 		state = false;
 	
-	var authors = document.querySelectorAll('input.author-input');
-	for (var i = 0; i < authors.length; i++) {
-		authors[i].checked = state;
-	}
-    
-	var comments = document.querySelectorAll('input.comments-input');
-	for (var j = 0; j < comments.length; j++) {
-		comments[j].checked = state;
-	}
-	
 	save_options();
 }
 
 function request_new_author(e) {
 	var trigger = Math.random();
 	chrome.storage.sync.set({'req_new_author': trigger});
-}
-
-function send_review(e) {
-    window.open("https://chrome.google.com/webstore/detail/zen-reader/mppoahikjcledceffobpdlainaeljaco/reviews?hl=he&gl=IL&authuser=0");
 }
 
 function onDOMLoaded() {
@@ -147,14 +105,6 @@ if (window === window.top) {
     if (sendReq)
         sendReq.addEventListener('click', function(e) {request_new_author(e);} );
 
-    var sentRev = document.getElementById('send-review');
-    if (sentRev)
-        sentRev.addEventListener('click', function(e) {send_review(e);} );
-    
-    var revFP = document.getElementById('review-frontpage');
-    if (revFP)
-        revFP.addEventListener('click', function(e) {send_review(e);} );
-    
     var relNotes = document.getElementById('zen_version');
     if (relNotes)
         relNotes.addEventListener('click', function(e) { window.open('./relnotes.html'); } );
