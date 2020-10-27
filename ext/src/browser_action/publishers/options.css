@@ -1,61 +1,71 @@
-body: { 
+body {
     background-color: whitesmoke;
     padding: 10px;
 }
-:focus {
+
+focus {
     outline: 0;
 }
+
 img {
     margin: 1px;
     border-style: dotted;
     border-width: 1px;
     border-color: #AAA;
 }
+
 #back {
-    width:32px;
-    height:auto;
-    float:left;
+    width: 32px;
+    height: auto;
+    float: left;
     border-style: none;
     padding-top: 3px;
 }
+
 #mailto {
-    width:16px;
-    height:auto;
-    float:left;
+    width: 16px;
+    height: auto;
+    float: left;
     border-style: none;
     padding-top: 10px;
     margin: 0px 10px 0px 25px;
 }
+
 #review {
-    width:16px;
-    height:auto;
-    float:left;
+    width: 16px;
+    height: auto;
+    float: left;
     border-style: none;
     padding-top: 8px;
     margin: 0px 10px 0px 0px;
 }
+
 #home {
-    width:16px;
-    height:auto;
-    float:left;
+    width: 16px;
+    height: auto;
+    float: left;
     border-style: none;
     padding-top: 9px;
     margin: 0px 10px 0px 0px;
 }
+
 #top-pub-logo {
-    vertical-align:middle;
-    width:64px;
-    height:auto;
+    vertical-align: middle;
+    width: 64px;
+    height: auto;
     border-style: none;
 }
+
 span.author {
-    padding:3px;
-    margin:0px;
-    float:none;
+    padding: 3px;
+    margin: 0px;
+    float: none;
 }
+
 .author-input + span {
     color: black;
 }
+
 .author-input:checked + span {
     color: #AAA;
 }
@@ -63,6 +73,7 @@ span.author {
 .comments-input + span {
     color: black;
 }
+
 .comments-input:checked + span {
     color: #AAA;
 }
@@ -78,10 +89,11 @@ span.author {
 }
 
 #lab-box {
+    margin-top: 16px;
     direction: ltr;
 }
 
-#lab-box>label>p {
+#lab-box > label > p {
     background-color: orange;
     color: #EEE;
 }

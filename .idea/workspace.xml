@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6d6ac458-f5d9-4a37-8f01-d3f0cd48944d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/ext/src/js/publishers/shoken/themarker.js" beforeDir="false" afterPath="$PROJECT_DIR$/ext/src/js/publishers/shoken/themarker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ext.crx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ext/src/browser_action/publishers/haaretz-options.html" beforeDir="false" afterPath="$PROJECT_DIR$/ext/src/browser_action/publishers/haaretz-options.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ext/src/browser_action/publishers/options.css" beforeDir="false" afterPath="$PROJECT_DIR$/ext/src/browser_action/publishers/options.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ext/src/browser_action/publishers/themarker-options.html" beforeDir="false" afterPath="$PROJECT_DIR$/ext/src/browser_action/publishers/themarker-options.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ext/src/browser_action/publishers/ynet-options.html" beforeDir="false" afterPath="$PROJECT_DIR$/ext/src/browser_action/publishers/ynet-options.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ext/src/js/publishers/ynet/ynet.js" beforeDir="false" afterPath="$PROJECT_DIR$/ext/src/js/publishers/ynet/ynet.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +45,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1603792565990</updated>
-      <workItem from="1603792567431" duration="2040000" />
+      <workItem from="1603792567431" duration="5278000" />
     </task>
     <servers />
   </component>
@@ -47,9 +53,13 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="623" y="246" width="672" height="678" key="search.everywhere.popup" timestamp="1603793146468">
+    <state x="652" y="250" width="616" height="554" key="find.popup" timestamp="1603824528118">
       <screen x="0" y="27" width="1920" height="1001" />
     </state>
-    <state x="623" y="246" width="672" height="678" key="search.everywhere.popup/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1603793146468" />
+    <state x="652" y="250" width="616" height="554" key="find.popup/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1603824528118" />
+    <state x="623" y="246" width="672" height="678" key="search.everywhere.popup" timestamp="1603824458133">
+      <screen x="0" y="27" width="1920" height="1001" />
+    </state>
+    <state x="623" y="246" width="672" height="678" key="search.everywhere.popup/0.27.1920.1001/1920.0.1920.1080@0.27.1920.1001" timestamp="1603824458133" />
   </component>
 </project>

@@ -56,11 +56,11 @@ var Ynet = function(tracker) {
                              'div > div.pphp_main > ul > li > div.pphp_li_items',
                              'div.top-story>div.top-story-main'];
 
-	this.talkbackParentClass = 'art_tkb_talkback';
+	this.talkbackParentClass = 'ArticleComment';
 
-	this.talkbackTitleSelectors = ['.art_tkb_talkback_title'];
+	this.talkbackTitleSelectors = ['.commentTitle'];
 
-	this.talkbackTextSelectors = ['.art_tkb_talkback_content'];
+	this.talkbackTextSelectors = ['.commentText'];
 
 	this.talkbackIdRegExp = XRegExp('[0-9]+');
 };
