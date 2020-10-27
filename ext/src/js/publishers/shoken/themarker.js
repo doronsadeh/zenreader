@@ -110,7 +110,7 @@ TheMarker.prototype._synopsis = function() {
                                 document.removeChild(existingSyn);
                             }
 
-                            var articleFirstParag = document.querySelector('section.article__entry>p.t-body-text');
+                            var articleFirstParag = document.querySelector('div[data-test="articleBody"]');
 
                             // Place visual queue while computing synopsis
                             var pendingDiv = document.createElement('DIV');
@@ -129,7 +129,7 @@ TheMarker.prototype._synopsis = function() {
         
                             articleFirstParag.parentElement.insertBefore(pendingDiv, articleFirstParag);
         
-                            var synopsis = self._computeSynopsis(self, 'section.article__entry>p.t-body-text');
+                            var synopsis = self._computeSynopsis(self, 'div[data-test="articleBody"] > p');
 
                             var bgColor = 'rgba(240,240,240,0.35)';
                             var marginB = '75px';
