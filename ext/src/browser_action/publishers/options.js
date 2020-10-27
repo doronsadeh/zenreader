@@ -26,16 +26,16 @@ function save_options() {
                                 // Save the current state of the labs features enable checkbox
                                 zenOptions[_publisher]["labs"] = { 'summarization': document.getElementById('labs-enable-synopsis').checked};
 
-                                chrome.storage.sync.set({
-                                    "zen_options" : zenOptions
-                                }, function() {
-                                    // Update status to let user know options were saved.
-                                    var status = document.getElementById('status');
-                                    status.innerHTML = 'Status: Changes applied';
-                                    setTimeout(function() {
-                                        status.textContent = 'Status: ' + numBlockedAuthors + ' authors are blocked';
-                                    }, 100);
-                                });
+                                // chrome.storage.sync.set({
+                                //     "zen_options" : zenOptions
+                                // }, function() {
+                                //     // Update status to let user know options were saved.
+                                //     var status = document.getElementById('status');
+                                //     status.innerHTML = 'Status: Changes applied';
+                                //     setTimeout(function() {
+                                //         status.textContent = 'Status: ' + numBlockedAuthors + ' authors are blocked';
+                                //     }, 100);
+                                // });
 
                                 var trigger = Math.random();
                                 chrome.storage.sync.set({'refresh': trigger});
