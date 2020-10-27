@@ -142,7 +142,7 @@ Ynet.prototype._synopsis = function() {
                             }
 
 							// var articleFirstParag = document.querySelector('#main>div.area.content>div>div.block.B4.spacer>div.block.B4>div.block.B3>div.block.B3>div.element.B3.ghcite>div>div[class^="text"]>span');
-							var articleFirstParag = document.querySelector('div.art_header_bottom, div.hr.solid, div#ahpp-1');
+							var articleFirstParag = document.querySelector('.text_editor_paragraph');
 
 							if (!articleFirstParag) {
 								console.log("Cannot insert synopsis, since cannot detect articleFirstParag!");
@@ -165,10 +165,10 @@ Ynet.prototype._synopsis = function() {
                             pendingDiv.appendChild(pendingGIF);
 
                             // articleFirstParag.parentElement.insertBefore(pendingDiv, articleFirstParag);
-							articleFirstParag.parentElement.insertBefore(pendingDiv, articleFirstParag.nextSibling);
+							articleFirstParag.parentElement.insertBefore(pendingDiv, articleFirstParag);
 
                             // var synopsis = self._computeSynopsis(self, '#main>div.area.content>div>div.block.B4.spacer>div.block.B4>div.block.B3>div.block.B3>div.element.B3.ghcite>div>div[class^="text"]>span>p');
-							var synopsis = self._computeSynopsis(self, 'div.art_body>div[class^="text"]>span>p, div.element.B3.ghcite>div>div[class^="text"]>span>p');
+							var synopsis = self._computeSynopsis(self, '.text_editor_paragraph');
 
                             var bgColor = 'rgba(240,240,240,0.35)';
                             var marginB = '75px';
